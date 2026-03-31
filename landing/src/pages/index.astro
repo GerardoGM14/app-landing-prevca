@@ -1,5 +1,25 @@
 ---
 import "../styles/global.css";
+import {
+	FaSearch,
+	FaArrowLeft,
+	FaArrowRight,
+	FaLinkedinIn,
+	FaInstagram,
+	FaTwitter,
+	FaBars,
+	FaTimes,
+	FaBullseye,
+	FaEye,
+	FaPhoneSquareAlt,
+} from "react-icons/fa";
+import { MdMarkEmailRead } from "react-icons/md";
+import {
+	HiArrowDownOnSquareStack,
+	HiArrowUpOnSquareStack,
+} from "react-icons/hi2";
+import { LuCookie } from "react-icons/lu";
+import libroImg from "../assets/libro-reclamaciones.png";
 ---
 
 <html lang="es">
@@ -8,48 +28,1291 @@ import "../styles/global.css";
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Prevca - Landing Page</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+		<title>Grupo Prevca</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@400;600&family=Inter:wght@300;400&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			/* Spinner Animation */
+			@keyframes spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			.loader-spinner {
+				border: 3px solid rgba(255, 255, 255, 0.1);
+				border-left-color: #1d4c74;
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				animation: spin 0.8s linear infinite;
+			}
+			/* Initial state for cookie banner */
+			#cookie-banner {
+				transform: translateY(100%);
+			}
+
+			/* Reveal on Scroll classes */
+			.reveal-item {
+				opacity: 0;
+				transform: translateY(30px);
+				transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+			.reveal-item.active {
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+			/* Nav Link Animation */
+			.nav-link {
+				position: relative;
+			}
+			.nav-link::after {
+				content: "";
+				position: absolute;
+				bottom: -2px;
+				left: 0;
+				width: 0;
+				height: 2px;
+				background-color: white;
+				transition: width 0.3s ease;
+			}
+			.nav-link:hover::after {
+				width: 100%;
+			}
+
+			/* Typewriter Cursor */
+			.typewriter-cursor::after {
+				content: "|";
+				animation: blink 1s infinite;
+				margin-left: 2px;
+				color: #1d4c74;
+			}
+			@keyframes blink {
+				0%,
+				100% {
+					opacity: 1;
+				}
+				50% {
+					opacity: 0;
+				}
+			}
+
+			/* Scroll Progress Bar Style */
+			#scroll-progress-bar {
+				width: 0%;
+				transition: width 0.1s ease-out;
+			}
+
+			/* Legal Modals Styles */
+			.modal-overlay {
+				position: fixed;
+				inset: 0;
+				background: rgba(0, 0, 0, 0.5);
+				backdrop-filter: blur(4px);
+				z-index: 100;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 20px;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.3s ease;
+			}
+			.modal-overlay.active {
+				opacity: 1;
+				pointer-events: auto;
+			}
+			.modal-content {
+				background: white;
+				width: 100%;
+				max-width: 800px;
+				max-height: 80vh;
+				overflow-y: auto;
+				padding: 40px;
+				border-radius: 2px;
+				box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+				position: relative;
+				border-top: 6px solid #1d4c74;
+			}
+			.modal-close {
+				position: absolute;
+				top: 20px;
+				right: 20px;
+				font-size: 24px;
+				cursor: pointer;
+				color: #2a3035;
+				opacity: 0.5;
+				transition: opacity 0.2s;
+			}
+			.modal-close:hover {
+				opacity: 1;
+			}
+			.modal-body h3 {
+				color: #1d4c74;
+				font-weight: 700;
+				font-family: "Outfit Variable", sans-serif;
+				margin-bottom: 20px;
+				letter-spacing: -0.01em;
+			}
+			.modal-body section {
+				margin-bottom: 24px;
+			}
+			.modal-body h4 {
+				font-weight: 700;
+				margin-bottom: 8px;
+				color: #2a3035;
+			}
+			.modal-body p {
+				color: #4b5563;
+				line-height: 1.6;
+				margin-bottom: 12px;
+			}
+		</style>
 	</head>
-	<body class="bg-[#050505] text-white font-['Outfit'] selection:bg-purple-500/30">
-		<main class="min-h-screen relative overflow-hidden flex flex-col justify-center items-center px-4">
-			<!-- Bakground Glow -->
-			<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/20 blur-[120px] rounded-full"></div>
-			<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 blur-[120px] rounded-full"></div>
+	<body
+		class="bg-white text-gray-800 font-body selection:bg-[#1d4c74] selection:text-white overflow-x-hidden"
+	>
+		<!-- CORPORATE LOADER -->
+		<div
+			id="loader-overlay"
+			class="fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-700"
+		>
+			<div class="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+			<div class="relative z-10">
+				<div class="loader-spinner"></div>
+			</div>
+		</div>
 
-			<nav class="absolute top-0 w-full p-8 flex justify-between items-center max-w-7xl">
-				<div class="text-2xl font-bold tracking-tighter">PREVCA</div>
-				<div class="hidden md:flex gap-8 text-sm font-medium opacity-60">
-					<a href="#" class="hover:opacity-100 transition-opacity">Inicio</a>
-					<a href="#" class="hover:opacity-100 transition-opacity">Servicios</a>
-					<a href="#" class="hover:opacity-100 transition-opacity">Contacto</a>
+		<!-- Main Navbar -->
+		<nav
+			class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300"
+		>
+			<div class="flex items-center gap-3">
+				<div
+					class="w-7 h-7 md:w-8 md:h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base md:text-lg shadow-none"
+				>
+					P
 				</div>
-				<a href="/ecommerce" class="px-5 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors text-sm font-medium">
-					Ir a la Tienda
+				<span
+					class="text-xl md:text-2xl font-extrabold tracking-widest font-display uppercase"
+					>GRUPO PREVCA</span
+				>
+			</div>
+
+			<!-- Desktop Menu -->
+			<div
+				class="hidden lg:flex gap-8 text-sm font-semibold tracking-wide uppercase"
+			>
+				<a
+					href="#"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Inicio</a
+				>
+				<a
+					href="#"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Sobre Nosotros</a
+				>
+				<a
+					href="#"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Madera</a
+				>
+				<a
+					href="#"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Hospitalidad</a
+				>
+				<a
+					href="#"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Café</a
+				>
+				<a
+					href="#"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Contacto</a
+				>
+			</div>
+
+			<div class="hidden lg:flex gap-6 items-center">
+				<button
+					class="hover:text-gray-400 transition-colors text-lg cursor-pointer"
+					aria-label="Buscar"><FaSearch /></button
+				>
+				<a
+					href="/ecommerce"
+					class="bg-[#1d4c74] text-white uppercase text-xs font-bold py-2 px-6 hover:bg-[#153a5b] transition-colors cursor-pointer border-none"
+				>
+					Tienda Virtual
 				</a>
-			</nav>
+			</div>
 
-			<section class="text-center space-y-8 relative z-10 max-w-3xl">
-				<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-xs font-semibold text-purple-300 animate-pulse">
-					🚀 Lanzamiento Próximamente
+			<!-- Mobile Toggle -->
+			<button
+				id="menu-toggle"
+				class="lg:hidden text-2xl text-white cursor-pointer"
+				aria-label="Menu"
+			>
+				<div id="icon-bars"><FaBars id="icon-bars" /></div>
+				<div id="icon-times" class="hidden">
+					<FaTimes id="icon-times" />
 				</div>
-				<h1 class="text-6xl md:text-8xl font-bold tracking-tight leading-[0.9]">
-					Transforma tu <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Visión</span> en Realidad
+			</button>
+		</nav>
+
+		<!-- Mobile Menu Drawer -->
+		<div
+			id="mobile-menu"
+			class="fixed inset-0 bg-[#2a3035] z-40 transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-8 overflow-y-auto"
+		>
+			<div
+				class="flex flex-col gap-6 text-xl text-white font-ui uppercase font-bold tracking-widest"
+			>
+				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Inicio</a
+				>
+				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Sobre Nosotros</a
+				>
+				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Madera</a
+				>
+				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Hospitalidad</a
+				>
+				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Café</a
+				>
+				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Contacto</a
+				>
+				<a
+					href="/ecommerce"
+					class="bg-[#1d4c74] text-center py-4 mt-4 cursor-pointer text-sm"
+					>Tienda Virtual</a
+				>
+			</div>
+		</div>
+
+		<!-- Hero Section -->
+		<header
+			class="relative w-full h-[60vh] md:h-[70vh] flex flex-col md:flex-row bg-gray-900 border-b border-[#2a3035]"
+		>
+			<!-- 3 Background Slices (Stacked on Mobile, Columns on Desktop) -->
+			<div
+				class="w-full md:w-1/3 h-1/3 md:h-full bg-cover bg-center md:border-r border-white/10 grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+				style="background-image: url('https://images.unsplash.com/photo-1541535650810-10d26f5c2abb?auto=format&fit=crop&q=80&w=1200');"
+			>
+			</div>
+			<div
+				class="w-full md:w-1/3 h-1/3 md:h-full bg-cover bg-center md:border-r border-white/10 grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+				style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200');"
+			>
+			</div>
+			<div
+				class="w-full md:w-1/3 h-1/3 md:h-full bg-cover bg-center grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+				style="background-image: url('https://images.unsplash.com/photo-1447933630913-221b4444c447?auto=format&fit=crop&q=80&w=1200');"
+			>
+			</div>
+			<!-- Overlay Content -->
+			<div
+				class="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-white text-center p-6 md:p-12"
+			>
+				<h1
+					class="text-4xl sm:text-6xl md:text-8xl font-extrabold font-display tracking-tighter mb-4 uppercase leading-none reveal-item"
+				>
+					GRUPO PREVCA
 				</h1>
-				<p class="text-lg md:text-xl text-neutral-400 max-w-xl mx-auto font-light leading-relaxed">
-					La solución integral para tu negocio digital. Landing pages rápidas, ecommerce fluido y backend potente.
+				<p
+					id="typewriter-text"
+					class="text-lg sm:text-xl md:text-2xl font-ui mb-8 font-light tracking-wide max-w-2xl px-4 text-gray-200 min-h-[1.5em] typewriter-cursor"
+				>
+					<!-- Text will be typed here -->
 				</p>
-				<div class="flex flex-col md:flex-row gap-4 justify-center items-center pt-4">
-					<button class="w-full md:w-auto px-8 py-4 bg-white text-black rounded-full font-bold hover:scale-105 transition-transform">
-						Empezar Ahora
-					</button>
-					<button class="w-full md:w-auto px-8 py-4 bg-white/5 border border-white/10 rounded-full font-bold hover:bg-white/10 transition-colors">
-						Saber Más
+				<button
+					class="bg-[#1d4c74] text-white font-display font-extrabold tracking-widest uppercase py-4 px-10 hover:bg-[#153a5b] transition-colors text-sm border-2 border-[#1d4c74] cursor-pointer reveal-item"
+				>
+					Explorar Divisiones
+				</button>
+			</div>
+		</header>
+
+		<!-- About Us (Responsive Columns) -->
+		<section
+			class="bg-[#1d4c74] text-white py-16 md:py-24 px-6 md:px-8 reveal-item"
+		>
+			<div
+				class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10 md:gap-16"
+			>
+				<!-- Left Text -->
+				<div class="w-full lg:w-1/2 space-y-6 md:space-y-8">
+					<h2
+						class="text-3xl md:text-4xl font-extrabold font-display uppercase tracking-widest text-white"
+					>
+						SOBRE NOSOTROS
+					</h2>
+					<div class="w-16 h-1.5 bg-white"></div>
+					<p
+						class="font-body text-gray-200 leading-relaxed text-base md:text-lg"
+					>
+						Grupo Prevca es un firme compromiso con la calidad y la
+						innovación, adaptando nuestra gestión a las necesidades
+						de los clientes y navegando nuevos retos con la
+						experiencia de nuestro equipo. Desde las materias primas
+						hasta las mejores experiencias, integramos la excelencia
+						en todo lo que hacemos.
+					</p>
+					<button
+						class="bg-white text-[#1d4c74] font-ui font-extrabold uppercase py-3.5 px-8 tracking-wider hover:bg-gray-100 transition-all text-xs md:text-sm mt-4 cursor-pointer"
+					>
+						LEER MÁS
 					</button>
 				</div>
-			</section>
-		</main>
+				<!-- Right Image (Carousel Mock) -->
+				<div class="w-full lg:w-1/2">
+					<div
+						class="relative w-full aspect-[16/9] md:aspect-[4/3] bg-gray-800 overflow-hidden border-[6px] border-white ring-1 ring-black/10"
+					>
+						<img
+							src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
+							alt="Corporativo"
+							class="w-full h-full object-cover"
+						/>
+						<!-- Simplified Controls -->
+						<div class="absolute bottom-0 right-0 flex shadow-none">
+							<button
+								class="w-12 h-12 md:w-14 md:h-14 bg-[#2a3035] text-white flex items-center justify-center hover:bg-[#1d4c74] transition-colors cursor-pointer"
+							>
+								<FaArrowLeft />
+							</button>
+							<button
+								class="w-12 h-12 md:w-14 md:h-14 bg-[#2a3035] text-white flex items-center justify-center hover:bg-[#1d4c74] transition-colors border-l border-white/20 cursor-pointer"
+							>
+								<FaArrowRight />
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Corporate Values & Stats (NEW) -->
+		<section
+			class="bg-white py-12 md:py-16 border-b border-gray-100 reveal-item"
+		>
+			<div
+				class="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"
+			>
+				<div class="text-center space-y-2">
+					<p
+						class="text-4xl md:text-5xl font-display font-extrabold text-[#1d4c74] stat-number"
+						data-target="25"
+					>
+						0
+					</p>
+					<p
+						class="text-[10px] md:text-xs font-ui font-bold uppercase tracking-widest text-gray-500"
+					>
+						Años de Trayectoria
+					</p>
+				</div>
+				<div class="text-center space-y-2">
+					<p
+						class="text-4xl md:text-5xl font-display font-extrabold text-[#1d4c74] stat-number"
+						data-target="150"
+					>
+						0
+					</p>
+					<p
+						class="text-[10px] md:text-xs font-ui font-bold uppercase tracking-widest text-gray-500"
+					>
+						Proyectos Globales
+					</p>
+				</div>
+				<div class="text-center space-y-2">
+					<p
+						class="text-4xl md:text-5xl font-display font-extrabold text-[#1d4c74] stat-number"
+						data-target="100"
+					>
+						0
+					</p>
+					<p
+						class="text-[10px] md:text-xs font-ui font-bold uppercase tracking-widest text-gray-500"
+					>
+						Calidad Sostenible (%)
+					</p>
+				</div>
+				<div class="text-center space-y-2">
+					<p
+						class="text-4xl md:text-5xl font-display font-extrabold text-[#1d4c74] stat-number"
+						data-target="3"
+					>
+						0
+					</p>
+					<p
+						class="text-[10px] md:text-xs font-ui font-bold uppercase tracking-widest text-gray-500"
+					>
+						Unidades de Negocio
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Mission & Vision (NEW) -->
+		<section
+			class="flex flex-col lg:flex-row w-full min-h-[450px] reveal-item"
+		>
+			<!-- Mission -->
+			<div
+				class="w-full lg:w-1/2 bg-[#2a3035] text-white p-12 md:p-20 flex flex-col justify-center gap-8 border-b lg:border-b-0 lg:border-r border-white/5"
+			>
+				<div class="flex items-center gap-6">
+					<div
+						class="w-14 h-14 bg-[#1d4c74] flex items-center justify-center text-3xl"
+					>
+						<HiArrowDownOnSquareStack />
+					</div>
+					<h3
+						class="text-3xl md:text-4xl font-display font-extrabold uppercase tracking-tighter"
+					>
+						Nuestra Misión
+					</h3>
+				</div>
+				<p
+					class="font-body text-gray-400 text-lg leading-relaxed max-w-xl"
+				>
+					Elevar los estándares de la industria a través de procesos
+					productivos innovadores y sostenibles, garantizando la
+					excelencia en cada grano de café, cada pieza de madera y
+					cada experiencia de hospitalidad que entregamos al mundo.
+				</p>
+			</div>
+			<!-- Vision -->
+			<div
+				class="w-full lg:w-1/2 bg-[#1d4c74] text-white p-12 md:p-20 flex flex-col justify-center gap-8"
+			>
+				<div class="flex items-center gap-6">
+					<div
+						class="w-14 h-14 bg-[#2a3035] flex items-center justify-center text-3xl"
+					>
+						<HiArrowUpOnSquareStack />
+					</div>
+					<h3
+						class="text-3xl md:text-4xl font-display font-extrabold uppercase tracking-tighter"
+					>
+						Nuestra Visión
+					</h3>
+				</div>
+				<p
+					class="font-body text-gray-100 text-lg leading-relaxed max-w-xl opacity-90"
+				>
+					Ser el grupo corporativo referente en la región por nuestra
+					capacidad de diversificación inteligente, liderando el
+					mercado con integridad y transformando los recursos
+					naturales en valor excepcional para nuestros socios y
+					comunidades.
+				</p>
+			</div>
+		</section>
+
+		<!-- Divisions Cards (Responsive Grid) -->
+		<section class="py-16 md:py-24 px-6 md:px-8 bg-gray-50 reveal-item">
+			<div
+				class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-0 md:border border-gray-200"
+			>
+				<!-- Madera -->
+				<div
+					class="bg-[#2a3035] flex flex-col group border md:border-none border-gray-200 shadow-none"
+				>
+					<div class="h-64 overflow-hidden relative">
+						<img
+							src="https://images.unsplash.com/photo-1610557892470-56d93bb076b0?auto=format&fit=crop&q=80&w=800"
+							alt="Madera"
+							class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 font-display"
+						/>
+					</div>
+					<div class="p-8 md:p-10 flex flex-col flex-grow text-white">
+						<h3
+							class="text-xl md:text-2xl font-extrabold font-display mb-4 tracking-widest uppercase"
+						>
+							MADERA
+						</h3>
+						<p
+							class="font-body leading-relaxed mb-8 flex-grow text-gray-300 text-sm md:text-base"
+						>
+							Producimos madera de alta calidad con estándares
+							sostenibles para la industria de la construcción y
+							diseño.
+						</p>
+						<button
+							class="bg-[#1d4c74] text-white font-ui font-bold uppercase py-3 px-6 self-start hover:bg-white hover:text-[#1d4c74] transition-colors text-xs tracking-wider cursor-pointer"
+						>
+							Ver División
+						</button>
+					</div>
+				</div>
+
+				<!-- Hospitalidad -->
+				<div
+					class="bg-[#1d4c74] flex flex-col group border md:border-none border-gray-200 shadow-none"
+				>
+					<div class="h-64 overflow-hidden relative">
+						<img
+							src="https://images.unsplash.com/photo-1542314831-c6a4d14faaf2?auto=format&fit=crop&q=80&w=800"
+							alt="Hospitalidad"
+							class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 font-display"
+						/>
+					</div>
+					<div
+						class="p-8 md:p-10 flex flex-col flex-grow text-white border-y border-white/10 md:border-y-0 md:border-x shadow-none"
+					>
+						<h3
+							class="text-xl md:text-2xl font-extrabold font-display mb-4 tracking-widest uppercase"
+						>
+							HOSPITALIDAD
+						</h3>
+						<p
+							class="font-body leading-relaxed mb-8 flex-grow text-gray-200 text-sm md:text-base"
+						>
+							Gestión hotelera de lujo con un enfoque en la
+							experiencia personalizada y el confort superior.
+						</p>
+						<button
+							class="bg-[#2a3035] text-white font-ui font-bold uppercase py-3 px-6 self-start hover:bg-white hover:text-[#2a3035] transition-colors text-xs tracking-wider cursor-pointer"
+						>
+							Ver División
+						</button>
+					</div>
+				</div>
+
+				<!-- Café -->
+				<div
+					class="bg-[#2a3035] flex flex-col group border md:border-none border-gray-200 shadow-none"
+				>
+					<div class="h-64 overflow-hidden relative">
+						<img
+							src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800"
+							alt="Café"
+							class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 font-display"
+						/>
+					</div>
+					<div class="p-8 md:p-10 flex flex-col flex-grow text-white">
+						<h3
+							class="text-xl md:text-2xl font-extrabold font-display mb-4 tracking-widest uppercase"
+						>
+							CAFÉ
+						</h3>
+						<p
+							class="font-body leading-relaxed mb-8 flex-grow text-gray-300 text-sm md:text-base"
+						>
+							Especialistas en granos de origen único, tueste
+							artesanal y distribución de café de especialidad.
+						</p>
+						<button
+							class="bg-[#1d4c74] text-white font-ui font-bold uppercase py-3 px-6 self-start hover:bg-white hover:text-[#1d4c74] transition-colors text-xs tracking-wider cursor-pointer"
+						>
+							Ver División
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Quotation / Contact Form (NEW) -->
+		<section id="contact-section" class="py-16 md:py-24 px-6 md:px-8 bg-white reveal-item">
+			<div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16">
+				<!-- Left Text, Info & Image -->
+				<div class="w-full lg:w-5/12 flex flex-col justify-between">
+					<div>
+						<div class="space-y-4 mb-8">
+							<h2
+								class="text-3xl md:text-4xl font-extrabold font-display uppercase tracking-widest text-[#1d4c74]"
+							>
+								INICIAR NEGOCIO
+							</h2>
+							<div class="w-80 h-1.5 bg-gray-100 overflow-hidden relative">
+								<div id="scroll-progress-bar" class="absolute inset-y-0 left-0 bg-[#1d4c74]"></div>
+							</div>
+						</div>
+						<p
+							class="font-body text-gray-600 leading-relaxed text-base"
+						>
+							Nuestros asesores corporativos están listos para
+							brindarle soluciones a medida. Complete el
+							formulario para cotizaciones, alianzas comerciales o
+							consultas especializadas sobre nuestras divisiones.
+						</p>
+
+						<div
+							class="space-y-6 pt-8 font-body text-sm text-gray-800 mb-8"
+						>
+							<div class="flex items-center gap-4">
+								<div
+									class="w-10 h-10 bg-gray-100 flex items-center justify-center text-[#1d4c74]"
+								>
+									<FaLinkedinIn />
+								</div>
+								<div>
+									<p
+										class="font-bold uppercase tracking-wider text-xs text-gray-500"
+									>
+										Oficina Central
+									</p>
+									<p class="font-semibold text-gray-700">
+										Av. Empresarial 100, Distrito Financiero
+									</p>
+								</div>
+							</div>
+							<div class="flex items-center gap-4">
+								<div
+									class="w-10 h-10 bg-gray-100 flex items-center justify-center text-[#1d4c74]"
+								>
+									<svg
+										class="w-4 h-4"
+										fill="currentColor"
+										viewBox="0 0 24 24"
+										><path
+											d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+										></path></svg
+									>
+								</div>
+								<div>
+									<p
+										class="font-bold uppercase tracking-wider text-xs text-gray-500"
+									>
+										Contacto Directo
+									</p>
+									<p class="font-semibold text-gray-700">
+										cotizaciones@grupoprevca.com
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Corporate Location Map -->
+					<div
+						class="w-full h-48 md:h-64 mt-auto overflow-hidden relative bg-gray-100 border border-gray-200"
+					>
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15605.35246755498!2d-77.0396096!3d-12.094584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c860fe519233%3A0xb2bbdf2e17620ad!2sDistrito%20Financiero%2C%20San%20Isidro%2015046!5e0!3m2!1ses-419!2spe!4v1680123456789!5m2!1ses-419!2spe"
+							class="w-full h-full border-0 outline-none"
+							allowfullscreen=""
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							title="Mapa de Ubicación Central"
+						>
+						</iframe>
+					</div>
+				</div>
+
+				<!-- Right Form -->
+				<div
+					class="w-full lg:w-7/12 bg-gray-50 p-8 md:p-12 border border-gray-200"
+				>
+					<form class="space-y-6 font-body">
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div class="space-y-2">
+								<label
+									class="text-sm font-semibold text-gray-700"
+									>Nombre completo</label
+								>
+								<input
+									type="text"
+									class="w-full bg-white border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#1d4c74] focus:ring-1 focus:ring-[#1d4c74] transition-all"
+									placeholder="Ej. Juan Pérez"
+								/>
+							</div>
+							<div class="space-y-2">
+								<label
+									class="text-sm font-semibold text-gray-700"
+									>Empresa (Opcional)</label
+								>
+								<input
+									type="text"
+									class="w-full bg-white border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#1d4c74] focus:ring-1 focus:ring-[#1d4c74] transition-all"
+									placeholder="Su empresa"
+								/>
+							</div>
+						</div>
+
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div class="space-y-2">
+								<label
+									class="text-sm font-semibold text-gray-700"
+									>Correo electrónico</label
+								>
+								<input
+									type="email"
+									class="w-full bg-white border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#1d4c74] focus:ring-1 focus:ring-[#1d4c74] transition-all"
+									placeholder="correo@empresa.com"
+								/>
+							</div>
+							<div class="space-y-2">
+								<label
+									class="text-sm font-semibold text-gray-700"
+									>División de interés</label
+								>
+								<div class="relative">
+									<select
+										class="w-full bg-white border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#1d4c74] focus:ring-1 focus:ring-[#1d4c74] transition-all appearance-none cursor-pointer text-gray-600"
+									>
+										<option value="" disabled selected
+											>Seleccione un área...</option
+										>
+										<option value="madera"
+											>División Madera</option
+										>
+										<option value="hospitalidad"
+											>División Hospitalidad</option
+										>
+										<option value="cafe"
+											>División Café</option
+										>
+										<option value="general"
+											>Información General</option
+										>
+									</select>
+									<div
+										class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#1d4c74]"
+									>
+										<svg
+											class="fill-current h-5 w-5"
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 20 20"
+											><path
+												d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+											></path></svg
+										>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="space-y-2">
+							<label class="text-sm font-semibold text-gray-700"
+								>Mensaje o requerimiento</label
+							>
+							<textarea
+								class="w-full bg-white border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#1d4c74] focus:ring-1 focus:ring-[#1d4c74] transition-all h-32 resize-none"
+								placeholder="Describa brevemente lo que necesita cotizar..."
+							></textarea>
+						</div>
+
+						<button
+							type="button"
+							class="w-full bg-[#1d4c74] text-white font-ui font-extrabold tracking-widest uppercase py-4 hover:bg-[#153a5b] transition-colors text-sm cursor-pointer border-none mt-4"
+						>
+							Solicitar Cotización
+						</button>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<!-- Final CTA / Underbar -->
+		<footer
+			class="bg-[#2a3035] text-white pt-16 md:pt-20 pb-8 px-6 md:px-8 border-t border-gray-800 reveal-item"
+		>
+			<div
+				class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16 mb-16"
+			>
+				<!-- Brand & Contact -->
+				<div class="space-y-6">
+					<div class="flex items-center gap-3">
+						<div
+							class="w-7 h-7 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base"
+						>
+							P
+						</div>
+						<span
+							class="text-xl font-extrabold tracking-widest font-display uppercase"
+							>GRUPO PREVCA</span
+						>
+					</div>
+					<p class="text-sm text-gray-400 font-body leading-loose">
+						Inspiramos confianza a través de la excelencia y la
+						sostenibilidad en cada sector donde operamos.
+					</p>
+					<div class="pt-2 space-y-4 text-sm text-gray-400 font-body">
+						<p class="flex items-center gap-3">
+							<span class="text-white text-xl"
+								><FaPhoneSquareAlt /></span
+							>
+							<span
+								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
+								>+51 987 654 321</span
+							>
+						</p>
+						<p class="flex items-center gap-3">
+							<span class="text-white text-xl"
+								><MdMarkEmailRead /></span
+							>
+							<span
+								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
+								>info@grupoprevca.com</span
+							>
+						</p>
+					</div>
+				</div>
+
+				<!-- Libro de Reclamaciones -->
+				<div>
+					<h4 class="mb-6 text-sm opacity-70 text-white">
+						Atención al Cliente
+					</h4>
+					<div class="flex flex-col gap-3 mt-2">
+						<a
+							href="#"
+							class="bg-white p-1 rounded-sm hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg"
+						>
+							<img
+								src={libroImg.src}
+								alt="Libro de Reclamaciones"
+								class="w-full h-auto max-h-24 object-contain"
+							/>
+						</a>
+						<p
+							class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-1 font-bold"
+						>
+							Conforme a la Ley N° 29571
+						</p>
+					</div>
+				</div>
+
+				<!-- Links & Legal -->
+				<div>
+					<h4 class="font-extrabold mb-6 text-sm opacity-70">
+						Corporativo
+					</h4>
+					<ul class="space-y-4 text-sm text-gray-400 font-body">
+						<li>
+							<a
+								href="#"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Sobre Nosotros</a
+							>
+						</li>
+						<li>
+							<a
+								href="#"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Centro de Contacto</a
+							>
+						</li>
+						<li>
+							<a
+								id="btn-privacy"
+								href="javascript:void(0)"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Política de Privacidad</a
+							>
+						</li>
+						<li>
+							<a
+								id="btn-terms"
+								href="javascript:void(0)"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Términos Legales</a
+							>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Newsletter & Social -->
+				<div class="space-y-10">
+					<div class="w-full">
+						<h4 class="font-extrabold mb-6 text-sm opacity-70">
+							Boletín Corporativo
+						</h4>
+						<form
+							class="flex border border-white/10 bg-black/20 focus-within:border-white transition-all"
+						>
+							<input
+								type="email"
+								placeholder="correo@empresa.com"
+								class="bg-transparent text-white px-4 py-2.5 w-full font-body text-sm outline-none placeholder:opacity-30"
+							/>
+							<button
+								class="bg-[#1d4c74] px-4 py-2.5 hover:bg-[#153a5b] cursor-pointer border-none text-white transition-colors"
+								><FaArrowRight /></button
+							>
+						</form>
+					</div>
+					<div>
+						<h4 class="font-extrabold mb-4 text-sm opacity-70">
+							Síguenos
+						</h4>
+						<div class="flex gap-3">
+							<a
+								href="#"
+								class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all cursor-pointer"
+							>
+								<FaLinkedinIn />
+							</a>
+							<a
+								href="#"
+								class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all cursor-pointer"
+							>
+								<FaInstagram />
+							</a>
+							<a
+								href="#"
+								class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all cursor-pointer"
+							>
+								<FaTwitter />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui"
+			>
+				&copy; 2026 Grupo Prevca. Todos los derechos reservados. |
+				Diseñado por PolarSystem S.A.C.
+			</div>
+		</footer>
+
+		<!-- COOKIE CONSENT BANNER & OVERLAY -->
+		<div
+			id="cookie-overlay"
+			class="fixed inset-0 z-[85] bg-black/30 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-1000"
+		>
+		</div>
+
+		<div
+			id="cookie-banner"
+			class="fixed bottom-0 left-0 right-0 bg-[#2a3035] text-white p-6 md:px-12 z-[90] flex flex-col md:flex-row items-center justify-between gap-6 transition-transform duration-500 border-t-2 border-[#1d4c74] shadow-2xl"
+		>
+			<div class="flex items-center gap-6">
+				<div class="text-white text-4xl flex-shrink-0">
+					<LuCookie />
+				</div>
+				<p
+					class="text-sm font-body leading-relaxed max-w-2xl text-gray-300"
+				>
+					Utilizamos cookies para optimizar esta landing page y
+					asegurar que nuestro catálogo de <span
+						class="text-white font-bold tracking-tight border-none"
+						>Madera, Hospitalidad y Café</span
+					> te brinde la mejor experiencia corporativa. Al continuar navegando,
+					aceptas nuestra política de privacidad.
+				</p>
+			</div>
+			<div class="flex gap-4 w-full md:w-auto">
+				<button
+					id="cookie-reject"
+					class="w-full md:w-auto border border-white/20 text-white font-ui font-semibold py-3 px-8 text-xs tracking-widest hover:bg-white/10 transition-all cursor-pointer"
+				>
+					Rechazar
+				</button>
+				<button
+					id="cookie-accept"
+					class="w-full md:w-auto bg-[#1d4c74] text-white font-ui font-semibold py-3 px-10 text-xs tracking-widest hover:bg-[#153a5b] transition-all cursor-pointer"
+				>
+					Aceptar Todo
+				</button>
+			</div>
+		</div>
+
+		<!-- MODAL: PRIVACIDAD -->
+		<div id="modal-privacy" class="modal-overlay">
+			<div class="modal-content relative">
+				<span class="modal-close">&times;</span>
+				<div class="modal-body font-body">
+					<h3>Política de Privacidad</h3>
+					<section>
+						<h4>1. Protección de Datos</h4>
+						<p>De conformidad con la Ley N° 29733 (Ley de Protección de Datos Personales en Perú), Grupo Prevca garantiza el tratamiento responsable de toda información recolectada mediante este portal corporativo.</p>
+					</section>
+					<section>
+						<h4>2. Finalidades del Tratamiento</h4>
+						<p>La información recolectada en nuestros formularios de contacto y cotización se utiliza exclusivamente para: proveer información de servicios, gestionar relaciones comerciales de nuestras divisiones (Madera, Café, Hospitalidad) y mejorar su experiencia de usuario.</p>
+					</section>
+					<section>
+						<h4>3. Seguridad</h4>
+						<p>Implementamos protocolos de seguridad técnica y organizativa para evitar el acceso no autorizado, pérdida o alteración de sus datos personales. No compartimos información con terceros sin su consentimiento explícito.</p>
+					</section>
+					<section>
+						<h4>4. Derechos ARCO</h4>
+						<p>Usted puede ejercer sus derechos de Acceso, Rectificación, Cancelación y Oposición en cualquier momento enviando una solicitud formal a: info@grupoprevca.com.</p>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<!-- MODAL: TERMINOS -->
+		<div id="modal-terms" class="modal-overlay">
+			<div class="modal-content relative">
+				<span class="modal-close">&times;</span>
+				<div class="modal-body font-body">
+					<h3>Términos y Condiciones Legales</h3>
+					<section>
+						<h4>1. Propiedad Intelectual</h4>
+						<p>Todo el contenido editorial, gráfico y logotipos son propiedad exclusiva de Grupo Prevca. Queda prohibida la reproducción total o parcial sin autorización por escrito.</p>
+					</section>
+					<section>
+						<h4>2. Limitación de Responsabilidad</h4>
+						<p>Grupo Prevca se reserva el derecho de modificar catálogos, especificaciones de productos y tarifas de hospitalidad sin previo aviso, buscando siempre la precisión comercial constante.</p>
+					</section>
+					<section>
+						<h4>3. Uso del Sitio</h4>
+						<p>El uso de este portal es estrictamente informativo y de prospección comercial internacional. Cualquier uso malintencionado que vulnere la integridad del servidor será procesado legalmente.</p>
+					</section>
+					<section>
+						<h4>4. Jurisdicción</h4>
+						<p>Cualquier controversia derivada del uso de este portal se regirá bajo las leyes de la República del Perú, sometiéndose a la competencia de los tribunales de Lima.</p>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<!-- CLIENT SIDE LOGIC -->
+		<script is:inline>
+			document.addEventListener("DOMContentLoaded", () => {
+				// 1. LOADER HIDER
+				const loader = document.getElementById("loader-overlay");
+				const body = document.body;
+
+				window.addEventListener("load", () => {
+					setTimeout(() => {
+						if (loader) {
+							loader.classList.add("opacity-0");
+							setTimeout(() => {
+								loader.classList.add("hidden");
+								startTypewriter(); // Start typewriter after loader
+							}, 700);
+						}
+					}, 300);
+				});
+
+				// 2. TYPEWRITER LOGIC
+				const typewriterElement =
+					document.getElementById("typewriter-text");
+				const targetText = "Excelencia en Madera, Hospitalidad y Café";
+
+				function startTypewriter() {
+					let i = 0;
+					typewriterElement.textContent = "";
+					function type() {
+						if (i < targetText.length) {
+							typewriterElement.textContent +=
+								targetText.charAt(i);
+							i++;
+							setTimeout(type, 50);
+						} else {
+							typewriterElement.classList.remove(
+								"typewriter-cursor",
+							);
+						}
+					}
+					type();
+				}
+
+				// 3. REVEAL & COUNTER LOGIC (Intersection Observer)
+				const revealItems = document.querySelectorAll(".reveal-item");
+				const stats = document.querySelectorAll(".stat-number");
+
+				const observerOptions = {
+					threshold: 0.2,
+					rootMargin: "0px 0px -50px 0px",
+				};
+
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("active");
+
+							// If it's a stat section, trigger counter
+							if (
+								entry.target.contains(stats[0]) ||
+								entry.target.classList.contains("stat-number")
+							) {
+								triggerCounters();
+							}
+						}
+					});
+				}, observerOptions);
+
+				revealItems.forEach((item) => observer.observe(item));
+
+				function triggerCounters() {
+					stats.forEach((stat) => {
+						const target = parseInt(
+							stat.getAttribute("data-target"),
+						);
+						const duration = 2000; // 2 seconds
+						const stepTime = 20;
+						const totalSteps = duration / stepTime;
+						const increment = target / totalSteps;
+						let current = 0;
+
+						if (stat.getAttribute("data-started")) return;
+						stat.setAttribute("data-started", "true");
+
+						const timer = setInterval(() => {
+							current += increment;
+							if (current >= target) {
+								stat.textContent =
+									target +
+									(target === 100 &&
+									stat.textContent.includes("%")
+										? "%"
+										: "");
+								if (stat.getAttribute("data-target") === "100")
+									stat.textContent += "";
+								clearInterval(timer);
+							} else {
+								stat.textContent = Math.floor(current);
+							}
+						}, stepTime);
+					});
+				}
+
+				// 4. COOKIE LOGIC
+				const cookieBanner = document.getElementById("cookie-banner");
+				const cookieOverlay = document.getElementById("cookie-overlay");
+				const cookieAcceptBtn =
+					document.getElementById("cookie-accept");
+				const cookieRejectBtn =
+					document.getElementById("cookie-reject");
+
+				const hideCookies = () => {
+					if (cookieBanner)
+						cookieBanner.style.transform = "translateY(100%)";
+					if (cookieOverlay) {
+						cookieOverlay.classList.remove("opacity-100");
+						cookieOverlay.classList.add("opacity-0");
+						cookieOverlay.classList.add("pointer-events-none");
+					}
+					setTimeout(() => {
+						if (cookieBanner) cookieBanner.classList.add("hidden");
+						if (cookieOverlay)
+							cookieOverlay.classList.add("hidden");
+					}, 500);
+				};
+
+				if (!localStorage.getItem("prevca_cookies_accepted")) {
+					setTimeout(() => {
+						if (cookieBanner)
+							cookieBanner.style.transform = "translateY(0)";
+						if (cookieOverlay) {
+							cookieOverlay.classList.remove(
+								"opacity-0",
+								"pointer-events-none",
+							);
+							cookieOverlay.classList.add("opacity-100");
+						}
+					}, 1500);
+				} else {
+					if (cookieBanner) cookieBanner.classList.add("hidden");
+					if (cookieOverlay) cookieOverlay.classList.add("hidden");
+				}
+
+				cookieAcceptBtn?.addEventListener("click", () => {
+					localStorage.setItem("prevca_cookies_accepted", "true");
+					hideCookies();
+				});
+
+				cookieRejectBtn?.addEventListener("click", () => {
+					localStorage.setItem("prevca_cookies_accepted", "false");
+					hideCookies();
+				});
+
+				// 5. LEGAL MODALS LOGIC
+				const btnPrivacy = document.getElementById("btn-privacy");
+				const btnTerms = document.getElementById("btn-terms");
+				const modalPrivacy = document.getElementById("modal-privacy");
+				const modalTerms = document.getElementById("modal-terms");
+				const closeBtns = document.querySelectorAll(".modal-close");
+				
+				const toggleModal = (modal, show) => {
+					if (show) {
+						modal.classList.add("active");
+						body.style.overflow = "hidden";
+					} else {
+						modal.classList.remove("active");
+						body.style.overflow = "auto";
+					}
+				};
+
+				btnPrivacy?.addEventListener("click", () => toggleModal(modalPrivacy, true));
+				btnTerms?.addEventListener("click", () => toggleModal(modalTerms, true));
+				
+				closeBtns.forEach(btn => {
+					btn.addEventListener("click", () => {
+						toggleModal(modalPrivacy, false);
+						toggleModal(modalTerms, false);
+					});
+				});
+
+				// Close on click outside content
+				[modalPrivacy, modalTerms].forEach(modal => {
+					modal?.addEventListener("click", (e) => {
+						if (e.target === modal) toggleModal(modal, false);
+					});
+				});
+
+				// 6. LOCAL SCROLL PROGRESS LOGIC (Contact Section)
+				const scrollIndicator = document.getElementById("scroll-progress-bar");
+				const contactSection = document.getElementById("contact-section");
+				
+				const updateProgress = () => {
+					if (!contactSection || !scrollIndicator) return;
+					
+					const rect = contactSection.getBoundingClientRect();
+					const windowHeight = window.innerHeight;
+					
+					// Mide el progreso desde que la sección aparece abajo hasta que desaparece arriba
+					const startPoint = rect.top - windowHeight;
+					const totalDistance = rect.height + windowHeight;
+					const distanceScrolledIntoSection = -startPoint;
+					
+					let percentage = (distanceScrolledIntoSection / totalDistance) * 100;
+					
+					// Limitar estrictamente entre 0 y 100
+					percentage = Math.max(0, Math.min(100, percentage));
+					
+					scrollIndicator.style.width = percentage + "%";
+				};
+				
+				window.addEventListener("scroll", updateProgress);
+				updateProgress(); // Llamada inicial
+
+				// 7. MOBILE MENU LOGIC
+				const toggle = document.getElementById("menu-toggle");
+				const menu = document.getElementById("mobile-menu");
+				const bars = document.getElementById("icon-bars");
+				const times = document.getElementById("icon-times");
+
+				if (toggle && menu && bars && times) {
+					toggle.addEventListener("click", () => {
+						const isCurrentlyOpen =
+							menu.classList.contains("translate-x-full");
+
+						if (isCurrentlyOpen) {
+							menu.classList.remove("translate-x-full");
+							menu.classList.add("translate-x-0");
+							bars.classList.add("hidden");
+							times.classList.remove("hidden");
+							body.style.overflow = "hidden";
+						} else {
+							menu.classList.add("translate-x-full");
+							menu.classList.remove("translate-x-0");
+							bars.classList.remove("hidden");
+							times.classList.add("hidden");
+							body.style.overflow = "auto";
+						}
+					});
+				}
+			});
+		</script>
 	</body>
 </html>

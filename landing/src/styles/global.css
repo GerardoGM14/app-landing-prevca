@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+@theme {
+  --font-display: "Plus Jakarta Sans", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-ui: "Outfit", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
