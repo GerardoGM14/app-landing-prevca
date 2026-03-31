@@ -1,0 +1,893 @@
+---
+import "../styles/global.css";
+import {
+	FaSearch,
+	FaArrowLeft,
+	FaArrowRight,
+	FaLinkedinIn,
+	FaInstagram,
+	FaTwitter,
+	FaBars,
+	FaTimes,
+	FaBullseye,
+	FaEye,
+	FaPhoneSquareAlt,
+} from "react-icons/fa";
+import { MdMarkEmailRead } from "react-icons/md";
+import {
+	HiArrowDownOnSquareStack,
+	HiArrowUpOnSquareStack,
+} from "react-icons/hi2";
+import { LuCookie } from "react-icons/lu";
+import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineStar } from "react-icons/hi2";
+import libroImg from "../assets/libro-reclamaciones.png";
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Nuestra Historia | Grupo Prevca</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@400;600&family=Inter:wght@300;400&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			/* Spinner Animation */
+			@keyframes spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			.loader-spinner {
+				border: 3px solid rgba(255, 255, 255, 0.1);
+				border-left-color: #1d4c74;
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				animation: spin 0.8s linear infinite;
+			}
+			/* Initial state for cookie banner */
+			#cookie-banner {
+				transform: translateY(100%);
+			}
+
+			/* Reveal on Scroll classes */
+			.reveal-item {
+				opacity: 0;
+				transform: translateY(30px);
+				transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+			.reveal-item.active {
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+            /* Timeline Styling */
+            .timeline-dot {
+                width: 14px;
+                height: 14px;
+                background-color: white;
+                border-radius: 50%;
+                position: absolute;
+                top: -7px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 10;
+                box-shadow: 0 0 0 4px #1d4c74;
+            }
+
+			/* Nav Link Animation */
+			.nav-link {
+				position: relative;
+			}
+			.nav-link::after {
+				content: "";
+				position: absolute;
+				bottom: -2px;
+				left: 0;
+				width: 0;
+				height: 2px;
+				background-color: white;
+				transition: width 0.3s ease;
+			}
+			.nav-link:hover::after {
+				width: 100%;
+			}
+
+			/* Typewriter Cursor */
+			.typewriter-cursor::after {
+				content: "|";
+				animation: blink 1s infinite;
+				margin-left: 2px;
+				color: #1d4c74;
+			}
+			@keyframes blink {
+				0%,
+				100% {
+					opacity: 1;
+				}
+				50% {
+					opacity: 0;
+				}
+			}
+
+			/* Scroll Progress Bar Style */
+			#scroll-progress-bar {
+				width: 0%;
+				transition: width 0.1s ease-out;
+			}
+
+			/* Legal Modals Styles */
+			.modal-overlay {
+				position: fixed;
+				inset: 0;
+				background: rgba(0, 0, 0, 0.5);
+				backdrop-filter: blur(4px);
+				z-index: 100;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 20px;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.3s ease;
+			}
+			.modal-overlay.active {
+				opacity: 1;
+				pointer-events: auto;
+			}
+			.modal-content {
+				background: white;
+				width: 100%;
+				max-width: 800px;
+				max-height: 80vh;
+				overflow-y: auto;
+				padding: 40px;
+				border-radius: 2px;
+				box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+				position: relative;
+				border-top: 6px solid #1d4c74;
+			}
+			.modal-close {
+				position: absolute;
+				top: 20px;
+				right: 20px;
+				font-size: 24px;
+				cursor: pointer;
+				color: #2a3035;
+				opacity: 0.5;
+				transition: opacity 0.2s;
+			}
+			.modal-close:hover {
+				opacity: 1;
+			}
+			.modal-body h3 {
+				color: #1d4c74;
+				font-weight: 700;
+				font-family: "Outfit Variable", sans-serif;
+				margin-bottom: 20px;
+				letter-spacing: -0.01em;
+			}
+			.modal-body section {
+				margin-bottom: 24px;
+			}
+			.modal-body h4 {
+				font-weight: 700;
+				margin-bottom: 8px;
+				color: #2a3035;
+			}
+			.modal-body p {
+				color: #4b5563;
+				line-height: 1.6;
+				margin-bottom: 12px;
+			}
+		</style>
+	</head>
+	<body
+		class="bg-white text-gray-800 font-body selection:bg-[#1d4c74] selection:text-white overflow-x-hidden"
+	>
+		<!-- CORPORATE LOADER -->
+		<div
+			id="loader-overlay"
+			class="fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-700"
+		>
+			<div class="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+			<div class="relative z-10">
+				<div class="loader-spinner"></div>
+			</div>
+		</div>
+
+		<!-- Main Navbar -->
+		<nav
+			class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300"
+		>
+			<div class="flex items-center gap-3">
+				<div
+					class="w-7 h-7 md:w-8 md:h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base md:text-lg shadow-none"
+				>
+					P
+				</div>
+				<span
+					class="text-xl md:text-2xl font-extrabold tracking-widest font-display uppercase"
+					>GRUPO PREVCA</span
+				>
+			</div>
+
+			<!-- Desktop Menu -->
+			<div
+				class="hidden lg:flex gap-8 text-sm font-semibold tracking-wide uppercase"
+			>
+				<a
+					href="/"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Inicio</a
+				>
+				<a
+					href="/nosotros"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Sobre Nosotros</a
+				>
+				<a
+					href="/#divisiones"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Madera</a
+				>
+				<a
+					href="/#divisiones"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Hospitalidad</a
+				>
+				<a
+					href="/#divisiones"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Café</a
+				>
+				<a
+					href="/#contacto"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Contacto</a
+				>
+			</div>
+
+			<div class="hidden lg:flex gap-6 items-center">
+				<button
+					class="hover:text-gray-400 transition-colors text-lg cursor-pointer"
+					aria-label="Buscar"><FaSearch /></button
+				>
+				<a
+					href="/ecommerce"
+					class="bg-[#1d4c74] text-white uppercase text-xs font-bold py-2 px-6 hover:bg-[#153a5b] transition-colors cursor-pointer border-none"
+				>
+					Tienda Virtual
+				</a>
+			</div>
+
+			<!-- Mobile Toggle -->
+			<button
+				id="menu-toggle"
+				class="lg:hidden text-2xl text-white cursor-pointer"
+				aria-label="Menu"
+			>
+				<div id="icon-bars"><FaBars id="icon-bars" /></div>
+				<div id="icon-times" class="hidden">
+					<FaTimes id="icon-times" />
+				</div>
+			</button>
+		</nav>
+
+		<!-- Mobile Menu Drawer -->
+		<div
+			id="mobile-menu"
+			class="fixed inset-0 bg-[#2a3035] z-40 transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-8 overflow-y-auto"
+		>
+			<div
+				class="flex flex-col gap-6 text-xl text-white font-ui uppercase font-bold tracking-widest"
+			>
+				<a href="/" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Inicio</a
+				>
+				<a href="/nosotros" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Sobre Nosotros</a
+				>
+				<a href="/#divisiones" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Madera</a
+				>
+				<a href="/#divisiones" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Hospitalidad</a
+				>
+				<a href="/#divisiones" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Café</a
+				>
+				<a href="/#contacto" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Contacto</a
+				>
+				<a
+					href="/ecommerce"
+					class="bg-[#1d4c74] text-center py-4 mt-4 cursor-pointer text-sm"
+					>Tienda Virtual</a
+				>
+			</div>
+		</div>
+
+		<!-- HERO: Nuestra Historia y Valores -->
+		<header
+			class="relative w-full h-[50vh] md:h-[60vh] flex flex-col md:flex-row bg-gray-900 border-b border-[#2a3035]"
+		>
+			<!-- 3 Background Slices -->
+			<div
+				class="w-full md:w-1/3 h-1/3 md:h-full bg-cover bg-center md:border-r border-white/10 grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+				style="background-image: url('https://images.unsplash.com/photo-1616423640778-28d1b53229bd?auto=format&fit=crop&q=80&w=1200');"
+			></div>
+			<div
+				class="w-full md:w-1/3 h-1/3 md:h-full bg-cover bg-center md:border-r border-white/10 grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+				style="background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d14faaf2?auto=format&fit=crop&q=80&w=1200');"
+			></div>
+			<div
+				class="w-full md:w-1/3 h-1/3 md:h-full bg-cover bg-center grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
+				style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=1200');"
+			></div>
+			
+			<!-- Overlay with Title -->
+			<div class="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-white text-center p-6 md:p-12">
+				<h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display tracking-wide leading-tight reveal-item shadow-black drop-shadow-xl uppercase">
+					Nuestra Historia y Valores
+				</h1>
+			</div>
+		</header>
+
+		<!-- Timeline Section -->
+		<section class="bg-[#1d4c74] py-20 text-white font-body px-6 md:px-8 overflow-hidden relative border-t-4 border-[#2a3035]">
+			<div class="max-w-7xl mx-auto reveal-item">
+				<div class="relative w-full h-1 bg-white/20 hidden md:block mb-10 rounded-full mt-4"></div>
+				
+				<div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 relative text-center">
+					<!-- Node 1 -->
+					<div class="relative pt-4">
+						<div class="hidden md:block timeline-dot"></div>
+						<h3 class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui">Fundación</h3>
+						<h4 class="font-extrabold text-3xl font-display mb-3 text-white">1987</h4>
+						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2">Consolidación de la exportación de madera sustentable en respeto al medio ambiente.</p>
+					</div>
+					<!-- Node 2 -->
+					<div class="relative pt-4" style="transition-delay: 150ms">
+						<div class="hidden md:block timeline-dot"></div>
+						<h3 class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui">Expansión</h3>
+						<h4 class="font-extrabold text-3xl font-display mb-3 text-white">2010</h4>
+						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2">Integración de estándares corporativos y expansión técnica a nivel regional.</p>
+					</div>
+					<!-- Node 3 -->
+					<div class="relative pt-4" style="transition-delay: 300ms">
+						<div class="hidden md:block timeline-dot"></div>
+						<h3 class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui">Diversificación</h3>
+						<h4 class="font-extrabold text-3xl font-display mb-3 text-white">2022</h4>
+						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2">Apertura oficial del sector de Hospitalidad Premium con establecimientos modelo.</p>
+					</div>
+					<!-- Node 4 -->
+					<div class="relative pt-4" style="transition-delay: 450ms">
+						<div class="hidden md:block timeline-dot"></div>
+						<h3 class="font-extrabold text-lg font-display mb-2 text-white">Liderazgo Multisectorial</h3>
+						<h4 class="font-bold text-xl opacity-90 tracking-widest font-ui mt-3">2024 - Presente</h4>
+						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2 mt-2">Dedicados a proveer soluciones de alto calibre a través de Madera, Hospitalidad y Café.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Executive Leadership -->
+		<section class="py-24 px-6 md:px-8 bg-white reveal-item">
+			<div class="max-w-6xl mx-auto text-center">
+				<h2 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-[#2a3035] mb-16 uppercase">
+					Executive Leadership
+				</h2>
+				
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+					<!-- Leader 1 -->
+					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
+						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
+							<img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&h=150&q=80" alt="Daniel" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+						</div>
+						<div class="flex flex-col justify-center font-body truncate">
+							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Daniel Montes</h3>
+							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">Gerente General</p>
+						</div>
+					</div>
+					<!-- Leader 2 -->
+					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
+						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
+							<img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80" alt="Martin" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+						</div>
+						<div class="flex flex-col justify-center font-body truncate">
+							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Martin Frederick</h3>
+							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">VP Financiero</p>
+						</div>
+					</div>
+					<!-- Leader 3 -->
+					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
+						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
+							<img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80" alt="Sonia" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+						</div>
+						<div class="flex flex-col justify-center font-body truncate">
+							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Sonia Vernaliza</h3>
+							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">Directora Op.</p>
+						</div>
+					</div>
+					<!-- Leader 4 -->
+					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
+						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
+							<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80" alt="Javier" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+						</div>
+						<div class="flex flex-col justify-center font-body truncate">
+							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Javier Meltimas</h3>
+							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">Líder Comercial</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Core Values -->
+		<section class="py-24 px-6 md:px-8 bg-gray-50 border-t border-gray-200 text-center reveal-item border-b">
+			<div class="max-w-6xl mx-auto">
+				<h2 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-[#2a3035] mb-20 uppercase">
+					Valores Fundamentales
+				</h2>
+				
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+					<!-- Integridad -->
+					<div class="flex flex-col items-center group">
+						<div class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+							<HiOutlineHeart />
+						</div>
+						<h3 class="font-extrabold text-xl font-display mb-4 text-[#2a3035]">Integridad</h3>
+						<p class="text-base font-body text-gray-600 leading-relaxed max-w-sm">
+							Sostenibilidad ambiental y respeto corporativo como ejes transversales de nuestra cultura y ecosistema.
+						</p>
+					</div>
+					<!-- Innovación -->
+					<div class="flex flex-col items-center group">
+						<div class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+							<HiOutlineLightBulb />
+						</div>
+						<h3 class="font-extrabold text-xl font-display mb-4 text-[#2a3035]">Innovación</h3>
+						<p class="text-base font-body text-gray-600 leading-relaxed max-w-sm">
+							Gestión de primer nivel y actualización tecnológica para optimizar cada proceso en nuestras tres divisiones maestras.
+						</p>
+					</div>
+					<!-- Excelencia -->
+					<div class="flex flex-col items-center group">
+						<div class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+							<HiOutlineStar />
+						</div>
+						<h3 class="font-extrabold text-xl font-display mb-4 text-[#2a3035]">Excelencia</h3>
+						<p class="text-base font-body text-gray-600 leading-relaxed max-w-sm">
+							Foco obsesivo en proporcionar productos y servicios de clase mundial que eleven el estándar corporativo.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Final CTA / Underbar -->
+		<footer
+			class="bg-[#2a3035] text-white pt-16 md:pt-20 pb-8 px-6 md:px-8 border-t border-gray-800 reveal-item"
+		>
+			<div
+				class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-16 mb-16"
+			>
+				<!-- Brand & Contact -->
+				<div class="space-y-6">
+					<div class="flex items-center gap-3">
+						<div
+							class="w-7 h-7 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base"
+						>
+							P
+						</div>
+						<span
+							class="text-xl font-extrabold tracking-widest font-display uppercase"
+							>GRUPO PREVCA</span
+						>
+					</div>
+					<p class="text-sm text-gray-400 font-body leading-loose">
+						Inspiramos confianza a través de la excelencia y la
+						sostenibilidad en cada sector donde operamos.
+					</p>
+					<div class="pt-2 space-y-4 text-sm text-gray-400 font-body">
+						<p class="flex items-center gap-3">
+							<span class="text-white text-xl"
+								><FaPhoneSquareAlt /></span
+							>
+							<span
+								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
+								>+51 987 654 321</span
+							>
+						</p>
+						<p class="flex items-center gap-3">
+							<span class="text-white text-xl"
+								><MdMarkEmailRead /></span
+							>
+							<span
+								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
+								>info@grupoprevca.com</span
+							>
+						</p>
+					</div>
+				</div>
+
+				<!-- Libro de Reclamaciones -->
+				<div>
+					<h4 class="mb-6 text-sm opacity-70 text-white">
+						Atención al Cliente
+					</h4>
+					<div class="flex flex-col gap-3 mt-2">
+						<a
+							href="#"
+							class="bg-white p-1 rounded-sm hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg"
+						>
+							<img
+								src={libroImg.src}
+								alt="Libro de Reclamaciones"
+								class="w-full h-auto max-h-24 object-contain"
+							/>
+						</a>
+						<p
+							class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-1 font-bold"
+						>
+							Conforme a la Ley N° 29571
+						</p>
+					</div>
+				</div>
+
+				<!-- Links & Legal -->
+				<div>
+					<h4 class="font-extrabold mb-6 text-sm opacity-70">
+						Corporativo
+					</h4>
+					<ul class="space-y-4 text-sm text-gray-400 font-body">
+						<li>
+							<a
+								href="/nosotros"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Sobre Nosotros</a
+							>
+						</li>
+						<li>
+							<a
+								href="/#contacto"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Centro de Contacto</a
+							>
+						</li>
+						<li>
+							<a
+								id="btn-privacy"
+								href="javascript:void(0)"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Política de Privacidad</a
+							>
+						</li>
+						<li>
+							<a
+								id="btn-terms"
+								href="javascript:void(0)"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+								>Términos Legales</a
+							>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Newsletter & Social -->
+				<div class="space-y-10">
+					<div class="w-full">
+						<h4 class="font-extrabold mb-6 text-sm opacity-70">
+							Boletín Corporativo
+						</h4>
+						<form
+							class="flex border border-white/10 bg-black/20 focus-within:border-white transition-all"
+						>
+							<input
+								type="email"
+								placeholder="correo@empresa.com"
+								class="bg-transparent text-white px-4 py-2.5 w-full font-body text-sm outline-none placeholder:opacity-30"
+							/>
+							<button
+								class="bg-[#1d4c74] px-4 py-2.5 hover:bg-[#153a5b] cursor-pointer border-none text-white transition-colors"
+								><FaArrowRight /></button
+							>
+						</form>
+					</div>
+					<div>
+						<h4 class="font-extrabold mb-4 text-sm opacity-70">
+							Síguenos
+						</h4>
+						<div class="flex gap-3">
+							<a
+								href="#"
+								class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all cursor-pointer"
+							>
+								<FaLinkedinIn />
+							</a>
+							<a
+								href="#"
+								class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all cursor-pointer"
+							>
+								<FaInstagram />
+							</a>
+							<a
+								href="#"
+								class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all cursor-pointer"
+							>
+								<FaTwitter />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui"
+			>
+				&copy; 2026 Grupo Prevca. Todos los derechos reservados. |
+				Diseñado por PolarSystem S.A.C.
+			</div>
+		</footer>
+
+		<!-- COOKIE CONSENT BANNER & OVERLAY -->
+		<div
+			id="cookie-overlay"
+			class="fixed inset-0 z-[85] bg-black/30 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-1000"
+		>
+		</div>
+
+		<div
+			id="cookie-banner"
+			class="fixed bottom-0 left-0 right-0 bg-[#2a3035] text-white p-6 md:px-12 z-[90] flex flex-col md:flex-row items-center justify-between gap-6 transition-transform duration-500 border-t-2 border-[#1d4c74] shadow-2xl"
+		>
+			<div class="flex items-center gap-6">
+				<div class="text-white text-4xl flex-shrink-0">
+					<LuCookie />
+				</div>
+				<p
+					class="text-sm font-body leading-relaxed max-w-2xl text-gray-300"
+				>
+					Utilizamos cookies para optimizar este sitio y asegurar que nuestro catálogo de <span
+						class="text-white font-bold tracking-tight border-none"
+						>Madera, Hospitalidad y Café</span
+					> te brinde la mejor experiencia corporativa. Al continuar navegando,
+					aceptas nuestra política de privacidad.
+				</p>
+			</div>
+			<div class="flex gap-4 w-full md:w-auto">
+				<button
+					id="cookie-reject"
+					class="w-full md:w-auto border border-white/20 text-white font-ui font-semibold py-3 px-8 text-xs tracking-widest hover:bg-white/10 transition-all cursor-pointer"
+				>
+					Rechazar
+				</button>
+				<button
+					id="cookie-accept"
+					class="w-full md:w-auto bg-[#1d4c74] text-white font-ui font-semibold py-3 px-10 text-xs tracking-widest hover:bg-[#153a5b] transition-all cursor-pointer"
+				>
+					Aceptar Todo
+				</button>
+			</div>
+		</div>
+
+		<!-- MODAL: PRIVACIDAD -->
+		<div id="modal-privacy" class="modal-overlay">
+			<div class="modal-content relative">
+				<span class="modal-close">&times;</span>
+				<div class="modal-body font-body">
+					<h3>Política de Privacidad</h3>
+					<section>
+						<h4>1. Protección de Datos</h4>
+						<p>
+							De conformidad con la Ley N° 29733 (Ley de Protección de Datos
+							Personales en Perú), Grupo Prevca garantiza el tratamiento
+							responsable de toda información recolectada mediante este
+							portal corporativo.
+						</p>
+					</section>
+					<section>
+						<h4>2. Finalidades del Tratamiento</h4>
+						<p>
+							La información recolectada en nuestros formularios se utiliza
+							exclusivamente para: proveer información de servicios y gestionar
+							relaciones comerciales con nuestros clientes.
+						</p>
+					</section>
+					<section>
+						<h4>3. Seguridad</h4>
+						<p>
+							Implementamos protocolos de seguridad técnica y organizativa.
+							No compartimos información con terceros sin su
+							consentimiento explícito.
+						</p>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<!-- MODAL: TERMINOS -->
+		<div id="modal-terms" class="modal-overlay">
+			<div class="modal-content relative">
+				<span class="modal-close">&times;</span>
+				<div class="modal-body font-body">
+					<h3>Términos y Condiciones Legales</h3>
+					<section>
+						<h4>1. Propiedad Intelectual</h4>
+						<p>
+							Todo el contenido editorial, gráfico y logotipos son propiedad
+							exclusiva de Grupo Prevca. Queda prohibida la reproducción total
+							o parcial sin autorización.
+						</p>
+					</section>
+					<section>
+						<h4>2. Limitación de Responsabilidad</h4>
+						<p>
+							Grupo Prevca se reserva el derecho de modificar catálogos
+							sin previo aviso.
+						</p>
+					</section>
+					<section>
+						<h4>3. Jurisdicción</h4>
+						<p>
+							Cualquier controversia se regirá bajo las leyes de la
+							República del Perú.
+						</p>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<!-- CLIENT SIDE LOGIC -->
+		<script is:inline>
+			document.addEventListener("DOMContentLoaded", () => {
+				// 1. LOADER HIDER
+				const loader = document.getElementById("loader-overlay");
+				const body = document.body;
+
+				window.addEventListener("load", () => {
+					setTimeout(() => {
+						if (loader) {
+							loader.classList.add("opacity-0");
+							setTimeout(() => {
+								loader.classList.add("hidden");
+							}, 700);
+						}
+					}, 300);
+				});
+
+				// 2. REVEAL LOGIC
+				const revealItems = document.querySelectorAll(".reveal-item");
+
+				const observerOptions = {
+					threshold: 0.2,
+					rootMargin: "0px 0px -50px 0px",
+				};
+
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("active");
+						}
+					});
+				}, observerOptions);
+
+				revealItems.forEach((item) => observer.observe(item));
+
+				// 3. COOKIE BANNER
+				const cookieBanner = document.getElementById("cookie-banner");
+				const cookieOverlay = document.getElementById("cookie-overlay");
+				const cookieAcceptBtn = document.getElementById("cookie-accept");
+				const cookieRejectBtn = document.getElementById("cookie-reject");
+
+				const hideCookies = () => {
+					if (cookieBanner) cookieBanner.style.transform = "translateY(100%)";
+					if (cookieOverlay) {
+						cookieOverlay.classList.remove("opacity-100");
+						cookieOverlay.classList.add("opacity-0");
+						cookieOverlay.classList.add("pointer-events-none");
+					}
+					setTimeout(() => {
+						if (cookieBanner) cookieBanner.classList.add("hidden");
+						if (cookieOverlay) cookieOverlay.classList.add("hidden");
+					}, 500);
+				};
+
+				if (!localStorage.getItem("prevca_cookies_accepted")) {
+					setTimeout(() => {
+						if (cookieBanner) cookieBanner.style.transform = "translateY(0)";
+						if (cookieOverlay) {
+							cookieOverlay.classList.remove("opacity-0", "pointer-events-none");
+							cookieOverlay.classList.add("opacity-100");
+						}
+					}, 1500);
+				} else {
+					if (cookieBanner) cookieBanner.classList.add("hidden");
+					if (cookieOverlay) cookieOverlay.classList.add("hidden");
+				}
+
+				cookieAcceptBtn?.addEventListener("click", () => {
+					localStorage.setItem("prevca_cookies_accepted", "true");
+					hideCookies();
+				});
+
+				cookieRejectBtn?.addEventListener("click", () => {
+					localStorage.setItem("prevca_cookies_accepted", "false");
+					hideCookies();
+				});
+
+				// 4. LEGAL MODALS LOGIC
+				const btnPrivacy = document.getElementById("btn-privacy");
+				const btnTerms = document.getElementById("btn-terms");
+				const modalPrivacy = document.getElementById("modal-privacy");
+				const modalTerms = document.getElementById("modal-terms");
+				const closeBtns = document.querySelectorAll(".modal-close");
+
+				const toggleModal = (modal, show) => {
+					if (show) {
+						modal.classList.add("active");
+						body.style.overflow = "hidden";
+					} else {
+						modal.classList.remove("active");
+						body.style.overflow = "auto";
+					}
+				};
+
+				btnPrivacy?.addEventListener("click", () =>
+					toggleModal(modalPrivacy, true),
+				);
+				btnTerms?.addEventListener("click", () =>
+					toggleModal(modalTerms, true),
+				);
+
+				closeBtns.forEach((btn) => {
+					btn.addEventListener("click", () => {
+						toggleModal(modalPrivacy, false);
+						toggleModal(modalTerms, false);
+					});
+				});
+
+				// Close on click outside content
+				[modalPrivacy, modalTerms].forEach((modal) => {
+					modal?.addEventListener("click", (e) => {
+						if (e.target === modal) toggleModal(modal, false);
+					});
+				});
+
+				// 5. MOBILE MENU LOGIC
+				const toggle = document.getElementById("menu-toggle");
+				const menu = document.getElementById("mobile-menu");
+				const bars = document.getElementById("icon-bars");
+				const times = document.getElementById("icon-times");
+
+				if (toggle && menu && bars && times) {
+					toggle.addEventListener("click", () => {
+						const isCurrentlyOpen =
+							menu.classList.contains("translate-x-full");
+
+						if (isCurrentlyOpen) {
+							menu.classList.remove("translate-x-full");
+							menu.classList.add("translate-x-0");
+							bars.classList.add("hidden");
+							times.classList.remove("hidden");
+							body.style.overflow = "hidden";
+						} else {
+							menu.classList.add("translate-x-full");
+							menu.classList.remove("translate-x-0");
+							bars.classList.remove("hidden");
+							times.classList.add("hidden");
+							body.style.overflow = "auto";
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+</html>
