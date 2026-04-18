@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "app-prevca"
+  },
+  "targets": {
+    "app-prevca": {
+      "hosting": {
+        "landing": [
+          "app-prevca"
+        ]
+      }
+    }
+  }
+}
