@@ -12,8 +12,10 @@ import {
 	FaBullseye,
 	FaEye,
 	FaPhoneSquareAlt,
+	FaCheckCircle,
 } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
+import { AiOutlineSafetyCertificate } from "react-icons/ai";
 import {
 	HiArrowDownOnSquareStack,
 	HiArrowUpOnSquareStack,
@@ -21,6 +23,7 @@ import {
 import { LuCookie } from "react-icons/lu";
 import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineStar } from "react-icons/hi2";
 import libroImg from "../assets/libro-reclamaciones.png";
+import isoImg from "../assets/iso-9001.webp";
 ---
 
 <html lang="es">
@@ -429,6 +432,76 @@ import libroImg from "../assets/libro-reclamaciones.png";
 				</div>
 			</div>
 		</section>
+		<!-- ISO Certification Section -->
+		<section class="py-28 px-6 md:px-8 bg-[#1d4c74] border-y border-white/5 reveal-item relative overflow-hidden">
+			<!-- Background Watermark Text -->
+			<div class="absolute right-0 bottom-0 text-[15rem] font-display font-black text-white/5 select-none pointer-events-none transform translate-y-1/4 translate-x-1/4 leading-none">
+				ISO 9001
+			</div>
+			
+			<!-- Visual Pattern Overlay -->
+			<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+			
+			<div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16 relative z-10">
+				<!-- Floating ISO Seal -->
+				<div class="w-full lg:w-2/5 flex justify-center">
+					<div class="relative">
+						<!-- Decorative Rings -->
+						<div class="absolute inset-0 -m-8 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"></div>
+						<div class="absolute inset-0 -m-4 border border-white/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+						
+						<!-- Glow Effect -->
+						<div class="absolute inset-0 bg-white/20 rounded-full blur-3xl scale-125"></div>
+						
+						<!-- The Logo itself (Transparent/Circular focus) -->
+						<div class="relative z-10 w-64 h-64 md:w-72 md:h-72">
+							<img 
+								src={isoImg.src} 
+								alt="Certificado ISO 9001" 
+								class="w-full h-full object-contain filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.5)] transition-transform duration-700 hover:scale-105"
+							/>
+						</div>
+						
+						<!-- Bottom Badge Label -->
+						<div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white text-[#1d4c74] font-ui font-black px-6 py-2 rounded-sm shadow-2xl skew-x-[-10deg] whitespace-nowrap text-xs md:text-sm tracking-widest border-r-4 border-b-4 border-gray-200">
+							ESTÁNDAR CERTIFICADO
+						</div>
+					</div>
+				</div>
+				
+				<!-- Text Content -->
+				<div class="w-full lg:w-3/5 space-y-8 text-center lg:text-left">
+					<h2 class="text-3xl md:text-5xl font-extrabold font-display tracking-tight text-white leading-tight min-h-[160px] md:min-h-[120px] flex items-center lg:items-start">
+						<span>
+							Compromiso con la <br class="md:hidden" />
+							<span id="typewriter-word" class="text-white"></span>
+							<br class="md:hidden" /> e Innovación Sostenible
+						</span>
+					</h2>
+					<div class="w-24 h-1 bg-white/30 hidden lg:block"></div>
+					<p class="text-lg md:text-xl font-body text-gray-200 leading-relaxed max-w-2xl opacity-90">
+						Nuestra excelencia no es una coincidencia, es el resultado de procesos estandarizados bajo la norma <span class="text-white font-bold border-b-2 border-white/20 pb-0.5">ISO 9001:2015</span>. Certificamos cada eslabón de nuestra cadena de valor.
+					</p>
+					
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">
+						<div class="space-y-3 p-6 bg-white/5 border-l-2 border-white/30 backdrop-blur-sm group hover:bg-white/10 transition-colors">
+							<div class="flex items-center gap-3">
+								<div class="text-white text-xl"><FaCheckCircle /></div>
+								<h4 class="font-display font-bold text-white uppercase text-sm tracking-widest">Mejora Continua</h4>
+							</div>
+							<p class="text-sm font-body text-gray-300 leading-relaxed">Optimizamos constantemente cada fase de producción para garantizar eficiencia.</p>
+						</div>
+						<div class="space-y-3 p-6 bg-white/5 border-l-2 border-white/30 backdrop-blur-sm group hover:bg-white/10 transition-colors">
+							<div class="flex items-center gap-3">
+								<div class="text-white text-xl"><FaCheckCircle /></div>
+								<h4 class="font-display font-bold text-white uppercase text-sm tracking-widest">Confianza Global</h4>
+							</div>
+							<p class="text-sm font-body text-gray-300 leading-relaxed">Garantizamos que cada entrega supere las expectativas técnicas de nuestros socios internacionales.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
 		<!-- Core Values -->
 		<section class="py-24 px-6 md:px-8 bg-gray-50 border-t border-gray-200 text-center reveal-item border-b">
@@ -747,7 +820,58 @@ import libroImg from "../assets/libro-reclamaciones.png";
 
 		<!-- CLIENT SIDE LOGIC -->
 		<script is:inline>
+			// Typewriter Effect for ISO Section (Word Cycler)
+			function initTypewriter() {
+				const wordElement = document.getElementById('typewriter-word');
+				if (!wordElement) return;
+
+				const words = ["Calidad", "Excelencia", "Eficiencia", "Sostenibilidad"];
+				let wordIndex = 0;
+				let charIndex = 0;
+				let isDeleting = false;
+				const typeSpeed = 100;
+				const deleteSpeed = 50;
+				const waitTime = 2000;
+
+				function type() {
+					const currentWord = words[wordIndex];
+					
+					if (isDeleting) {
+						wordElement.textContent = currentWord.substring(0, charIndex - 1);
+						charIndex--;
+					} else {
+						wordElement.textContent = currentWord.substring(0, charIndex + 1);
+						charIndex++;
+					}
+
+					let delay = isDeleting ? deleteSpeed : typeSpeed;
+
+					if (!isDeleting && charIndex === currentWord.length) {
+						isDeleting = true;
+						delay = waitTime;
+					} else if (isDeleting && charIndex === 0) {
+						isDeleting = false;
+						wordIndex = (wordIndex + 1) % words.length;
+						delay = 500;
+					}
+
+					setTimeout(type, delay);
+				}
+
+				// Intersection Observer to start when visible
+				const observer = new IntersectionObserver((entries) => {
+					if (entries[0].isIntersecting) {
+						type();
+						observer.disconnect();
+					}
+				}, { threshold: 0.5 });
+
+				observer.observe(document.querySelector('.py-28'));
+			}
+
 			document.addEventListener("DOMContentLoaded", () => {
+				initTypewriter();
+				
 				// 1. LOADER HIDER
 				const loader = document.getElementById("loader-overlay");
 				const body = document.body;

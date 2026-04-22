@@ -213,7 +213,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 					>Inicio</a
 				>
 				<a
-					href="#"
+					href="#sobre-nosotros"
 					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
 					>Sobre Nosotros</a
 				>
@@ -276,7 +276,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
 					>Inicio</a
 				>
-				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
+				<a href="#sobre-nosotros" class="border-b border-white/10 pb-4 cursor-pointer"
 					>Sobre Nosotros</a
 				>
 				<a href="#" class="border-b border-white/10 pb-4 cursor-pointer"
@@ -344,10 +344,14 @@ import libroImg from "../assets/libro-reclamaciones.png";
 
 		<!-- About Us (Responsive Columns) -->
 		<section
-			class="bg-[#1d4c74] text-white py-16 md:py-24 px-6 md:px-8 reveal-item"
+			id="sobre-nosotros"
+			class="bg-[#1d4c74] text-white py-16 md:py-24 px-6 md:px-8 reveal-item relative overflow-hidden"
 		>
+			<!-- Subtle pattern overlay -->
+			<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+
 			<div
-				class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10 md:gap-16"
+				class="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10 md:gap-16 relative z-10"
 			>
 				<!-- Left Text -->
 				<div class="w-full lg:w-1/2 space-y-6 md:space-y-8">
@@ -367,11 +371,12 @@ import libroImg from "../assets/libro-reclamaciones.png";
 						hasta las mejores experiencias, integramos la excelencia
 						en todo lo que hacemos.
 					</p>
-					<button
-						class="bg-white text-[#1d4c74] font-ui font-extrabold uppercase py-3.5 px-8 tracking-wider hover:bg-gray-100 transition-all text-xs md:text-sm mt-4 cursor-pointer"
+					<a
+						href="/nosotros"
+						class="inline-block bg-white text-[#1d4c74] font-ui font-extrabold uppercase py-3.5 px-8 tracking-wider hover:bg-gray-100 transition-all text-xs md:text-sm mt-4 cursor-pointer"
 					>
 						LEER MÁS
-					</button>
+					</a>
 				</div>
 				<!-- Right Image (Carousel Mock) -->
 				<div class="w-full lg:w-1/2">
