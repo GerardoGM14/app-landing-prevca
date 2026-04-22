@@ -26,10 +26,18 @@ jobs:
           cache-dependency-path: landing/package-lock.json
       - run: npm ci
       - run: npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - id: deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_APP_PREVCA }}
           projectId: app-prevca
           target: landing
           entryPoint: ./
+      - name: Publicar URL del preview en el summary
+        if: steps.deploy.outputs.details_url != ''
+        run: |
+          echo "### Preview deploy listo" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- URL del preview: ${{ steps.deploy.outputs.details_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Expira: ${{ steps.deploy.outputs.expire_time }}" >> $GITHUB_STEP_SUMMARY
