@@ -1,0 +1,631 @@
+---
+import "../styles/global.css";
+import {
+	FaSearch,
+	FaBars,
+	FaTimes,
+	FaArrowRight,
+	FaLinkedinIn,
+	FaInstagram,
+	FaTwitter,
+	FaLeaf,
+	FaFire,
+	FaGlobeAmericas,
+	FaShoppingCart
+} from "react-icons/fa";
+import { MdMarkEmailRead } from "react-icons/md";
+import { FaPhoneSquareAlt } from "react-icons/fa";
+import libroImg from "../assets/libro-reclamaciones.png";
+
+// Imágenes de la División Café
+import cafeImg01 from "../assets/cafe/cafe-image-01.png";
+import cafeImg02 from "../assets/cafe/cafe-image-02.png";
+import cafeImg03 from "../assets/cafe/cafe-image-03.png";
+import cafeImg04 from "../assets/cafe/cafe-image-04.png";
+import cafeImg05 from "../assets/cafe/cafe-image-05.png";
+import cafeImg06 from "../assets/cafe/cafe-image-06.png";
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Café | Grupo Prevca</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@400;600&family=Inter:wght@300;400&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			@keyframes spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			.loader-spinner {
+				border: 3px solid rgba(255, 255, 255, 0.1);
+				border-left-color: #1d4c74;
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				animation: spin 0.8s linear infinite;
+			}
+			.reveal-item {
+				opacity: 0;
+				transform: translateY(30px);
+				transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+			.reveal-item.active {
+				opacity: 1;
+				transform: translateY(0);
+			}
+			.nav-link {
+				position: relative;
+			}
+			.nav-link::after {
+				content: "";
+				position: absolute;
+				bottom: -2px;
+				left: 0;
+				width: 0;
+				height: 2px;
+				background-color: white;
+				transition: width 0.3s ease;
+			}
+			.nav-link:hover::after {
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body
+		class="bg-gray-50 text-gray-800 font-body selection:bg-[#1d4c74] selection:text-white overflow-x-hidden"
+	>
+		<!-- CORPORATE LOADER -->
+		<div
+			id="loader-overlay"
+			class="fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-700"
+		>
+			<div class="absolute inset-0 bg-black/30 backdrop-blur-md"></div>
+			<div class="relative z-10">
+				<div class="loader-spinner"></div>
+			</div>
+		</div>
+
+		<!-- Main Navbar -->
+		<nav
+			class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300"
+		>
+			<div class="flex items-center gap-3">
+				<div
+					class="w-7 h-7 md:w-8 md:h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base md:text-lg shadow-none rounded-none"
+				>
+					P
+				</div>
+				<span
+					class="text-xl md:text-2xl font-extrabold tracking-widest font-display uppercase"
+					>GRUPO PREVCA</span
+				>
+			</div>
+
+			<!-- Desktop Menu -->
+			<div
+				class="hidden lg:flex gap-8 text-sm font-semibold tracking-wide uppercase items-center"
+			>
+				<a
+					href="/"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Inicio</a
+				>
+				<a
+					href="/nosotros"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Sobre Nosotros</a
+				>
+				<a
+					href="/madera"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Madera</a
+				>
+				<a
+					href="/hospitalidad"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Hospitalidad</a
+				>
+				<a
+					href="/cafe"
+					class="nav-link text-white border-b-2 border-white cursor-pointer"
+					>Café</a
+				>
+				<a
+					href="/#contact-section"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Contacto</a
+				>
+
+				<!-- Cart Icon -->
+				<a
+					href="/ecommerce"
+					class="relative cursor-pointer hover:text-gray-300 transition-colors ml-2 mr-4 flex items-center"
+				>
+					<div class="text-xl"><FaShoppingCart /></div>
+					<span
+						id="cart-count-desktop"
+						class="absolute top-[-6px] right-[-14px] w-4 h-4 flex items-center justify-center bg-white text-[#2a3035] text-[10px] font-extrabold rounded-full shadow-md leading-none pt-[1px]"
+					>0</span>
+				</a>
+			</div>
+
+			<!-- Mobile Menu Toggle -->
+			<button
+				id="menu-toggle"
+				class="lg:hidden text-2xl text-white cursor-pointer"
+			>
+				<div id="icon-bars"><FaBars /></div>
+				<div id="icon-times" class="hidden"><FaTimes /></div>
+			</button>
+		</nav>
+
+		<!-- Mobile Menu Drawer -->
+		<div
+			id="mobile-menu"
+			class="fixed inset-0 bg-[#2a3035] z-40 transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-8 overflow-y-auto"
+		>
+			<div
+				class="flex flex-col gap-6 text-xl text-white font-ui uppercase font-bold tracking-widest"
+			>
+				<a href="/" class="border-b border-white/10 pb-4 cursor-pointer"
+					>Inicio</a
+				>
+				<a
+					href="/nosotros"
+					class="border-b border-white/10 pb-4 cursor-pointer"
+					>Sobre Nosotros</a
+				>
+				<a
+					href="/madera"
+					class="border-b border-white/10 pb-4 cursor-pointer"
+					>Madera</a
+				>
+				<a
+					href="/hospitalidad"
+					class="border-b border-white/10 pb-4 cursor-pointer"
+					>Hospitalidad</a
+				>
+				<a
+					href="/cafe"
+					class="border-b border-white/10 pb-4 cursor-pointer">Café</a
+				>
+				<a
+					href="/#contact-section"
+					class="border-b border-white/10 pb-4 cursor-pointer"
+					>Contacto</a
+				>
+				<div
+					class="border-b border-white/10 pb-4 cursor-pointer flex justify-between items-center text-[#1d4c74] bg-white px-4 rounded-none shadow-sm"
+				>
+					<span class="flex items-center gap-3"
+						><FaShoppingCart /> Mi Carrito</span
+					>
+					<span
+						id="cart-count-mobile"
+						class="bg-[#2a3035] text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full"
+						>0</span
+					>
+				</div>
+				<a
+					href="/ecommerce"
+					class="bg-[#1d4c74] text-center py-4 mt-2 cursor-pointer text-sm"
+					>Tienda Virtual</a
+				>
+			</div>
+		</div>
+
+		<!-- Hero Section -->
+		<header class="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
+			<div class="absolute inset-0 bg-black/60 z-10"></div>
+			<img 
+				src={cafeImg01.src} 
+				alt="División Café" 
+				class="absolute inset-0 w-full h-full object-cover"
+			/>
+			<div class="relative z-20 text-center text-white px-6 max-w-4xl mx-auto reveal-item">
+				<span class="font-ui tracking-[0.3em] text-sm md:text-base font-bold uppercase mb-4 block opacity-80">División Café</span>
+				<h1 class="text-4xl md:text-6xl font-extrabold font-display leading-tight mb-6">
+					El Arte del Café Premium, <br/><span class="text-[#1d4c74] bg-white px-4 inline-block mt-2">Desde el Origen</span>
+				</h1>
+				<div class="w-24 h-1 bg-white mx-auto mt-8 opacity-50"></div>
+			</div>
+		</header>
+
+		<!-- Info Section -->
+		<section class="py-24 px-6 md:px-8 bg-white overflow-hidden">
+			<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+				<div class="reveal-item">
+					<h4 class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4">Nuestra Diferencia</h4>
+					<h2 class="text-3xl md:text-4xl font-extrabold font-display text-[#2a3035] leading-tight mb-6">
+						Tostado Artesanal y Selección Rigurosa
+					</h2>
+					<p class="text-gray-600 font-body mb-6 text-lg leading-relaxed">
+						En Grupo Prevca, cultivamos, seleccionamos y procesamos los mejores granos de café para garantizar una taza excepcional en cada preparación.
+					</p>
+					<p class="text-gray-600 font-body mb-8 text-lg leading-relaxed">
+						Trabajamos directamente con agricultores en regiones cafetaleras de altura, asegurando prácticas sostenibles, comercio justo y un control de calidad meticuloso desde la semilla hasta el tostado final.
+					</p>
+				</div>
+				
+				<div class="relative reveal-item" style="transition-delay: 200ms">
+					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-none"></div>
+					<img 
+						src={cafeImg02.src} 
+						alt="Proceso de Tostado" 
+						class="relative z-10 w-full h-auto rounded-none"
+					/>
+				</div>
+			</div>
+		</section>
+
+		<!-- Core Capabilities Section -->
+		<section class="py-24 px-6 md:px-8 bg-gray-50">
+			<div class="max-w-7xl mx-auto">
+				<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal-item">
+					<div>
+						<h4 class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4">Proceso de Calidad</h4>
+						<h2 class="text-3xl md:text-5xl font-extrabold font-display text-[#2a3035] leading-tight max-w-2xl">
+							Nuestros Pilares Cafetaleros
+						</h2>
+					</div>
+					<p class="text-gray-600 font-body max-w-md text-lg">
+						Comprometidos con la excelencia en cada etapa de la producción para los paladares más exigentes.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<!-- Card 1 -->
+					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]">
+						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+							<FaLeaf />
+						</div>
+						<h3 class="text-xl font-bold font-display text-white mb-4">Origen Seleccionado</h3>
+						<p class="text-white/80 font-body text-sm leading-relaxed">
+							Granos cultivados a gran altitud, seleccionados a mano en su punto óptimo de maduración para asegurar perfiles de sabor complejos.
+						</p>
+					</div>
+					
+					<!-- Card 2 -->
+					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]" style="transition-delay: 100ms;">
+						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+							<FaFire />
+						</div>
+						<h3 class="text-xl font-bold font-display text-white mb-4">Tueste de Precisión</h3>
+						<p class="text-white/80 font-body text-sm leading-relaxed">
+							Tostadores maestros utilizan curvas de tueste específicas para cada variedad, maximizando los aromas y aceites esenciales del grano.
+						</p>
+					</div>
+
+					<!-- Card 3 -->
+					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]" style="transition-delay: 200ms;">
+						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+							<FaGlobeAmericas />
+						</div>
+						<h3 class="text-xl font-bold font-display text-white mb-4">Calidad de Exportación</h3>
+						<p class="text-white/80 font-body text-sm leading-relaxed">
+							Cumplimos con las normativas internacionales más estrictas, proveyendo café verde y tostado a mercados globales exigentes.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Catalog Section -->
+		<section class="py-24 px-6 md:px-8 bg-white">
+			<div class="max-w-7xl mx-auto">
+				<!-- Banner Header -->
+				<div class="relative rounded-none overflow-hidden mb-16 h-64 reveal-item flex items-center p-10">
+					<div class="absolute inset-0 bg-[#2a3035]/80 z-10"></div>
+					<img src={cafeImg01.src} alt="Nuestra Selección" class="absolute inset-0 w-full h-full object-cover z-0" />
+					<div class="relative z-20">
+						<h2 class="text-3xl md:text-5xl font-extrabold font-display text-white mb-4">Nuestra Selección</h2>
+						<p class="text-white/80 font-body text-lg max-w-xl">Descubra nuestros granos excepcionales y complementos para la experiencia cafetera perfecta.</p>
+					</div>
+				</div>
+
+				<!-- Filter placeholder -->
+				<div class="flex flex-wrap gap-4 items-center mb-12 font-ui text-sm reveal-item">
+					<span class="font-bold text-gray-500 tracking-widest uppercase mr-4 hidden md:block">Categorías:</span>
+					<button class="bg-[#1d4c74] text-white px-6 py-2 font-bold cursor-pointer border border-[#1d4c74] rounded-none">Todas</button>
+					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Tostado</button>
+					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Café Verde</button>
+					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Equipamiento</button>
+				</div>
+
+				<!-- Grid of Products -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item">
+					<!-- Product 1 -->
+					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
+						<div class="h-48 overflow-hidden bg-gray-100 relative rounded-none">
+							<img src={cafeImg03.src} alt="Café de Especialidad" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
+						</div>
+						<div class="p-6 flex flex-col flex-grow">
+							<div class="flex justify-between items-start mb-2">
+								<h3 class="font-display font-bold text-[#2a3035] leading-tight">Café de Especialidad Origen</h3>
+							</div>
+							<p class="text-sm text-gray-500 font-body mb-6">Tueste Medio | 250g / 1kg</p>
+							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
+								<span>Ref: ESP-01</span>
+								<a href="/cafe/especialidad-origen" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Product 2 -->
+					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
+						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
+							<img src={cafeImg04.src} alt="Café Verde" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
+						</div>
+						<div class="p-6 flex flex-col flex-grow">
+							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Café Verde Grado Exportación</h3>
+							<p class="text-sm text-gray-500 font-body mb-6">Sacos de Yute | 69kg</p>
+							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
+								<span>Ref: GRN-EX</span>
+								<a href="/cafe/verde-exportacion" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Product 3 -->
+					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
+						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
+							<img src={cafeImg05.src} alt="Cápsulas Premium" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
+						</div>
+						<div class="p-6 flex flex-col flex-grow">
+							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Cápsulas Premium Espresso</h3>
+							<p class="text-sm text-gray-500 font-body mb-6">Compatibles | Caja x 50</p>
+							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
+								<span>Ref: CAP-PR</span>
+								<a href="/cafe/capsulas-premium" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
+							</div>
+						</div>
+					</div>
+
+					<!-- Product 4 -->
+					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
+						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
+							<img src={cafeImg06.src} alt="Equipamiento Barista" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
+						</div>
+						<div class="p-6 flex flex-col flex-grow">
+							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Equipamiento Barista Profesional</h3>
+							<p class="text-sm text-gray-500 font-body mb-6">Máquinas y Molinos Comerciales</p>
+							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
+								<span>Ref: EQP-BR</span>
+								<a href="/cafe/equipamiento-barista" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- CTA Banner -->
+				<div class="mt-16 bg-[#f4f7fa] rounded-none p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 border border-[#1d4c74]/10 reveal-item">
+					<div class="text-center md:text-left">
+						<h3 class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] mb-2">¿Buscas proveer a tu cafetería?</h3>
+						<p class="text-gray-600 font-body max-w-xl">Ofrecemos precios corporativos, capacitación de baristas y suministro continuo garantizado.</p>
+					</div>
+					<a href="/#contact-section" class="bg-[#1d4c74] text-white font-bold px-8 py-4 rounded-none font-ui tracking-wider hover:bg-[#2a3035] transition-colors whitespace-nowrap">
+						Ventas Corporativas
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer class="bg-[#2a3035] text-white pt-24 pb-12 px-6 md:px-8">
+			<!-- ... Footer Content ... -->
+			<div
+				class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-12 lg:gap-16 mb-24"
+			>
+				<div class="space-y-8">
+					<div class="flex items-center gap-3">
+						<div
+							class="w-8 h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-lg rounded-none"
+						>
+							P
+						</div>
+						<span
+							class="text-2xl font-extrabold tracking-widest font-display uppercase"
+							>PREVCA</span
+						>
+					</div>
+					<p
+						class="text-gray-400 text-sm font-body leading-relaxed max-w-xs"
+					>
+						Elevando estándares corporativos a través de la
+						excelencia operativa y la diversificación estratégica.
+					</p>
+					<div class="flex gap-4">
+						<a
+							href="#"
+							class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all rounded-none"
+							><FaLinkedinIn /></a
+						>
+						<a
+							href="#"
+							class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all rounded-none"
+							><FaInstagram /></a
+						>
+						<a
+							href="#"
+							class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all rounded-none"
+							><FaTwitter /></a
+						>
+					</div>
+				</div>
+
+				<!-- Contacto -->
+				<div>
+					<h4 class="font-extrabold mb-8 text-sm opacity-70">
+						Contacto
+					</h4>
+					<div class="space-y-6 text-sm font-body">
+						<p class="flex items-center gap-3">
+							<span class="text-white text-xl"
+								><FaPhoneSquareAlt /></span
+							>
+							<span
+								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
+								>+51 987 654 321</span
+							>
+						</p>
+						<p class="flex items-center gap-3">
+							<span class="text-white text-xl"
+								><MdMarkEmailRead /></span
+							>
+							<span
+								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
+								>info@grupoprevca.com</span
+							>
+						</p>
+					</div>
+				</div>
+
+				<!-- Libro de Reclamaciones -->
+				<div>
+					<h4 class="mb-6 text-sm opacity-70 text-white">
+						Atención al Cliente
+					</h4>
+					<div class="flex flex-col gap-3 mt-2">
+						<a
+							href="#"
+							class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg rounded-none"
+						>
+							<img
+								src={libroImg.src}
+								alt="Libro de Reclamaciones"
+								class="w-full h-auto max-h-24 object-contain rounded-none"
+							/>
+						</a>
+						<p
+							class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-1 font-bold"
+						>
+							Conforme a la Ley N° 29571
+						</p>
+					</div>
+				</div>
+
+				<!-- Corporativo Links -->
+				<div>
+					<h4 class="font-extrabold mb-6 text-sm opacity-70">
+						Corporativo
+					</h4>
+					<ul class="space-y-4 text-sm text-gray-400 font-body">
+						<li>
+							<a
+								href="/nosotros"
+								class="hover:text-white transition-all underline-offset-4 hover:underline"
+								>Sobre Nosotros</a
+							>
+						</li>
+						<li>
+							<a
+								href="/#contact-section"
+								class="hover:text-white transition-all underline-offset-4 hover:underline"
+								>Centro de Contacto</a
+							>
+						</li>
+						<li>
+							<button
+								id="btn-privacy"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer bg-transparent border-none p-0 text-gray-400"
+								>Política de Privacidad</button
+							>
+						</li>
+						<li>
+							<button
+								id="btn-terms"
+								class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer bg-transparent border-none p-0 text-gray-400"
+								>Términos Legales</button
+							>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div
+				class="max-w-7xl mx-auto border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-xs font-ui tracking-[0.2em] text-gray-500 uppercase font-bold"
+			>
+				<p>© 2024 GRUPO PREVCA. TODOS LOS DERECHOS RESERVADOS.</p>
+				<p>
+					DISCUSIÓN Y DISEÑO POR <span class="text-white"
+						>TRIGA S.A.C.</span
+					>
+				</p>
+			</div>
+		</footer>
+
+		<script is:inline>
+			document.addEventListener("DOMContentLoaded", () => {
+				const body = document.body;
+				const loader = document.getElementById("loader-overlay");
+				setTimeout(() => {
+					loader.style.opacity = "0";
+					setTimeout(() => {
+						loader.style.display = "none";
+					}, 700);
+				}, 500);
+
+				const observer = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							if (entry.isIntersecting)
+								entry.target.classList.add("active");
+						});
+					},
+					{ threshold: 0.15 },
+				);
+				document
+					.querySelectorAll(".reveal-item")
+					.forEach((el) => observer.observe(el));
+
+				// Mobile Menu
+				const menuToggle = document.getElementById("menu-toggle");
+				const mobileMenu = document.getElementById("mobile-menu");
+				const iconBars = document.getElementById("icon-bars");
+				const iconTimes = document.getElementById("icon-times");
+
+				menuToggle?.addEventListener("click", () => {
+					const isOpen =
+						mobileMenu.classList.contains("translate-x-0");
+					if (isOpen) {
+						mobileMenu.classList.replace(
+							"translate-x-0",
+							"translate-x-full",
+						);
+						iconBars.classList.remove("hidden");
+						iconTimes.classList.add("hidden");
+						body.style.overflow = "auto";
+					} else {
+						mobileMenu.classList.replace(
+							"translate-x-full",
+							"translate-x-0",
+						);
+						iconBars.classList.add("hidden");
+						iconTimes.classList.remove("hidden");
+						body.style.overflow = "hidden";
+					}
+				});
+
+				// Cart Logic
+				const updateCartUI = () => {
+					const cart = JSON.parse(localStorage.getItem('prevca_cart')) || [];
+					const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+					const desktopBadge = document.getElementById('cart-count-desktop');
+					const mobileBadge = document.getElementById('cart-count-mobile');
+					if (desktopBadge) desktopBadge.textContent = totalItems;
+					if (mobileBadge) mobileBadge.textContent = totalItems;
+				};
+
+				updateCartUI();
+			});
+		</script>
+	</body>
+</html>
