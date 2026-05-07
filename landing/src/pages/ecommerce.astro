@@ -33,7 +33,13 @@ const catalog = {
     "especialidad-origen": { title: "Café de Especialidad Origen", div: "Café", ref: "ESP-01", desc: "Perfil de taza complejo con notas a frutas de hueso y caramelo. Tostado artesanal en pequeños lotes para máxima frescura." },
     "verde-exportacion": { title: "Café Verde Grado Exportación", div: "Café", ref: "GRN-EX", desc: "Grano verde meticulosamente procesado y seleccionado (Preparación Europea) para asegurar lotes consistentes de exportación." },
     "capsulas-premium": { title: "Cápsulas Premium Espresso", div: "Café", ref: "CAP-PR", desc: "Cápsulas compatibles que sellan herméticamente café recién molido, preservando aromas para un espresso intenso con crema espesa." },
-    "equipamiento-barista": { title: "Equipamiento Barista Profesional", div: "Café", ref: "EQP-BR", desc: "Máquinas de espresso de múltiples grupos y molinos comerciales de las mejores marcas para garantizar una extracción perfecta." }
+    "equipamiento-barista": { title: "Equipamiento Barista Profesional", div: "Café", ref: "EQP-BR", desc: "Máquinas de espresso de múltiples grupos y molinos comerciales de las mejores marcas para garantizar una extracción perfecta." },
+    
+    // Transporte
+    "carga-pesada": { title: "Transporte de Carga Pesada", div: "Transporte", ref: "TRN-NAC", desc: "Servicio integral de transporte terrestre a nivel nacional con moderna flota y monitoreo GPS 24/7." },
+    "logistica-internacional": { title: "Logística Internacional", div: "Transporte", ref: "TRN-INT", desc: "Soluciones integrales de transporte internacional de carga aéreo y marítimo, con gestión aduanera." },
+    "ultima-milla": { title: "Distribución Última Milla", div: "Transporte", ref: "TRN-ULL", desc: "Servicio de distribución urbana diseñado para operaciones B2B y B2C con tecnología de ruteo dinámico." },
+    "especializado": { title: "Transporte Especializado", div: "Transporte", ref: "TRN-ESP", desc: "Soluciones a la medida para cargas refrigeradas, materiales peligrosos o sobredimensionadas." }
 };
 ---
 
@@ -132,6 +138,11 @@ const catalog = {
 					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
 					>Café</a
 				>
+				<a
+					href="/transporte"
+					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
+					>Transporte</a
+				>
 
 				<!-- Cart Icon -->
 				<div
@@ -169,6 +180,7 @@ const catalog = {
 				<a href="/madera" class="border-b border-white/10 pb-4 cursor-pointer">Madera</a>
 				<a href="/hospitalidad" class="border-b border-white/10 pb-4 cursor-pointer">Hospitalidad</a>
 				<a href="/cafe" class="border-b border-white/10 pb-4 cursor-pointer">Café</a>
+				<a href="/transporte" class="border-b border-white/10 pb-4 cursor-pointer">Transporte</a>
 				<div
 					class="border-b border-white/10 pb-4 cursor-pointer flex justify-between items-center text-[#1d4c74] bg-white px-4 rounded-none shadow-sm"
 				>
