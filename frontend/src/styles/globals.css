@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Paleta corporativa Prevca === */
+  --color-prevca-blue: #1d4c74;
+  --color-prevca-blue-dark: #153a5b;
+  --color-prevca-blue-soft: rgba(29, 76, 116, 0.1);
+  --color-prevca-dark: #2a3035;
+  --color-prevca-dark-soft: rgba(42, 48, 53, 0.05);
+
+  /* === Tipografías corporativas === */
+  --font-display: "Plus Jakarta Sans", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-ui: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: #f9fafb;
+    color: #2a3035;
+  }
+  ::selection {
+    background-color: var(--color-prevca-blue);
+    color: white;
+  }
+  /* Inputs: sin redondeados, foco azul Prevca */
+  input,
+  textarea,
+  select {
+    border-radius: 0;
+  }
+  /* Spin del number input */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+/* Animaciones globales */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner {
+  border: 3px solid rgba(29, 76, 116, 0.1);
+  border-left-color: var(--color-prevca-blue);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 0.8s linear infinite;
+}
