@@ -17,13 +17,9 @@ import { MdMarkEmailRead } from "react-icons/md";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import libroImg from "../assets/libro-reclamaciones.png";
 
-// Imágenes de la División Transporte
+// Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import transporteImg01 from "../assets/transporte/transporte-image-01.png";
 import transporteImg02 from "../assets/transporte/transporte-image-02.png";
-import transporteImg03 from "../assets/transporte/transporte-image-03.png";
-import transporteImg04 from "../assets/transporte/transporte-image-04.png";
-import transporteImg05 from "../assets/transporte/transporte-image-05.png";
-import transporteImg06 from "../assets/transporte/transporte-image-06.png";
 ---
 
 <html lang="es">
@@ -350,69 +346,9 @@ import transporteImg06 from "../assets/transporte/transporte-image-06.png";
 					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Especializado</button>
 				</div>
 
-				<!-- Grid of Products -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item">
-					<!-- Product 1 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 relative rounded-none">
-							<img src={transporteImg03.src} alt="Transporte Pesado" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<div class="flex justify-between items-start mb-2">
-								<h3 class="font-display font-bold text-[#2a3035] leading-tight">Transporte de Carga Pesada</h3>
-							</div>
-							<p class="text-sm text-gray-500 font-body mb-6">Nivel Nacional | Plataformas y Furgones</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: TRN-NAC</span>
-								<a href="/transporte/carga-pesada" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 2 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={transporteImg04.src} alt="Logística Internacional" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Logística Internacional</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Aéreo & Marítimo | FCL y LCL</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: TRN-INT</span>
-								<a href="/transporte/logistica-internacional" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 3 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={transporteImg05.src} alt="Distribución Última Milla" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Distribución Última Milla</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Urbano | Flota Ligera B2B/B2C</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: TRN-ULL</span>
-								<a href="/transporte/ultima-milla" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 4 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={transporteImg06.src} alt="Transporte Especializado" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Transporte Especializado</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Refrigerado / Peligroso / Sobredimensionado</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: TRN-ESP</span>
-								<a href="/transporte/especializado" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
+				<!-- Grid of Products (dinámico: se carga desde la API pública) -->
+				<div id="transporte-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]">
+					<!-- Los productos se hidratan aquí desde Firestore via /public/products?division=TRANSPORTE -->
 				</div>
 
 				<!-- CTA Banner -->
@@ -635,6 +571,13 @@ import transporteImg06 from "../assets/transporte/transporte-image-06.png";
 
 				updateCartUI();
 			});
+		</script>
+
+		<!-- Carga dinámica del catálogo de Transporte desde la API pública -->
+		<script>
+			import { renderProductGrid, renderSkeleton } from "../lib/product-grid.js";
+			renderSkeleton("transporte-products-grid", 4);
+			renderProductGrid("transporte-products-grid", "TRANSPORTE", "/transporte");
 		</script>
 	</body>
 </html>

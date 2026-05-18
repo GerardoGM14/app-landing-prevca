@@ -18,13 +18,9 @@ import { FaPhoneSquareAlt } from "react-icons/fa";
 import { LuCookie } from "react-icons/lu";
 import libroImg from "../assets/libro-reclamaciones.png";
 
-// Imágenes de la División Hospitalidad
+// Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import hospImg01 from "../assets/hospitalidad/hosp-image-01.png";
 import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
-import hospImg03 from "../assets/hospitalidad/hosp-image-03.png";
-import hospImg04 from "../assets/hospitalidad/hosp-image-04.png";
-import hospImg05 from "../assets/hospitalidad/hosp-image-05.png";
-import hospImg06 from "../assets/hospitalidad/hosp-image-06.png";
 ---
 
 <html lang="es">
@@ -414,72 +410,9 @@ import hospImg06 from "../assets/hospitalidad/hosp-image-06.png";
 					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Bienestar</button>
 				</div>
 
-				<!-- Grid of Products -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item">
-					<!-- Product 1 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 relative rounded-none">
-							<img src={hospImg03.src} alt="Habitación Deluxe" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<div class="flex justify-between items-start mb-2">
-								<h3 class="font-display font-bold text-[#2a3035] leading-tight">Habitación Deluxe King</h3>
-							</div>
-							<p class="text-sm text-gray-500 font-body mb-6">Capacidad: 2 personas | 45m²</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: DLX-01</span>
-								<a href="/hospitalidad/deluxe-king" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 2 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={hospImg04.src} alt="Suite Presidencial" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Suite Presidencial Panorama</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Capacidad: 4 personas | 120m²</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: SUI-PR</span>
-								<a href="/hospitalidad/suite-presidencial" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 3 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={hospImg05.src} alt="Restaurante" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<div class="flex justify-between items-start mb-2">
-								<h3 class="font-display font-bold text-[#2a3035] leading-tight">Restaurante Signature "Azul"</h3>
-								<span class="bg-[#1d4c74]/10 text-[#1d4c74] text-[10px] font-bold px-2 py-1 uppercase tracking-wider ml-2 shrink-0">Reserva</span>
-							</div>
-							<p class="text-sm text-gray-500 font-body mb-6">Especialidad: Alta Cocina Fusión</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: RST-01</span>
-								<a href="/hospitalidad/restaurante-azul" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 4 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={hospImg06.src} alt="Spa" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Spa & Wellness Center</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Servicios: Terapias y Circuitos Termales</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: SPA-01</span>
-								<a href="/hospitalidad/spa-wellness" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
+				<!-- Grid of Products (dinámico: se carga desde la API pública) -->
+				<div id="hospitalidad-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]">
+					<!-- Los productos se hidratan aquí desde Firestore via /public/products?division=HOSPITALIDAD -->
 				</div>
 
 				<!-- CTA Banner -->
@@ -702,6 +635,13 @@ import hospImg06 from "../assets/hospitalidad/hosp-image-06.png";
 
 				updateCartUI();
 			});
+		</script>
+
+		<!-- Carga dinámica del catálogo de Hospitalidad desde la API pública -->
+		<script>
+			import { renderProductGrid, renderSkeleton } from "../lib/product-grid.js";
+			renderSkeleton("hospitalidad-products-grid", 4);
+			renderProductGrid("hospitalidad-products-grid", "HOSPITALIDAD", "/hospitalidad");
 		</script>
 	</body>
 </html>

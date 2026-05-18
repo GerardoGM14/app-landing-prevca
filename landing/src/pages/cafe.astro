@@ -17,13 +17,9 @@ import { MdMarkEmailRead } from "react-icons/md";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import libroImg from "../assets/libro-reclamaciones.png";
 
-// Imágenes de la División Café
+// Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import cafeImg01 from "../assets/cafe/cafe-image-01.png";
 import cafeImg02 from "../assets/cafe/cafe-image-02.png";
-import cafeImg03 from "../assets/cafe/cafe-image-03.png";
-import cafeImg04 from "../assets/cafe/cafe-image-04.png";
-import cafeImg05 from "../assets/cafe/cafe-image-05.png";
-import cafeImg06 from "../assets/cafe/cafe-image-06.png";
 ---
 
 <html lang="es">
@@ -350,69 +346,9 @@ import cafeImg06 from "../assets/cafe/cafe-image-06.png";
 					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Equipamiento</button>
 				</div>
 
-				<!-- Grid of Products -->
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item">
-					<!-- Product 1 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 relative rounded-none">
-							<img src={cafeImg03.src} alt="Café de Especialidad" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<div class="flex justify-between items-start mb-2">
-								<h3 class="font-display font-bold text-[#2a3035] leading-tight">Café de Especialidad Origen</h3>
-							</div>
-							<p class="text-sm text-gray-500 font-body mb-6">Tueste Medio | 250g / 1kg</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: ESP-01</span>
-								<a href="/cafe/especialidad-origen" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 2 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={cafeImg04.src} alt="Café Verde" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Café Verde Grado Exportación</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Sacos de Yute | 69kg</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: GRN-EX</span>
-								<a href="/cafe/verde-exportacion" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 3 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={cafeImg05.src} alt="Cápsulas Premium" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Cápsulas Premium Espresso</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Compatibles | Caja x 50</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: CAP-PR</span>
-								<a href="/cafe/capsulas-premium" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
-
-					<!-- Product 4 -->
-					<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col rounded-none">
-						<div class="h-48 overflow-hidden bg-gray-100 rounded-none">
-							<img src={cafeImg06.src} alt="Equipamiento Barista" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" />
-						</div>
-						<div class="p-6 flex flex-col flex-grow">
-							<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">Equipamiento Barista Profesional</h3>
-							<p class="text-sm text-gray-500 font-body mb-6">Máquinas y Molinos Comerciales</p>
-							<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
-								<span>Ref: EQP-BR</span>
-								<a href="/cafe/equipamiento-barista" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">Detalles <FaArrowRight /></a>
-							</div>
-						</div>
-					</div>
+				<!-- Grid of Products (dinámico: se carga desde la API pública) -->
+				<div id="cafe-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]">
+					<!-- Los productos se hidratan aquí desde Firestore via /public/products?division=CAFE -->
 				</div>
 
 				<!-- CTA Banner -->
@@ -635,6 +571,13 @@ import cafeImg06 from "../assets/cafe/cafe-image-06.png";
 
 				updateCartUI();
 			});
+		</script>
+
+		<!-- Carga dinámica del catálogo de Café desde la API pública -->
+		<script>
+			import { renderProductGrid, renderSkeleton } from "../lib/product-grid.js";
+			renderSkeleton("cafe-products-grid", 4);
+			renderProductGrid("cafe-products-grid", "CAFE", "/cafe");
 		</script>
 	</body>
 </html>

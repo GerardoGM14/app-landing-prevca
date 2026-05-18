@@ -1,46 +1,9 @@
 ---
 import "../styles/global.css";
-import {
-	FaBars,
-	FaTimes,
-	FaLinkedinIn,
-	FaInstagram,
-	FaTwitter,
-	FaShoppingCart,
-	FaChevronDown,
-	FaChevronUp,
-	FaTrash,
-	FaArrowLeft
-} from "react-icons/fa";
-import { MdMarkEmailRead } from "react-icons/md";
-import { FaPhoneSquareAlt } from "react-icons/fa";
-import libroImg from "../assets/libro-reclamaciones.png";
+import { FaBars, FaTimes, FaShoppingCart, FaArrowLeft } from "react-icons/fa";
 
-const catalog = {
-    // Madera
-    "pino-radiata": { title: "Madera Aserrada Pino Radiata", div: "Madera", ref: "RP-01", desc: "Madera de excelente trabajabilidad y resistencia, secada al horno y proveniente de bosques certificados." },
-    "eucalipto-globulus": { title: "Tablas de Eucalipto Globulus", div: "Madera", ref: "EG-04", desc: "Tablas de extrema dureza y durabilidad natural, secadas bajo estricto control, ideales para pisos y revestimientos." },
-    "vigas-pino": { title: "Vigas Estructurales Pino", div: "Madera", ref: "RP-ST", desc: "Vigas diseñadas para soportar cargas pesadas en longitudes de hasta 6m continuos sin uniones." },
-    "eucalipto-mueble": { title: "Eucalipto Grado Mueble", div: "Madera", ref: "EG-FG", desc: "Línea premium seca al 10-12% de humedad, ideal para ebanistería fina y acabados de lujo." },
-    
-    // Hospitalidad
-    "deluxe-king": { title: "Habitación Deluxe King", div: "Hospitalidad", ref: "DLX-01", desc: "Santuario de tranquilidad con cama King size, sábanas de algodón egipcio y baño de mármol con ducha de lluvia." },
-    "suite-presidencial": { title: "Suite Presidencial Panorama", div: "Hospitalidad", ref: "SUI-PR", desc: "El pináculo del lujo con vistas de 180 grados, comedor privado, sala de estar y servicio de mayordomo personal dedicado." },
-    "restaurante-azul": { title: 'Restaurante Signature "Azul"', div: "Hospitalidad", ref: "RST-01", desc: "Experiencia gastronómica galardonada con menús de degustación estacionales que fusionan sabores locales y técnicas internacionales." },
-    "spa-wellness": { title: "Spa & Wellness Center", div: "Hospitalidad", ref: "SPA-01", desc: "Santuario holístico con circuito de hidroterapia completo y tratamientos exclusivos para una relajación profunda y duradera." },
-    
-    // Café
-    "especialidad-origen": { title: "Café de Especialidad Origen", div: "Café", ref: "ESP-01", desc: "Perfil de taza complejo con notas a frutas de hueso y caramelo. Tostado artesanal en pequeños lotes para máxima frescura." },
-    "verde-exportacion": { title: "Café Verde Grado Exportación", div: "Café", ref: "GRN-EX", desc: "Grano verde meticulosamente procesado y seleccionado (Preparación Europea) para asegurar lotes consistentes de exportación." },
-    "capsulas-premium": { title: "Cápsulas Premium Espresso", div: "Café", ref: "CAP-PR", desc: "Cápsulas compatibles que sellan herméticamente café recién molido, preservando aromas para un espresso intenso con crema espesa." },
-    "equipamiento-barista": { title: "Equipamiento Barista Profesional", div: "Café", ref: "EQP-BR", desc: "Máquinas de espresso de múltiples grupos y molinos comerciales de las mejores marcas para garantizar una extracción perfecta." },
-    
-    // Transporte
-    "carga-pesada": { title: "Transporte de Carga Pesada", div: "Transporte", ref: "TRN-NAC", desc: "Servicio integral de transporte terrestre a nivel nacional con moderna flota y monitoreo GPS 24/7." },
-    "logistica-internacional": { title: "Logística Internacional", div: "Transporte", ref: "TRN-INT", desc: "Soluciones integrales de transporte internacional de carga aéreo y marítimo, con gestión aduanera." },
-    "ultima-milla": { title: "Distribución Última Milla", div: "Transporte", ref: "TRN-ULL", desc: "Servicio de distribución urbana diseñado para operaciones B2B y B2C con tecnología de ruteo dinámico." },
-    "especializado": { title: "Transporte Especializado", div: "Transporte", ref: "TRN-ESP", desc: "Soluciones a la medida para cargas refrigeradas, materiales peligrosos o sobredimensionadas." }
-};
+// El catálogo se carga dinámicamente desde Firestore vía `/public/products` en el script de cliente.
+// Ver landing/src/lib/api.js
 ---
 
 <html lang="es">
@@ -222,21 +185,23 @@ const catalog = {
 							<span id="summary-total-items" class="font-bold text-[#2a3035] text-xl">0</span>
 						</div>
 
-						<form class="space-y-4" onsubmit="event.preventDefault(); alert('Solicitud enviada correctamente. Un asesor se comunicará pronto.');">
+						<form id="quote-form" class="space-y-4">
 							<div>
 								<label class="block text-xs font-bold font-ui text-gray-500 uppercase tracking-widest mb-1">Nombre Completo</label>
-								<input type="text" required class="w-full border border-gray-300 bg-gray-50 p-3 outline-none focus:border-[#1d4c74] transition-colors rounded-none font-body" />
+								<input id="quote-name" type="text" required class="w-full border border-gray-300 bg-gray-50 p-3 outline-none focus:border-[#1d4c74] transition-colors rounded-none font-body" />
 							</div>
 							<div>
 								<label class="block text-xs font-bold font-ui text-gray-500 uppercase tracking-widest mb-1">Empresa</label>
-								<input type="text" class="w-full border border-gray-300 bg-gray-50 p-3 outline-none focus:border-[#1d4c74] transition-colors rounded-none font-body" />
+								<input id="quote-company" type="text" class="w-full border border-gray-300 bg-gray-50 p-3 outline-none focus:border-[#1d4c74] transition-colors rounded-none font-body" />
 							</div>
 							<div>
 								<label class="block text-xs font-bold font-ui text-gray-500 uppercase tracking-widest mb-1">Correo Electrónico</label>
-								<input type="email" required class="w-full border border-gray-300 bg-gray-50 p-3 outline-none focus:border-[#1d4c74] transition-colors rounded-none font-body" />
+								<input id="quote-email" type="email" required class="w-full border border-gray-300 bg-gray-50 p-3 outline-none focus:border-[#1d4c74] transition-colors rounded-none font-body" />
 							</div>
-							
-							<button type="submit" class="w-full bg-[#1d4c74] text-white font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-[#2a3035] transition-colors border border-[#1d4c74] flex items-center justify-center gap-3 cursor-pointer shadow-md mt-6 rounded-none">
+
+							<div id="quote-feedback" class="hidden text-sm font-body p-3 border-l-4"></div>
+
+							<button id="quote-submit" type="submit" class="w-full bg-[#1d4c74] text-white font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-[#2a3035] transition-colors border border-[#1d4c74] flex items-center justify-center gap-3 cursor-pointer shadow-md mt-6 rounded-none disabled:opacity-50 disabled:cursor-not-allowed">
 								Solicitar Cotización
 							</button>
 						</form>
@@ -256,8 +221,17 @@ const catalog = {
 			</div>
 		</footer>
 
-		<script is:inline define:vars={{ catalog }}>
-			document.addEventListener("DOMContentLoaded", () => {
+		<script>
+			import { fetchProducts, submitOrder } from "../lib/api.js";
+
+			const DIVISION_LABELS = {
+				MADERA: "Madera",
+				HOSPITALIDAD: "Hospitalidad",
+				CAFE: "Café",
+				TRANSPORTE: "Transporte",
+			};
+
+			document.addEventListener("DOMContentLoaded", async () => {
 				// Mobile Menu
 				const menuToggle = document.getElementById("menu-toggle");
 				const mobileMenu = document.getElementById("mobile-menu");
@@ -285,9 +259,29 @@ const catalog = {
 				const mobileBadge = document.getElementById('cart-count-mobile');
 				const summaryTotal = document.getElementById('summary-total-items');
 
+				// Fetch del catálogo desde la API pública. Cae con array vacío si falla.
+				let catalog = {};
+				try {
+					const products = await fetchProducts({ pageSize: 100 });
+					catalog = Object.fromEntries(
+						products.map((p) => [
+							p.slug,
+							{
+								id: p.id,
+								title: p.title,
+								div: DIVISION_LABELS[p.division] ?? p.division,
+								ref: p.ref,
+								desc: p.shortDesc,
+							},
+						]),
+					);
+				} catch (err) {
+					console.error("No se pudo cargar el catálogo:", err);
+				}
+
 				const renderCart = () => {
 					let cart = JSON.parse(localStorage.getItem('prevca_cart')) || [];
-					
+
 					// Filter out valid items (in case of old data)
 					cart = cart.filter(item => catalog[item.id]);
 
@@ -391,6 +385,63 @@ const catalog = {
 
 				// Initial Render
 				renderCart();
+
+				// Form submit → POST /public/orders
+				const form = document.getElementById("quote-form");
+				const submitBtn = document.getElementById("quote-submit");
+				const feedback = document.getElementById("quote-feedback");
+				const nameInput = document.getElementById("quote-name");
+				const companyInput = document.getElementById("quote-company");
+				const emailInput = document.getElementById("quote-email");
+
+				const showFeedback = (message, kind) => {
+					if (!feedback) return;
+					feedback.textContent = message;
+					feedback.classList.remove("hidden", "bg-red-50", "border-red-500", "text-red-700", "bg-green-50", "border-green-500", "text-green-700");
+					if (kind === "error") {
+						feedback.classList.add("bg-red-50", "border-red-500", "text-red-700");
+					} else {
+						feedback.classList.add("bg-green-50", "border-green-500", "text-green-700");
+					}
+				};
+
+				form?.addEventListener("submit", async (e) => {
+					e.preventDefault();
+					const cart = JSON.parse(localStorage.getItem('prevca_cart')) || [];
+					const validItems = cart
+						.filter((item) => catalog[item.id])
+						.map((item) => ({
+							productId: catalog[item.id].id,
+							quantity: item.quantity,
+						}));
+
+					if (validItems.length === 0) {
+						showFeedback("Su lista de cotización está vacía.", "error");
+						return;
+					}
+
+					submitBtn.disabled = true;
+					submitBtn.textContent = "Enviando...";
+					try {
+						const response = await submitOrder({
+							customer: {
+								name: nameInput.value.trim(),
+								email: emailInput.value.trim(),
+								company: companyInput.value.trim() || undefined,
+							},
+							items: validItems,
+						});
+						showFeedback(`✓ ${response.message ?? 'Cotización enviada'} Código: ${response.code ?? ''}`, "success");
+						localStorage.removeItem('prevca_cart');
+						form.reset();
+						renderCart();
+					} catch (err) {
+						showFeedback(err.message ?? "No se pudo enviar la cotización", "error");
+					} finally {
+						submitBtn.disabled = false;
+						submitBtn.textContent = "Solicitar Cotización";
+					}
+				});
 			});
 		</script>
 	</body>

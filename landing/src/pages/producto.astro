@@ -1,0 +1,533 @@
+---
+/**
+ * SPA Detail Page para cualquier producto de cualquier división.
+ *
+ * Esta página estática es servida por Firebase Hosting como fallback (vía rewrite)
+ * para cualquier URL del tipo `/madera/<slug>`, `/cafe/<slug>`, `/hospitalidad/<slug>`,
+ * `/transporte/<slug>` que no tenga una página estática.
+ *
+ * El script al final lee la URL del navegador, identifica división y slug,
+ * y carga el producto correspondiente desde la API pública.
+ */
+import "../styles/global.css";
+import {
+	FaBars,
+	FaTimes,
+	FaShoppingCart,
+	FaLinkedinIn,
+	FaInstagram,
+	FaTwitter,
+	FaPhoneSquareAlt,
+} from "react-icons/fa";
+import { MdMarkEmailRead } from "react-icons/md";
+import libroImg from "../assets/libro-reclamaciones.png";
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title id="page-title">Cargando producto... | Grupo Prevca</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@400;600&family=Inter:wght@300;400&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			@keyframes spin {
+				to { transform: rotate(360deg); }
+			}
+			.loader-spinner {
+				border: 3px solid rgba(255, 255, 255, 0.1);
+				border-left-color: #1d4c74;
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				animation: spin 0.8s linear infinite;
+			}
+			.reveal-item {
+				opacity: 0;
+				transform: translateY(20px);
+				transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+			.reveal-item.active {
+				opacity: 1;
+				transform: translateY(0);
+			}
+			.nav-link {
+				position: relative;
+			}
+			.nav-link::after {
+				content: "";
+				position: absolute;
+				bottom: -2px;
+				left: 0;
+				width: 0;
+				height: 2px;
+				background-color: white;
+				transition: width 0.3s ease;
+			}
+			.nav-link:hover::after {
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body class="bg-gray-50 text-gray-800 font-body selection:bg-[#1d4c74] selection:text-white overflow-x-hidden">
+		<!-- Loader -->
+		<div id="loader-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 bg-white">
+			<div class="loader-spinner"></div>
+		</div>
+
+		<!-- Navbar -->
+		<nav class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300">
+			<div class="flex items-center gap-3">
+				<a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+					<div class="w-7 h-7 md:w-8 md:h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base md:text-lg">P</div>
+					<span class="text-xl md:text-2xl font-extrabold tracking-widest font-display uppercase">GRUPO PREVCA</span>
+				</a>
+			</div>
+			<div class="hidden lg:flex gap-8 text-sm font-semibold tracking-wide uppercase items-center">
+				<a href="/" class="nav-link hover:text-gray-300 transition-colors">Inicio</a>
+				<a href="/madera" class="nav-link hover:text-gray-300 transition-colors">Madera</a>
+				<a href="/hospitalidad" class="nav-link hover:text-gray-300 transition-colors">Hospitalidad</a>
+				<a href="/cafe" class="nav-link hover:text-gray-300 transition-colors">Café</a>
+				<a href="/transporte" class="nav-link hover:text-gray-300 transition-colors">Transporte</a>
+				<a href="/ecommerce" class="relative cursor-pointer hover:text-gray-300 transition-colors ml-2 mr-4 flex items-center">
+					<div class="text-xl"><FaShoppingCart /></div>
+					<span id="cart-count-desktop" class="absolute top-[-6px] right-[-14px] w-4 h-4 flex items-center justify-center bg-white text-[#2a3035] text-[10px] font-extrabold rounded-full shadow-md leading-none pt-[1px]">0</span>
+				</a>
+			</div>
+			<button id="menu-toggle" class="lg:hidden text-2xl text-white cursor-pointer">
+				<div id="icon-bars"><FaBars /></div>
+				<div id="icon-times" class="hidden"><FaTimes /></div>
+			</button>
+		</nav>
+
+		<!-- Mobile Menu -->
+		<div id="mobile-menu" class="fixed inset-0 bg-[#2a3035] z-40 transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-8 overflow-y-auto">
+			<div class="flex flex-col gap-6 text-xl text-white font-ui uppercase font-bold tracking-widest">
+				<a href="/" class="border-b border-white/10 pb-4">Inicio</a>
+				<a href="/madera" class="border-b border-white/10 pb-4">Madera</a>
+				<a href="/hospitalidad" class="border-b border-white/10 pb-4">Hospitalidad</a>
+				<a href="/cafe" class="border-b border-white/10 pb-4">Café</a>
+				<a href="/transporte" class="border-b border-white/10 pb-4">Transporte</a>
+				<a href="/ecommerce" class="bg-[#1d4c74] text-center py-4 mt-2 text-sm">Tienda Virtual</a>
+			</div>
+		</div>
+
+		<!-- Breadcrumb -->
+		<div class="bg-white border-b border-gray-200">
+			<div class="max-w-7xl mx-auto px-6 md:px-8 py-4 text-sm font-ui text-gray-500 uppercase tracking-widest font-bold">
+				<a id="breadcrumb-division-link" href="#" class="hover:text-[#1d4c74] transition-colors">División</a>
+				<span class="mx-2">/</span>
+				<span id="breadcrumb-product" class="text-[#1d4c74]">Cargando...</span>
+			</div>
+		</div>
+
+		<!-- Product Detail -->
+		<section id="product-section" class="pt-8 pb-16 md:pt-12 md:pb-24 px-6 md:px-8 bg-white hidden">
+			<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+				<!-- Image -->
+				<div class="reveal-item active">
+					<div class="bg-gray-100 p-2 md:p-4 border border-gray-100">
+						<img id="product-image" src="" alt="" class="w-full h-auto object-cover shadow-sm aspect-square" />
+					</div>
+					<!-- Image thumbnails -->
+					<div id="product-thumbnails" class="grid grid-cols-4 gap-2 mt-2"></div>
+				</div>
+
+				<!-- Details -->
+				<div class="space-y-8 reveal-item active" style="transition-delay: 100ms;">
+					<div>
+						<div class="flex items-center gap-4 mb-3">
+							<span id="product-ref" class="bg-[#1d4c74]/10 text-[#1d4c74] text-[10px] md:text-xs font-bold px-3 py-1 uppercase tracking-wider"></span>
+						</div>
+						<h1 id="product-title" class="text-4xl md:text-5xl font-extrabold font-display text-[#2a3035] leading-tight mb-4"></h1>
+						<p id="product-specs" class="text-xl font-body text-gray-500 font-semibold mb-6"></p>
+					</div>
+
+					<div class="w-full h-px bg-gray-200"></div>
+
+					<div>
+						<h3 class="text-[#1d4c74] font-bold font-display text-lg mb-3">Descripción</h3>
+						<p id="product-description" class="text-gray-600 font-body leading-relaxed text-base whitespace-pre-line"></p>
+					</div>
+
+					<div id="features-section" class="bg-gray-50 p-6 md:p-8 border border-gray-100 hidden">
+						<h3 class="text-[#2a3035] font-bold font-display text-lg mb-4">Características Principales</h3>
+						<ul id="features-list" class="space-y-3"></ul>
+					</div>
+
+					<div class="pt-4 flex flex-col lg:flex-row gap-4 items-stretch">
+						<div class="flex items-stretch border border-gray-300 bg-white text-[#2a3035] font-ui font-bold h-[56px] lg:h-auto">
+							<button id="qty-minus" class="w-12 hover:bg-gray-100 transition-colors border-r border-gray-300 cursor-pointer text-xl flex items-center justify-center">-</button>
+							<input id="qty-input" type="number" value="1" min="1" class="w-14 text-center m-0 p-0 outline-none bg-transparent text-lg" />
+							<button id="qty-plus" class="w-12 hover:bg-gray-100 transition-colors border-l border-gray-300 cursor-pointer text-xl flex items-center justify-center">+</button>
+						</div>
+
+						<button id="add-to-cart-btn" data-product="" class="flex-1 bg-[#1d4c74] text-white font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-[#2a3035] transition-colors border border-[#1d4c74] flex items-center justify-center gap-3 cursor-pointer shadow-lg hover:shadow-xl text-sm">
+							<span class="text-xl"><FaShoppingCart /></span>
+							<span class="whitespace-nowrap">Agregar al Carrito</span>
+						</button>
+						<a href="/#contact-section" class="flex-1 flex items-center justify-center text-center bg-white text-[#1d4c74] font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-gray-50 transition-colors border-2 border-[#1d4c74] text-sm">
+							Cotizar Proyecto
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Products -->
+		<section id="related-section" class="py-24 px-6 md:px-8 bg-gray-50 hidden">
+			<div class="max-w-7xl mx-auto">
+				<div class="text-center mb-16">
+					<h2 id="related-heading" class="text-3xl font-extrabold font-display text-[#2a3035]">Otras opciones</h2>
+					<div class="w-16 h-1 bg-[#1d4c74] mx-auto mt-6"></div>
+				</div>
+				<div id="related-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+			</div>
+		</section>
+
+		<!-- 404 Not Found -->
+		<section id="not-found-section" class="hidden py-24 px-6 md:px-8 bg-white">
+			<div class="max-w-2xl mx-auto text-center">
+				<h1 class="text-6xl md:text-8xl font-display font-extrabold text-[#1d4c74]">404</h1>
+				<div class="w-16 h-1.5 bg-[#1d4c74] mx-auto my-6"></div>
+				<h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase tracking-tighter text-[#2a3035] mb-4">Producto no encontrado</h2>
+				<p class="text-gray-500 font-body mb-8">El producto que busca no existe o ya no está disponible en nuestro catálogo.</p>
+				<div class="flex flex-wrap gap-4 justify-center">
+					<a href="/" class="bg-[#1d4c74] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest text-sm hover:bg-[#153a5b] transition-colors">Inicio</a>
+					<a id="back-to-division" href="/" class="bg-white text-[#1d4c74] border-2 border-[#1d4c74] font-bold px-8 py-3 uppercase font-ui tracking-widest text-sm hover:bg-[#1d4c74] hover:text-white transition-colors">Ver división</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer class="bg-[#2a3035] text-white pt-16 pb-8 px-6 md:px-8">
+			<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+				<div class="space-y-6">
+					<div class="flex items-center gap-3">
+						<div class="w-7 h-7 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base">P</div>
+						<span class="text-xl font-extrabold tracking-widest font-display uppercase">GRUPO PREVCA</span>
+					</div>
+					<p class="text-sm text-gray-400 font-body leading-loose">Inspiramos confianza a través de la excelencia y la sostenibilidad en cada sector donde operamos.</p>
+					<div class="space-y-3 text-sm text-gray-400 font-body">
+						<p class="flex items-center gap-3"><span class="text-white text-xl"><FaPhoneSquareAlt /></span><span>+51 987 654 321</span></p>
+						<p class="flex items-center gap-3"><span class="text-white text-xl"><MdMarkEmailRead /></span><span>info@grupoprevca.com</span></p>
+					</div>
+				</div>
+				<div>
+					<h4 class="mb-6 text-sm opacity-70 text-white">Atención al Cliente</h4>
+					<a href="#" class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg">
+						<img src={libroImg.src} alt="Libro de Reclamaciones" class="w-full h-auto max-h-24 object-contain" />
+					</a>
+					<p class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-2 font-bold">Conforme a la Ley N° 29571</p>
+				</div>
+				<div>
+					<h4 class="font-extrabold mb-6 text-sm opacity-70">Corporativo</h4>
+					<ul class="space-y-3 text-sm text-gray-400 font-body">
+						<li><a href="/nosotros" class="hover:text-white transition-all">Sobre Nosotros</a></li>
+						<li><a href="/#contact-section" class="hover:text-white transition-all">Centro de Contacto</a></li>
+					</ul>
+				</div>
+				<div>
+					<h4 class="font-extrabold mb-4 text-sm opacity-70">Síguenos</h4>
+					<div class="flex gap-3">
+						<a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all"><FaLinkedinIn /></a>
+						<a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all"><FaInstagram /></a>
+						<a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all"><FaTwitter /></a>
+					</div>
+				</div>
+			</div>
+			<div class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui">
+				&copy; 2026 Grupo Prevca. Todos los derechos reservados.
+			</div>
+		</footer>
+
+		<!-- SPA logic: lee URL, fetchea producto, renderiza -->
+		<script>
+			import { fetchProductBySlug, fetchProducts } from "../lib/api.js";
+
+			type DivisionSlug = "madera" | "cafe" | "hospitalidad" | "transporte";
+			type DivisionCode = "MADERA" | "CAFE" | "HOSPITALIDAD" | "TRANSPORTE";
+
+			interface ProductImage {
+				url: string;
+				alt: string | null;
+				isPrimary: boolean;
+			}
+
+			interface Product {
+				id: string;
+				slug: string;
+				ref: string;
+				title: string;
+				division: DivisionCode;
+				shortDesc: string;
+				description: string;
+				specs: string | null;
+				features: string[];
+				images: ProductImage[];
+			}
+
+			interface CartItem {
+				id: string;
+				quantity: number;
+			}
+
+			const DIVISION_MAP: Record<DivisionSlug, { code: DivisionCode; label: string }> = {
+				madera: { code: "MADERA", label: "División Madera" },
+				cafe: { code: "CAFE", label: "División Café" },
+				hospitalidad: { code: "HOSPITALIDAD", label: "División Hospitalidad" },
+				transporte: { code: "TRANSPORTE", label: "División Transporte" },
+			};
+
+			const isDivisionSlug = (s: string | null | undefined): s is DivisionSlug =>
+				!!s && s in DIVISION_MAP;
+
+			const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
+				document.getElementById(id) as T;
+
+			const escapeHtml = (value: unknown): string =>
+				String(value ?? "")
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
+
+			const hideLoader = (): void => {
+				const loader = document.getElementById("loader-overlay");
+				if (loader) {
+					loader.style.opacity = "0";
+					setTimeout(() => (loader.style.display = "none"), 500);
+				}
+			};
+
+			const showNotFound = (divisionSlug: DivisionSlug | null): void => {
+				$("page-title").textContent = "Producto no encontrado | Grupo Prevca";
+				$("not-found-section").classList.remove("hidden");
+				const backLink = $<HTMLAnchorElement>("back-to-division");
+				if (divisionSlug && DIVISION_MAP[divisionSlug]) {
+					backLink.href = `/${divisionSlug}`;
+					backLink.textContent = `Ver ${DIVISION_MAP[divisionSlug].label}`;
+				}
+				hideLoader();
+			};
+
+			const renderProduct = (product: Product, divisionSlug: DivisionSlug): void => {
+				const division = DIVISION_MAP[divisionSlug];
+
+				// Title + breadcrumb
+				$("page-title").textContent = `${product.title} | ${division.label} | Grupo Prevca`;
+				const divLink = $<HTMLAnchorElement>("breadcrumb-division-link");
+				divLink.href = `/${divisionSlug}`;
+				divLink.textContent = division.label;
+				$("breadcrumb-product").textContent = product.title;
+
+				// Image
+				const mainImg = product.images?.find((i) => i.isPrimary) ?? product.images?.[0];
+				const productImage = $<HTMLImageElement>("product-image");
+				if (mainImg) {
+					productImage.src = mainImg.url;
+					productImage.alt = mainImg.alt ?? product.title;
+				} else {
+					productImage.classList.add("bg-gray-200");
+				}
+
+				// Thumbnails (si hay más de 1 imagen)
+				if (product.images && product.images.length > 1) {
+					const thumbs = $("product-thumbnails");
+					thumbs.innerHTML = product.images
+						.map(
+							(img) => `
+						<button type="button" class="aspect-square border-2 border-transparent hover:border-[#1d4c74] transition-colors overflow-hidden bg-gray-100" data-url="${escapeHtml(img.url)}">
+							<img src="${escapeHtml(img.url)}" alt="${escapeHtml(img.alt ?? "")}" class="w-full h-full object-cover" />
+						</button>
+					`,
+						)
+						.join("");
+					thumbs.querySelectorAll<HTMLButtonElement>("button").forEach((btn) => {
+						btn.addEventListener("click", () => {
+							if (btn.dataset.url) productImage.src = btn.dataset.url;
+						});
+					});
+				}
+
+				// Ref, title, specs, description
+				$("product-ref").textContent = `Ref: ${product.ref}`;
+				$("product-title").textContent = product.title;
+				$("product-specs").textContent = product.specs ?? "";
+				$("product-description").textContent = product.description;
+
+				// Features
+				if (product.features && product.features.length > 0) {
+					$("features-section").classList.remove("hidden");
+					$("features-list").innerHTML = product.features
+						.map(
+							(f) => `
+						<li class="flex items-center gap-3 text-gray-600 font-body">
+							<div class="text-[#1d4c74] flex-shrink-0">
+								<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm141.4 130.7L213.5 322.6 122.6 230.3c-4.7-4.7-4.6-12.3 .1-17l22.7-22.7c4.7-4.7 12.3-4.6 17 .1l67 67.8 161.8-161.8c4.7-4.7 12.3-4.7 17 0l22.7 22.7c4.7 4.7 4.7 12.3-.1 17z"/></svg>
+							</div>
+							<span>${escapeHtml(f)}</span>
+						</li>
+					`,
+						)
+						.join("");
+				}
+
+				// Add-to-cart button uses slug (consistent with rest of site)
+				$("add-to-cart-btn").dataset.product = product.slug;
+
+				// Mostrar producto
+				$("product-section").classList.remove("hidden");
+				hideLoader();
+			};
+
+			const buildDetailUrl = (divisionSlug: string, slug: string): string => {
+				if (import.meta.env.DEV) {
+					return `/producto?division=${encodeURIComponent(divisionSlug)}&slug=${encodeURIComponent(slug)}`;
+				}
+				return `/${divisionSlug}/${encodeURIComponent(slug)}`;
+			};
+
+			const renderRelated = async (divisionCode: DivisionCode, currentSlug: string): Promise<void> => {
+				try {
+					const related = (await fetchProducts({ division: divisionCode, pageSize: 4 })) as Product[];
+					const others = related.filter((p) => p.slug !== currentSlug).slice(0, 3);
+					if (others.length === 0) return;
+					$("related-grid").innerHTML = others
+						.map((p) => {
+							const img = p.images?.find((i) => i.isPrimary)?.url ?? p.images?.[0]?.url ?? "";
+							const divSlug = p.division.toLowerCase();
+							return `
+							<div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col">
+								<div class="h-48 overflow-hidden bg-gray-100">
+									${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(p.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />` : ""}
+								</div>
+								<div class="p-6 flex flex-col flex-grow">
+									<h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">${escapeHtml(p.title)}</h3>
+									<p class="text-sm text-gray-500 font-body mb-6">${escapeHtml(p.specs ?? p.shortDesc ?? "")}</p>
+									<div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
+										<span>Ref: ${escapeHtml(p.ref)}</span>
+										<a href="${buildDetailUrl(divSlug, p.slug)}" class="text-[#1d4c74] hover:text-[#153a5b]">Detalles →</a>
+									</div>
+								</div>
+							</div>
+						`;
+						})
+						.join("");
+					$("related-section").classList.remove("hidden");
+				} catch (err) {
+					console.error("Error cargando productos relacionados:", err);
+				}
+			};
+
+			const setupCartLogic = (): void => {
+				const cartCount = (): void => {
+					const cart = JSON.parse(localStorage.getItem("prevca_cart") ?? "[]") as CartItem[];
+					const total = cart.reduce((acc, item) => acc + item.quantity, 0);
+					const desktop = document.getElementById("cart-count-desktop");
+					if (desktop) desktop.textContent = String(total);
+				};
+				cartCount();
+
+				const qtyInput = $<HTMLInputElement>("qty-input");
+				$("qty-minus").addEventListener("click", () => {
+					const current = parseInt(qtyInput.value) || 1;
+					if (current > 1) qtyInput.value = String(current - 1);
+				});
+				$("qty-plus").addEventListener("click", () => {
+					const current = parseInt(qtyInput.value) || 1;
+					qtyInput.value = String(current + 1);
+				});
+
+				const addBtn = $<HTMLButtonElement>("add-to-cart-btn");
+				addBtn.addEventListener("click", () => {
+					const qty = parseInt(qtyInput.value) || 1;
+					const productId = addBtn.dataset.product;
+					if (!productId) return;
+					const cart = JSON.parse(localStorage.getItem("prevca_cart") ?? "[]") as CartItem[];
+					const existing = cart.find((item) => item.id === productId);
+					if (existing) {
+						existing.quantity += qty;
+					} else {
+						cart.push({ id: productId, quantity: qty });
+					}
+					localStorage.setItem("prevca_cart", JSON.stringify(cart));
+					cartCount();
+					const original = addBtn.innerHTML;
+					addBtn.innerHTML = '<span class="whitespace-nowrap">✓ Agregado</span>';
+					addBtn.classList.replace("bg-[#1d4c74]", "bg-green-600");
+					setTimeout(() => {
+						addBtn.innerHTML = original;
+						addBtn.classList.replace("bg-green-600", "bg-[#1d4c74]");
+					}, 1500);
+				});
+			};
+
+			const setupMobileMenu = (): void => {
+				const toggle = document.getElementById("menu-toggle");
+				const menu = document.getElementById("mobile-menu");
+				const bars = document.getElementById("icon-bars");
+				const times = document.getElementById("icon-times");
+				if (!toggle || !menu || !bars || !times) return;
+				toggle.addEventListener("click", () => {
+					const isOpen = menu.classList.contains("translate-x-0");
+					if (isOpen) {
+						menu.classList.replace("translate-x-0", "translate-x-full");
+						bars.classList.remove("hidden");
+						times.classList.add("hidden");
+					} else {
+						menu.classList.replace("translate-x-full", "translate-x-0");
+						bars.classList.add("hidden");
+						times.classList.remove("hidden");
+					}
+				});
+			};
+
+			(async (): Promise<void> => {
+				setupMobileMenu();
+
+				// Parse URL — soporta 2 formatos:
+				//   Producción (vía Firebase rewrites): /madera/pino-radiata
+				//   Desarrollo (Astro dev sin rewrites): /producto?division=madera&slug=pino-radiata
+				let divisionSlug: string | null = null;
+				let productSlug: string | null = null;
+				const segments = window.location.pathname.split("/").filter(Boolean);
+				if (segments.length === 2 && isDivisionSlug(segments[0])) {
+					divisionSlug = segments[0];
+					productSlug = segments[1];
+				} else {
+					const params = new URLSearchParams(window.location.search);
+					divisionSlug = params.get("division");
+					productSlug = params.get("slug");
+				}
+
+				if (!isDivisionSlug(divisionSlug) || !productSlug) {
+					showNotFound(null);
+					return;
+				}
+
+				try {
+					const product = (await fetchProductBySlug(productSlug)) as Product;
+					// Validar que el producto pertenece a la división de la URL
+					if (product.division !== DIVISION_MAP[divisionSlug].code) {
+						showNotFound(divisionSlug);
+						return;
+					}
+					renderProduct(product, divisionSlug);
+					setupCartLogic();
+					void renderRelated(product.division, product.slug);
+				} catch (err) {
+					console.error("Producto no encontrado:", err);
+					showNotFound(divisionSlug);
+				}
+			})();
+		</script>
+	</body>
+</html>
