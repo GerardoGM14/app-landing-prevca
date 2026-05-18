@@ -1,21 +1,38 @@
 {
   "name": "backend",
-  "description": "Firebase Functions for Prevca",
-  "main": "index.js",
-  "scripts": {
-    "dev": "firebase emulators:start --only functions",
-    "serve": "firebase emulators:start --only functions",
-    "deploy": "firebase deploy --only functions"
-  },
-  "dependencies": {
-    "firebase-admin": "^13.0.0",
-    "firebase-functions": "^6.0.0"
-  },
-  "devDependencies": {
-    "firebase-functions-test": "^3.0.0"
-  },
+  "description": "API y administración del ecommerce de Grupo Prevca",
+  "private": true,
+  "main": "lib/index.js",
   "engines": {
     "node": "22"
   },
-  "private": true
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions,firestore,auth,storage --import=./.firebase-data --export-on-exit",
+    "serve:fresh": "npm run build && firebase emulators:start --only functions,firestore,auth,storage",
+    "emulators": "firebase emulators:start --import=./.firebase-data --export-on-exit",
+    "shell": "npm run build && firebase functions:shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "seed": "tsx src/seed/seed.ts",
+    "seed:admin": "tsx src/seed/set-admin.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.1.0",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
 }
