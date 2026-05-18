@@ -3,25 +3,20 @@
     {
       "target": "landing",
       "public": "landing/dist",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        { "source": "/madera/**", "destination": "/producto/index.html" },
+        { "source": "/cafe/**", "destination": "/producto/index.html" },
+        { "source": "/hospitalidad/**", "destination": "/producto/index.html" },
+        { "source": "/transporte/**", "destination": "/producto/index.html" }
       ]
     },
     {
-      "target": "ecommerce",
-      "public": "ecommerce/dist",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "target": "admin",
+      "public": "frontend/dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
+        { "source": "**", "destination": "/index.html" }
       ]
     }
   ],
@@ -29,12 +24,30 @@
     {
       "source": "backend",
       "codebase": "default",
+      "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"],
       "ignore": [
         "node_modules",
         ".git",
         "firebase-debug.log",
-        "firebase-debug.*.log"
+        "firebase-debug.*.log",
+        "**/*.local"
       ]
     }
-  ]
+  ],
+  "firestore": {
+    "rules": "backend/firestore.rules",
+    "indexes": "backend/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "backend/storage.rules"
+  },
+  "emulators": {
+    "auth": { "port": 9099 },
+    "functions": { "port": 5001 },
+    "firestore": { "port": 8080 },
+    "hosting": { "port": 5000 },
+    "storage": { "port": 9199 },
+    "ui": { "enabled": true, "port": 4000 },
+    "singleProjectMode": true
+  }
 }
