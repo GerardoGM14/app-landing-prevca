@@ -3,6 +3,7 @@ import type { Ref, TextareaHTMLAttributes } from 'react';
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
+  hint?: string;
   ref?: Ref<HTMLTextAreaElement>;
 }
 
@@ -10,6 +11,7 @@ export const Textarea = ({
   ref,
   label,
   error,
+  hint,
   className = '',
   id,
   name,
@@ -36,6 +38,7 @@ export const Textarea = ({
         {...props}
       />
       {error && <p className="text-xs text-red-600 font-body">{error}</p>}
+      {!error && hint && <p className="text-xs text-gray-500 font-body">{hint}</p>}
     </div>
   );
 };
