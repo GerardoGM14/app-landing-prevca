@@ -1,6 +1,10 @@
 node_modules/
 dist/
+lib/
 .env
+.env.local
+.env.production
+.env.development
 .DS_Store
 .idea/
 .vscode/
@@ -13,3 +17,6 @@ build/
 out/
 .vercel
 .claude
+.firebase/
+.firebase-data/
+serviceAccountKey.json

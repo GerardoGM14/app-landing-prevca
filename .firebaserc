@@ -7,6 +7,9 @@
       "hosting": {
         "landing": [
           "app-prevca"
+        ],
+        "admin": [
+          "prevca-admin"
         ]
       }
     }
