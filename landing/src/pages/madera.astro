@@ -497,42 +497,48 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 					</div>
 				</div>
 
-				<!-- Filter placeholder -->
-				<div
-					class="flex flex-wrap gap-4 items-center mb-12 font-ui text-sm reveal-item"
-				>
-					<span
-						class="font-bold text-gray-500 tracking-widest uppercase mr-4 hidden md:block"
-						>Tipo de Madera:</span
+				<!-- ============ SECCIÓN 1: ASERRADERO PREVCA ============ -->
+				<div class="mb-20 reveal-item">
+					<div class="border-l-4 border-[#1d4c74] pl-6 mb-10">
+						<span class="font-ui text-xs font-bold tracking-widest text-[#1d4c74] uppercase">
+							División de Producción
+						</span>
+						<h3 class="text-3xl md:text-4xl font-display font-extrabold text-[#2a3035] mt-2">
+							Aserradero PREVCA
+						</h3>
+						<p class="text-gray-600 font-body mt-3 max-w-2xl">
+							Madera aserrada, subproductos industriales y productos terminados fabricados en
+							nuestro propio aserradero. Calidad garantizada y suministro permanente.
+						</p>
+					</div>
+					<div
+						id="prevca-products-grid"
+						class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 min-h-[400px]"
 					>
-					<button
-						class="bg-[#1d4c74] text-white px-6 py-2 font-bold cursor-pointer border border-[#1d4c74]"
-						>Todas</button
-					>
-					<button
-						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer"
-						>Pino Radiata</button
-					>
-					<button
-						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer"
-						>Eucalipto</button
-					>
-					<button
-						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer"
-						>Teca</button
-					>
-					<button
-						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer"
-						>Roble</button
-					>
+						<!-- Productos PREVCA cargados desde la API -->
+					</div>
 				</div>
 
-				<!-- Grid of Products (dinámico: se carga desde la API pública) -->
-				<div
-					id="madera-products-grid"
-					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]"
-				>
-					<!-- Los productos se hidratan aquí desde Firestore via /public/products?division=MADERA -->
+				<!-- ============ SECCIÓN 2: CORPORACIÓN MADERERA COPESA ============ -->
+				<div class="reveal-item">
+					<div class="border-l-4 border-[#1d4c74] pl-6 mb-10">
+						<span class="font-ui text-xs font-bold tracking-widest text-[#1d4c74] uppercase">
+							Catálogo de Especies
+						</span>
+						<h3 class="text-3xl md:text-4xl font-display font-extrabold text-[#2a3035] mt-2">
+							Corporación Maderera COPESA
+						</h3>
+						<p class="text-gray-600 font-body mt-3 max-w-2xl">
+							Biblioteca técnica de las especies de madera que comercializamos. Conozca origen,
+							características y aplicaciones de cada una para elegir la más adecuada para su proyecto.
+						</p>
+					</div>
+					<div
+						id="copesa-products-grid"
+						class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]"
+					>
+						<!-- Maderas COPESA cargadas desde la API (estilo librería) -->
+					</div>
 				</div>
 
 				<!-- CTA Banner -->
@@ -939,8 +945,20 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 				renderProductGrid,
 				renderSkeleton,
 			} from "../lib/product-grid.js";
-			renderSkeleton("madera-products-grid", 4);
-			renderProductGrid("madera-products-grid", "MADERA", "/madera");
+
+			// Sección 1: Aserradero PREVCA (estilo ecommerce)
+			renderSkeleton("prevca-products-grid", 4);
+			renderProductGrid("prevca-products-grid", "MADERA", "/madera", {
+				categorySlug: "aserradero-prevca",
+				variant: "ecommerce",
+			});
+
+			// Sección 2: Corporación Maderera COPESA (estilo librería)
+			renderSkeleton("copesa-products-grid", 3);
+			renderProductGrid("copesa-products-grid", "MADERA", "/madera", {
+				categorySlug: "corporacion-maderera-copesa",
+				variant: "library",
+			});
 		</script>
 	</body>
 </html>

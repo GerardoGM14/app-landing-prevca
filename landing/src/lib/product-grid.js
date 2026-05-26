@@ -29,14 +29,20 @@ const buildDetailUrl = (urlPrefix, divisionSlug, slug) => {
  * @param {string} containerId - id del div que contendrá las tarjetas
  * @param {"MADERA"|"HOSPITALIDAD"|"CAFE"|"TRANSPORTE"} division
  * @param {string} urlPrefix - ej. "/madera" para que los detalles vayan a /madera/<slug>
+ * @param {{ categorySlug?: string, variant?: "ecommerce" | "library" }} [options]
  */
-export async function renderProductGrid(containerId, division, urlPrefix) {
+export async function renderProductGrid(containerId, division, urlPrefix, options = {}) {
+  const { categorySlug, variant = "ecommerce" } = options;
   const divisionSlug = urlPrefix.replace(/^\//, "");
   const grid = document.getElementById(containerId);
   if (!grid) return;
 
   try {
-    const products = await fetchProducts({ division, pageSize: 100 });
+    const products = await fetchProducts({
+      division,
+      pageSize: 100,
+      ...(categorySlug ? { categorySlug } : {}),
+    });
 
     if (products.length === 0) {
       grid.innerHTML = `
@@ -50,6 +56,34 @@ export async function renderProductGrid(containerId, division, urlPrefix) {
     grid.innerHTML = products
       .map((p) => {
         const img = p.images?.find((i) => i.isPrimary)?.url ?? p.images?.[0]?.url ?? "";
+        const detailUrl = buildDetailUrl(urlPrefix, divisionSlug, p.slug);
+
+        if (variant === "library") {
+          // Estilo enciclopédico tipo COPESA / Litorsa
+          const subtitle = p.shortDesc ?? "";
+          const sci = p.scientificName ? `<p class="text-xs italic text-[#1d4c74] font-body mb-3">${escapeHtml(p.scientificName)}</p>` : "";
+          return `
+            <div class="bg-white border border-gray-200 group hover:shadow-lg transition-shadow flex flex-col">
+              <div class="aspect-square overflow-hidden bg-gray-100">
+                ${
+                  img
+                    ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(p.title)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />`
+                    : `<div class="w-full h-full flex items-center justify-center bg-gray-100"><div class="w-12 h-12 border-2 border-gray-300 border-dashed"></div></div>`
+                }
+              </div>
+              <div class="p-6 flex flex-col flex-grow text-center">
+                <h3 class="font-display font-bold text-lg text-[#2a3035] leading-tight mb-1">${escapeHtml(p.title)}</h3>
+                ${sci}
+                <p class="text-sm text-gray-500 font-body mb-5 line-clamp-2">${escapeHtml(subtitle)}</p>
+                <a href="${detailUrl}" class="mt-auto inline-block border-2 border-[#1d4c74] text-[#1d4c74] hover:bg-[#1d4c74] hover:text-white font-bold font-ui text-sm px-6 py-2 transition-colors self-center">
+                  Más info
+                </a>
+              </div>
+            </div>
+          `;
+        }
+
+        // Estilo ecommerce por defecto
         const subtitle = p.specs ?? p.shortDesc ?? "";
         return `
           <div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col">
@@ -65,7 +99,7 @@ export async function renderProductGrid(containerId, division, urlPrefix) {
               <p class="text-sm text-gray-500 font-body mb-6 line-clamp-2">${escapeHtml(subtitle)}</p>
               <div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
                 <span>Ref: ${escapeHtml(p.ref)}</span>
-                <a href="${buildDetailUrl(urlPrefix, divisionSlug, p.slug)}" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">
+                <a href="${detailUrl}" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">
                   Detalles ${ARROW_SVG}
                 </a>
               </div>
