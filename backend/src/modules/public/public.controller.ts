@@ -22,6 +22,10 @@ const PUBLIC_FIELDS = (p: Awaited<ReturnType<typeof productsRepository.findById>
     description: p.description,
     specs: p.specs,
     features: p.features,
+    scientificName: p.scientificName,
+    origin: p.origin,
+    applications: p.applications,
+    datasheetUrl: p.datasheetUrl,
     price: p.showPrice ? p.price : null,
     showPrice: p.showPrice,
     stock: p.showStock ? p.stock : null,
@@ -32,9 +36,21 @@ const PUBLIC_FIELDS = (p: Awaited<ReturnType<typeof productsRepository.findById>
 
 export const publicController = {
   listProducts: asyncHandler(async (req: Request, res: Response) => {
-    const query = req.query as unknown as ProductQuery;
+    const query = req.query as unknown as ProductQuery & { categorySlug?: string };
+
+    let categoryId = query.categoryId;
+    if (!categoryId && query.categorySlug && query.division) {
+      const cat = await categoriesRepository.findBySlug(query.categorySlug, query.division);
+      if (cat) categoryId = cat.id;
+      else {
+        res.json({ items: [], nextCursor: null });
+        return;
+      }
+    }
+
     const result = await productsRepository.list({
       ...query,
+      categoryId,
       isActive: true,
       pageSize: query.pageSize ?? 50,
     });
