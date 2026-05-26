@@ -16,7 +16,9 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "seed": "tsx src/seed/seed.ts",
-    "seed:admin": "tsx src/seed/set-admin.ts"
+    "seed:prod": "tsx src/seed/seed.ts -- --prod",
+    "seed:admin": "tsx src/seed/set-admin.ts",
+    "seed:admin:prod": "tsx src/seed/set-admin.ts -- --prod"
   },
   "dependencies": {
     "cors": "^2.8.5",
