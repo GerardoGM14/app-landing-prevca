@@ -7,4 +7,5 @@ firebase-debug.*.log
 *.log
 .firebase/
 .firebase-data/
+firebase-export-*/
 serviceAccountKey.json
