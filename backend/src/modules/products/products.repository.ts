@@ -22,6 +22,10 @@ export interface ProductDoc {
   description: string;
   specs: string | null;
   features: string[];
+  scientificName: string | null;
+  origin: string | null;
+  applications: string | null;
+  datasheetUrl: string | null;
   price: number | null;
   showPrice: boolean;
   stock: number;
@@ -73,7 +77,7 @@ export const productsRepository = {
     if (filters.categoryId) query = query.where('categoryId', '==', filters.categoryId);
     if (filters.isActive !== undefined) query = query.where('isActive', '==', filters.isActive);
 
-    query = query.orderBy('order', 'asc').orderBy('createdAt', 'desc');
+    query = query.orderBy('order', 'asc');
 
     if (filters.cursor) {
       const cursorDoc = await col().doc(filters.cursor).get();
