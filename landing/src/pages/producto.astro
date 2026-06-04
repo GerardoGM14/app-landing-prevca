@@ -3,7 +3,7 @@
  * SPA Detail Page para cualquier producto de cualquier división.
  *
  * Esta página estática es servida por Firebase Hosting como fallback (vía rewrite)
- * para cualquier URL del tipo `/madera/<slug>`, `/cafe/<slug>`, `/hospitalidad/<slug>`,
+ * para cualquier URL del tipo `/madera/<slug>`, `/cafe/<slug>`, `/alojamiento/<slug>`,
  * `/transporte/<slug>` que no tenga una página estática.
  *
  * El script al final lee la URL del navegador, identifica división y slug,
@@ -92,7 +92,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 			<div class="hidden lg:flex gap-8 text-sm font-semibold tracking-wide uppercase items-center">
 				<a href="/" class="nav-link hover:text-gray-300 transition-colors">Inicio</a>
 				<a href="/madera" class="nav-link hover:text-gray-300 transition-colors">Aserradero Prevca</a>
-				<a href="/hospitalidad" class="nav-link hover:text-gray-300 transition-colors">Hospitalidad</a>
+				<a href="/alojamiento" class="nav-link hover:text-gray-300 transition-colors">Alojamiento</a>
 				<a href="/cafe" class="nav-link hover:text-gray-300 transition-colors">Café</a>
 				<a href="/transporte" class="nav-link hover:text-gray-300 transition-colors">Transporte</a>
 				<a href="/ecommerce" class="relative cursor-pointer hover:text-gray-300 transition-colors ml-2 mr-4 flex items-center">
@@ -111,7 +111,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 			<div class="flex flex-col gap-6 text-xl text-white font-ui uppercase font-bold tracking-widest">
 				<a href="/" class="border-b border-white/10 pb-4">Inicio</a>
 				<a href="/madera" class="border-b border-white/10 pb-4">Aserradero Prevca</a>
-				<a href="/hospitalidad" class="border-b border-white/10 pb-4">Hospitalidad</a>
+				<a href="/alojamiento" class="border-b border-white/10 pb-4">Alojamiento</a>
 				<a href="/cafe" class="border-b border-white/10 pb-4">Café</a>
 				<a href="/transporte" class="border-b border-white/10 pb-4">Transporte</a>
 				<a href="/ecommerce" class="bg-[#1d4c74] text-center py-4 mt-2 text-sm">Tienda Virtual</a>
@@ -251,7 +251,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 		<script>
 			import { fetchProductBySlug, fetchProducts } from "../lib/api.js";
 
-			type DivisionSlug = "madera" | "cafe" | "hospitalidad" | "transporte";
+			type DivisionSlug = "madera" | "cafe" | "alojamiento" | "transporte";
 			type DivisionCode = "MADERA" | "CAFE" | "HOSPITALIDAD" | "TRANSPORTE";
 
 			interface ProductImage {
@@ -281,7 +281,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 			const DIVISION_MAP: Record<DivisionSlug, { code: DivisionCode; label: string }> = {
 				madera: { code: "MADERA", label: "División Madera" },
 				cafe: { code: "CAFE", label: "División Café" },
-				hospitalidad: { code: "HOSPITALIDAD", label: "División Hospitalidad" },
+				alojamiento: { code: "HOSPITALIDAD", label: "División Alojamiento" },
 				transporte: { code: "TRANSPORTE", label: "División Transporte" },
 			};
 

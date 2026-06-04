@@ -22,9 +22,37 @@ import {
 	HiArrowUpOnSquareStack,
 } from "react-icons/hi2";
 import { LuCookie } from "react-icons/lu";
-import { HiOutlineHeart, HiOutlineLightBulb, HiOutlineStar } from "react-icons/hi2";
+import {
+	HiOutlineHeart,
+	HiOutlineLightBulb,
+	HiOutlineStar,
+} from "react-icons/hi2";
 import libroImg from "../assets/libro-reclamaciones.png";
 import isoImg from "../assets/iso-9001.webp";
+
+// Importación de imágenes de liderazgo
+import leaderKevin from "../assets/nosotros/leader-kevin.jpeg";
+import leaderRosa from "../assets/nosotros/leader-rosa.jpg";
+import leaderMileydi from "../assets/nosotros/leader-sonia.png";
+
+// Configuración del equipo de liderazgo
+const leaders = [
+	{
+		name: "Kevin Charles Pérez Chávez",
+		role: "Gerente General",
+		image: leaderKevin,
+	},
+	{
+		name: "Rosa Santisteban",
+		role: "Logística y Operaciones",
+		image: leaderRosa,
+	},
+	{
+		name: "Sonia Vernaliza",
+		role: "Contabilidad y Finanzas",
+		image: leaderMileydi,
+	},
+];
 ---
 
 <html lang="es">
@@ -71,19 +99,19 @@ import isoImg from "../assets/iso-9001.webp";
 				transform: translateY(0);
 			}
 
-            /* Timeline Styling */
-            .timeline-dot {
-                width: 14px;
-                height: 14px;
-                background-color: white;
-                border-radius: 50%;
-                position: absolute;
-                top: -7px;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 10;
-                box-shadow: 0 0 0 4px #1d4c74;
-            }
+			/* Timeline Styling */
+			.timeline-dot {
+				width: 14px;
+				height: 14px;
+				background-color: white;
+				border-radius: 50%;
+				position: absolute;
+				top: -7px;
+				left: 50%;
+				transform: translateX(-50%);
+				z-index: 10;
+				box-shadow: 0 0 0 4px #1d4c74;
+			}
 
 			/* Nav Link Animation */
 			.nav-link {
@@ -242,9 +270,9 @@ import isoImg from "../assets/iso-9001.webp";
 					>Aserradero Prevca</a
 				>
 				<a
-					href="/hospitalidad"
+					href="/alojamiento"
 					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
-					>Hospitalidad</a
+					>Alojamiento</a
 				>
 				<a
 					href="/cafe"
@@ -295,19 +323,28 @@ import isoImg from "../assets/iso-9001.webp";
 				<a href="/" class="border-b border-white/10 pb-4 cursor-pointer"
 					>Inicio</a
 				>
-				<a href="/nosotros" class="border-b border-white/10 pb-4 cursor-pointer"
+				<a
+					href="/nosotros"
+					class="border-b border-white/10 pb-4 cursor-pointer"
 					>Sobre Nosotros</a
 				>
-				<a href="/madera" class="border-b border-white/10 pb-4 cursor-pointer"
+				<a
+					href="/madera"
+					class="border-b border-white/10 pb-4 cursor-pointer"
 					>Aserradero Prevca</a
 				>
-				<a href="/hospitalidad" class="border-b border-white/10 pb-4 cursor-pointer"
-					>Hospitalidad</a
+				<a
+					href="/alojamiento"
+					class="border-b border-white/10 pb-4 cursor-pointer"
+					>Alojamiento</a
 				>
-				<a href="/cafe" class="border-b border-white/10 pb-4 cursor-pointer"
-					>Café</a
+				<a
+					href="/cafe"
+					class="border-b border-white/10 pb-4 cursor-pointer">Café</a
 				>
-				<a href="/#contact-section" class="border-b border-white/10 pb-4 cursor-pointer"
+				<a
+					href="/#contact-section"
+					class="border-b border-white/10 pb-4 cursor-pointer"
 					>Contacto</a
 				>
 				<a
@@ -326,61 +363,128 @@ import isoImg from "../assets/iso-9001.webp";
 			<div
 				class="w-full md:w-1/4 h-1/4 md:h-full bg-cover bg-center md:border-r border-white/10 grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
 				style="background-image: url('https://images.unsplash.com/photo-1644358686685-4ed525a59663?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"
-			></div>
+			>
+			</div>
 			<div
 				class="w-full md:w-1/4 h-1/4 md:h-full bg-cover bg-center md:border-r border-white/10 grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
 				style="background-image: url('https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&q=80&w=1200');"
-			></div>
+			>
+			</div>
 			<div
 				class="w-full md:w-1/4 h-1/4 md:h-full bg-cover bg-center md:border-r border-white/10 grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
 				style="background-image: url('https://images.unsplash.com/photo-1542372147193-a7aca54189cd?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"
-			></div>
+			>
+			</div>
 			<div
 				class="w-full md:w-1/4 h-1/4 md:h-full bg-cover bg-center grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
 				style="background-image: url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=1200');"
-			></div>
-			
+			>
+			</div>
+
 			<!-- Overlay with Title -->
-			<div class="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-white text-center p-6 md:p-12">
-				<h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display tracking-wide leading-tight reveal-item shadow-black drop-shadow-xl uppercase">
+			<div
+				class="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-white text-center p-6 md:p-12"
+			>
+				<h1
+					class="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display tracking-wide leading-tight reveal-item shadow-black drop-shadow-xl uppercase"
+				>
 					Nuestra Historia y Valores
 				</h1>
 			</div>
 		</header>
 
 		<!-- Timeline Section -->
-		<section class="bg-[#1d4c74] py-20 text-white font-body px-6 md:px-8 overflow-hidden relative border-t-4 border-[#2a3035]">
+		<section
+			class="bg-[#1d4c74] py-20 text-white font-body px-6 md:px-8 overflow-hidden relative border-t-4 border-[#2a3035]"
+		>
 			<div class="max-w-7xl mx-auto reveal-item">
-				<div class="relative w-full h-1 bg-white/20 hidden md:block mb-10 rounded-full mt-4"></div>
-				
-				<div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 relative text-center">
+				<div
+					class="relative w-full h-1 bg-white/20 hidden md:block mb-10 rounded-full mt-4"
+				>
+				</div>
+
+				<div
+					class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 relative text-center"
+				>
 					<!-- Node 1 -->
 					<div class="relative pt-4">
 						<div class="hidden md:block timeline-dot"></div>
-						<h3 class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui">Fundación</h3>
-						<h4 class="font-extrabold text-3xl font-display mb-3 text-white">1987</h4>
-						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2">Consolidación de la exportación de madera sustentable en respeto al medio ambiente.</p>
+						<h3
+							class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui"
+						>
+							Fundación
+						</h3>
+						<h4
+							class="font-extrabold text-3xl font-display mb-3 text-white"
+						>
+							1987
+						</h4>
+						<p
+							class="text-sm text-gray-200 opacity-90 leading-relaxed px-2"
+						>
+							Consolidación de la exportación de madera
+							sustentable en respeto al medio ambiente.
+						</p>
 					</div>
 					<!-- Node 2 -->
 					<div class="relative pt-4" style="transition-delay: 150ms">
 						<div class="hidden md:block timeline-dot"></div>
-						<h3 class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui">Expansión</h3>
-						<h4 class="font-extrabold text-3xl font-display mb-3 text-white">2010</h4>
-						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2">Integración de estándares corporativos y expansión técnica a nivel regional.</p>
+						<h3
+							class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui"
+						>
+							Expansión
+						</h3>
+						<h4
+							class="font-extrabold text-3xl font-display mb-3 text-white"
+						>
+							2010
+						</h4>
+						<p
+							class="text-sm text-gray-200 opacity-90 leading-relaxed px-2"
+						>
+							Integración de estándares corporativos y expansión
+							técnica a nivel regional.
+						</p>
 					</div>
 					<!-- Node 3 -->
 					<div class="relative pt-4" style="transition-delay: 300ms">
 						<div class="hidden md:block timeline-dot"></div>
-						<h3 class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui">Diversificación</h3>
-						<h4 class="font-extrabold text-3xl font-display mb-3 text-white">2022</h4>
-						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2">Apertura oficial del sector de Hospitalidad Premium con establecimientos modelo.</p>
+						<h3
+							class="font-bold text-base mb-2 opacity-90 tracking-widest uppercase font-ui"
+						>
+							Diversificación
+						</h3>
+						<h4
+							class="font-extrabold text-3xl font-display mb-3 text-white"
+						>
+							2022
+						</h4>
+						<p
+							class="text-sm text-gray-200 opacity-90 leading-relaxed px-2"
+						>
+							Apertura oficial del sector de Alojamiento Premium
+							con establecimientos modelo.
+						</p>
 					</div>
 					<!-- Node 4 -->
 					<div class="relative pt-4" style="transition-delay: 450ms">
 						<div class="hidden md:block timeline-dot"></div>
-						<h3 class="font-extrabold text-lg font-display mb-2 text-white">Liderazgo Multisectorial</h3>
-						<h4 class="font-bold text-xl opacity-90 tracking-widest font-ui mt-3">2024 - Presente</h4>
-						<p class="text-sm text-gray-200 opacity-90 leading-relaxed px-2 mt-2">Dedicados a proveer soluciones de alto calibre a través de Madera, Hospitalidad, Café y Transporte.</p>
+						<h3
+							class="font-extrabold text-lg font-display mb-2 text-white"
+						>
+							Liderazgo Multisectorial
+						</h3>
+						<h4
+							class="font-bold text-xl opacity-90 tracking-widest font-ui mt-3"
+						>
+							2024 - Presente
+						</h4>
+						<p
+							class="text-sm text-gray-200 opacity-90 leading-relaxed px-2 mt-2"
+						>
+							Dedicados a proveer soluciones de alto calibre a
+							través de Madera, Alojamiento, Café y Transporte.
+						</p>
 					</div>
 				</div>
 			</div>
@@ -389,119 +493,159 @@ import isoImg from "../assets/iso-9001.webp";
 		<!-- Executive Leadership -->
 		<section class="py-24 px-6 md:px-8 bg-white reveal-item">
 			<div class="max-w-6xl mx-auto text-center">
-				<h2 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-[#2a3035] mb-16 uppercase">
-					Executive Leadership
+				<h2
+					class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-[#2a3035] mb-16 uppercase"
+				>
+					Nuestro Equipo de Trabajo
 				</h2>
-				
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-					<!-- Leader 1 -->
-					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
-						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
-							<img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=150&h=150&q=80" alt="Daniel" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-						</div>
-						<div class="flex flex-col justify-center font-body truncate">
-							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Daniel Montes</h3>
-							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">Gerente General</p>
-						</div>
-					</div>
-					<!-- Leader 2 -->
-					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
-						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
-							<img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80" alt="Martin" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-						</div>
-						<div class="flex flex-col justify-center font-body truncate">
-							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Martin Frederick</h3>
-							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">VP Financiero</p>
-						</div>
-					</div>
-					<!-- Leader 3 -->
-					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
-						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
-							<img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80" alt="Sonia" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-						</div>
-						<div class="flex flex-col justify-center font-body truncate">
-							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Sonia Vernaliza</h3>
-							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">Directora Op.</p>
-						</div>
-					</div>
-					<!-- Leader 4 -->
-					<div class="bg-gray-100 flex items-center gap-4 text-left p-4 hover:shadow-xl hover:-translate-y-1 transition-all group border border-gray-200 cursor-default">
-						<div class="w-16 h-16 overflow-hidden flex-shrink-0 bg-gray-300">
-							<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80" alt="Javier" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-						</div>
-						<div class="flex flex-col justify-center font-body truncate">
-							<h3 class="font-extrabold text-sm text-[#2a3035] truncate">Javier Meltimas</h3>
-							<p class="text-xs font-semibold text-gray-500 mt-0.5 truncate uppercase">Líder Comercial</p>
-						</div>
-					</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					{
+						leaders.map((leader) => (
+							<div class="bg-[#fcfcfc] flex flex-col group border border-gray-200 hover:border-[#1d4c74] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default rounded-none">
+								<div class="w-full aspect-[4/5] overflow-hidden bg-gray-100">
+									<img
+										src={leader.image.src}
+										alt={leader.name}
+										class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+									/>
+								</div>
+								<div class="p-8 flex flex-col items-center text-center font-body">
+									<h3 class="font-extrabold text-xl text-[#2a3035] font-display">
+										{leader.name}
+									</h3>
+									<p class="text-xs font-bold text-[#1d4c74] mt-1.5 uppercase tracking-widest font-ui">
+										{leader.role}
+									</p>
+								</div>
+							</div>
+						))
+					}
 				</div>
 			</div>
 		</section>
 		<!-- ISO Certification Section -->
-		<section class="py-28 px-6 md:px-8 bg-[#1d4c74] border-y border-white/5 reveal-item relative overflow-hidden">
+		<section
+			class="py-28 px-6 md:px-8 bg-[#1d4c74] border-y border-white/5 reveal-item relative overflow-hidden"
+		>
 			<!-- Background Watermark Text -->
-			<div class="absolute right-0 bottom-0 text-[15rem] font-display font-black text-white/5 select-none pointer-events-none transform translate-y-1/4 translate-x-1/4 leading-none">
+			<div
+				class="absolute right-0 bottom-0 text-[15rem] font-display font-black text-white/5 select-none pointer-events-none transform translate-y-1/4 translate-x-1/4 leading-none"
+			>
 				ISO 9001
 			</div>
-			
+
 			<!-- Visual Pattern Overlay -->
-			<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
-			
-			<div class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16 relative z-10">
+			<div
+				class="absolute inset-0 opacity-10 pointer-events-none"
+				style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"
+			>
+			</div>
+
+			<div
+				class="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16 relative z-10"
+			>
 				<!-- Floating ISO Seal -->
 				<div class="w-full lg:w-2/5 flex justify-center">
 					<div class="relative">
 						<!-- Decorative Rings -->
-						<div class="absolute inset-0 -m-8 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"></div>
-						<div class="absolute inset-0 -m-4 border border-white/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
-						
+						<div
+							class="absolute inset-0 -m-8 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"
+						>
+						</div>
+						<div
+							class="absolute inset-0 -m-4 border border-white/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"
+						>
+						</div>
+
 						<!-- Glow Effect -->
-						<div class="absolute inset-0 bg-white/20 rounded-full blur-3xl scale-125"></div>
-						
+						<div
+							class="absolute inset-0 bg-white/20 rounded-full blur-3xl scale-125"
+						>
+						</div>
+
 						<!-- The Logo itself (Transparent/Circular focus) -->
 						<div class="relative z-10 w-64 h-64 md:w-72 md:h-72">
-							<img 
-								src={isoImg.src} 
-								alt="Certificado ISO 9001" 
+							<img
+								src={isoImg.src}
+								alt="Certificado ISO 9001"
 								class="w-full h-full object-contain filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.5)] transition-transform duration-700 hover:scale-105"
 							/>
 						</div>
-						
+
 						<!-- Bottom Badge Label -->
-						<div class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white text-[#1d4c74] font-ui font-black px-6 py-2 rounded-sm shadow-2xl skew-x-[-10deg] whitespace-nowrap text-xs md:text-sm tracking-widest border-r-4 border-b-4 border-gray-200">
+						<div
+							class="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white text-[#1d4c74] font-ui font-black px-6 py-2 rounded-sm shadow-2xl skew-x-[-10deg] whitespace-nowrap text-xs md:text-sm tracking-widest border-r-4 border-b-4 border-gray-200"
+						>
 							ESTÁNDAR CERTIFICADO
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Text Content -->
 				<div class="w-full lg:w-3/5 space-y-8 text-center lg:text-left">
-					<h2 class="text-3xl md:text-5xl font-extrabold font-display tracking-tight text-white leading-tight min-h-[160px] md:min-h-[120px] flex items-center lg:items-start">
+					<h2
+						class="text-3xl md:text-5xl font-extrabold font-display tracking-tight text-white leading-tight min-h-[160px] md:min-h-[120px] flex items-center lg:items-start"
+					>
 						<span>
 							Compromiso con la <br class="md:hidden" />
-							<span id="typewriter-word" class="text-white"></span>
+							<span id="typewriter-word" class="text-white"
+							></span>
 							<br class="md:hidden" /> e Innovación Sostenible
 						</span>
 					</h2>
 					<div class="w-24 h-1 bg-white/30 hidden lg:block"></div>
-					<p class="text-lg md:text-xl font-body text-gray-200 leading-relaxed max-w-2xl opacity-90">
-						Nuestra excelencia no es una coincidencia, es el resultado de procesos estandarizados bajo la norma <span class="text-white font-bold border-b-2 border-white/20 pb-0.5">ISO 9001:2015</span>. Certificamos cada eslabón de nuestra cadena de valor.
+					<p
+						class="text-lg md:text-xl font-body text-gray-200 leading-relaxed max-w-2xl opacity-90"
+					>
+						Nuestra excelencia no es una coincidencia, es el
+						resultado de procesos estandarizados bajo la norma <span
+							class="text-white font-bold border-b-2 border-white/20 pb-0.5"
+							>ISO 9001:2015</span
+						>. Certificamos cada eslabón de nuestra cadena de valor.
 					</p>
-					
+
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">
-						<div class="space-y-3 p-6 bg-white/5 border-l-2 border-white/30 backdrop-blur-sm group hover:bg-white/10 transition-colors">
+						<div
+							class="space-y-3 p-6 bg-white/5 border-l-2 border-white/30 backdrop-blur-sm group hover:bg-white/10 transition-colors"
+						>
 							<div class="flex items-center gap-3">
-								<div class="text-white text-xl"><FaCheckCircle /></div>
-								<h4 class="font-display font-bold text-white uppercase text-sm tracking-widest">Mejora Continua</h4>
+								<div class="text-white text-xl">
+									<FaCheckCircle />
+								</div>
+								<h4
+									class="font-display font-bold text-white uppercase text-sm tracking-widest"
+								>
+									Mejora Continua
+								</h4>
 							</div>
-							<p class="text-sm font-body text-gray-300 leading-relaxed">Optimizamos constantemente cada fase de producción para garantizar eficiencia.</p>
+							<p
+								class="text-sm font-body text-gray-300 leading-relaxed"
+							>
+								Optimizamos constantemente cada fase de
+								producción para garantizar eficiencia.
+							</p>
 						</div>
-						<div class="space-y-3 p-6 bg-white/5 border-l-2 border-white/30 backdrop-blur-sm group hover:bg-white/10 transition-colors">
+						<div
+							class="space-y-3 p-6 bg-white/5 border-l-2 border-white/30 backdrop-blur-sm group hover:bg-white/10 transition-colors"
+						>
 							<div class="flex items-center gap-3">
-								<div class="text-white text-xl"><FaCheckCircle /></div>
-								<h4 class="font-display font-bold text-white uppercase text-sm tracking-widest">Confianza Global</h4>
+								<div class="text-white text-xl">
+									<FaCheckCircle />
+								</div>
+								<h4
+									class="font-display font-bold text-white uppercase text-sm tracking-widest"
+								>
+									Confianza Global
+								</h4>
 							</div>
-							<p class="text-sm font-body text-gray-300 leading-relaxed">Garantizamos que cada entrega supere las expectativas técnicas de nuestros socios internacionales.</p>
+							<p
+								class="text-sm font-body text-gray-300 leading-relaxed"
+							>
+								Garantizamos que cada entrega supere las
+								expectativas técnicas de nuestros socios
+								internacionales.
+							</p>
 						</div>
 					</div>
 				</div>
@@ -509,41 +653,73 @@ import isoImg from "../assets/iso-9001.webp";
 		</section>
 
 		<!-- Core Values -->
-		<section class="py-24 px-6 md:px-8 bg-gray-50 border-t border-gray-200 text-center reveal-item border-b">
+		<section
+			class="py-24 px-6 md:px-8 bg-gray-50 border-t border-gray-200 text-center reveal-item border-b"
+		>
 			<div class="max-w-6xl mx-auto">
-				<h2 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-[#2a3035] mb-20 uppercase">
+				<h2
+					class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-[#2a3035] mb-20 uppercase"
+				>
 					Valores Fundamentales
 				</h2>
-				
+
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
 					<!-- Integridad -->
 					<div class="flex flex-col items-center group">
-						<div class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+						<div
+							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
+						>
 							<HiOutlineHeart />
 						</div>
-						<h3 class="font-extrabold text-xl font-display mb-4 text-[#2a3035]">Integridad</h3>
-						<p class="text-base font-body text-gray-600 leading-relaxed max-w-sm">
-							Sostenibilidad ambiental y respeto corporativo como ejes transversales de nuestra cultura y ecosistema.
+						<h3
+							class="font-extrabold text-xl font-display mb-4 text-[#2a3035]"
+						>
+							Integridad
+						</h3>
+						<p
+							class="text-base font-body text-gray-600 leading-relaxed max-w-sm"
+						>
+							Sostenibilidad ambiental y respeto corporativo como
+							ejes transversales de nuestra cultura y ecosistema.
 						</p>
 					</div>
 					<!-- Innovación -->
 					<div class="flex flex-col items-center group">
-						<div class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+						<div
+							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
+						>
 							<HiOutlineLightBulb />
 						</div>
-						<h3 class="font-extrabold text-xl font-display mb-4 text-[#2a3035]">Innovación</h3>
-						<p class="text-base font-body text-gray-600 leading-relaxed max-w-sm">
-							Gestión de primer nivel y actualización tecnológica para optimizar cada proceso en nuestras tres divisiones maestras.
+						<h3
+							class="font-extrabold text-xl font-display mb-4 text-[#2a3035]"
+						>
+							Innovación
+						</h3>
+						<p
+							class="text-base font-body text-gray-600 leading-relaxed max-w-sm"
+						>
+							Gestión de primer nivel y actualización tecnológica
+							para optimizar cada proceso en nuestras tres
+							divisiones maestras.
 						</p>
 					</div>
 					<!-- Excelencia -->
 					<div class="flex flex-col items-center group">
-						<div class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+						<div
+							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
+						>
 							<HiOutlineStar />
 						</div>
-						<h3 class="font-extrabold text-xl font-display mb-4 text-[#2a3035]">Excelencia</h3>
-						<p class="text-base font-body text-gray-600 leading-relaxed max-w-sm">
-							Foco obsesivo en proporcionar productos y servicios de clase mundial que eleven el estándar corporativo.
+						<h3
+							class="font-extrabold text-xl font-display mb-4 text-[#2a3035]"
+						>
+							Excelencia
+						</h3>
+						<p
+							class="text-base font-body text-gray-600 leading-relaxed max-w-sm"
+						>
+							Foco obsesivo en proporcionar productos y servicios
+							de clase mundial que eleven el estándar corporativo.
 						</p>
 					</div>
 				</div>
@@ -733,9 +909,10 @@ import isoImg from "../assets/iso-9001.webp";
 				<p
 					class="text-sm font-body leading-relaxed max-w-2xl text-gray-300"
 				>
-					Utilizamos cookies para optimizar este sitio y asegurar que nuestro catálogo de <span
+					Utilizamos cookies para optimizar este sitio y asegurar que
+					nuestro catálogo de <span
 						class="text-white font-bold tracking-tight border-none"
-						>Madera, Hospitalidad, Café y Transporte</span
+						>Madera, Alojamiento, Café y Transporte</span
 					> te brinde la mejor experiencia corporativa. Al continuar navegando,
 					aceptas nuestra política de privacidad.
 				</p>
@@ -765,26 +942,28 @@ import isoImg from "../assets/iso-9001.webp";
 					<section>
 						<h4>1. Protección de Datos</h4>
 						<p>
-							De conformidad con la Ley N° 29733 (Ley de Protección de Datos
-							Personales en Perú), Grupo Prevca garantiza el tratamiento
-							responsable de toda información recolectada mediante este
-							portal corporativo.
+							De conformidad con la Ley N° 29733 (Ley de
+							Protección de Datos Personales en Perú), Grupo
+							Prevca garantiza el tratamiento responsable de toda
+							información recolectada mediante este portal
+							corporativo.
 						</p>
 					</section>
 					<section>
 						<h4>2. Finalidades del Tratamiento</h4>
 						<p>
-							La información recolectada en nuestros formularios se utiliza
-							exclusivamente para: proveer información de servicios y gestionar
-							relaciones comerciales con nuestros clientes.
+							La información recolectada en nuestros formularios
+							se utiliza exclusivamente para: proveer información
+							de servicios y gestionar relaciones comerciales con
+							nuestros clientes.
 						</p>
 					</section>
 					<section>
 						<h4>3. Seguridad</h4>
 						<p>
-							Implementamos protocolos de seguridad técnica y organizativa.
-							No compartimos información con terceros sin su
-							consentimiento explícito.
+							Implementamos protocolos de seguridad técnica y
+							organizativa. No compartimos información con
+							terceros sin su consentimiento explícito.
 						</p>
 					</section>
 				</div>
@@ -800,23 +979,23 @@ import isoImg from "../assets/iso-9001.webp";
 					<section>
 						<h4>1. Propiedad Intelectual</h4>
 						<p>
-							Todo el contenido editorial, gráfico y logotipos son propiedad
-							exclusiva de Grupo Prevca. Queda prohibida la reproducción total
-							o parcial sin autorización.
+							Todo el contenido editorial, gráfico y logotipos son
+							propiedad exclusiva de Grupo Prevca. Queda prohibida
+							la reproducción total o parcial sin autorización.
 						</p>
 					</section>
 					<section>
 						<h4>2. Limitación de Responsabilidad</h4>
 						<p>
-							Grupo Prevca se reserva el derecho de modificar catálogos
-							sin previo aviso.
+							Grupo Prevca se reserva el derecho de modificar
+							catálogos sin previo aviso.
 						</p>
 					</section>
 					<section>
 						<h4>3. Jurisdicción</h4>
 						<p>
-							Cualquier controversia se regirá bajo las leyes de la
-							República del Perú.
+							Cualquier controversia se regirá bajo las leyes de
+							la República del Perú.
 						</p>
 					</section>
 				</div>
@@ -827,10 +1006,15 @@ import isoImg from "../assets/iso-9001.webp";
 		<script is:inline>
 			// Typewriter Effect for ISO Section (Word Cycler)
 			function initTypewriter() {
-				const wordElement = document.getElementById('typewriter-word');
+				const wordElement = document.getElementById("typewriter-word");
 				if (!wordElement) return;
 
-				const words = ["Calidad", "Excelencia", "Eficiencia", "Sostenibilidad"];
+				const words = [
+					"Calidad",
+					"Excelencia",
+					"Eficiencia",
+					"Sostenibilidad",
+				];
 				let wordIndex = 0;
 				let charIndex = 0;
 				let isDeleting = false;
@@ -840,12 +1024,18 @@ import isoImg from "../assets/iso-9001.webp";
 
 				function type() {
 					const currentWord = words[wordIndex];
-					
+
 					if (isDeleting) {
-						wordElement.textContent = currentWord.substring(0, charIndex - 1);
+						wordElement.textContent = currentWord.substring(
+							0,
+							charIndex - 1,
+						);
 						charIndex--;
 					} else {
-						wordElement.textContent = currentWord.substring(0, charIndex + 1);
+						wordElement.textContent = currentWord.substring(
+							0,
+							charIndex + 1,
+						);
 						charIndex++;
 					}
 
@@ -864,19 +1054,22 @@ import isoImg from "../assets/iso-9001.webp";
 				}
 
 				// Intersection Observer to start when visible
-				const observer = new IntersectionObserver((entries) => {
-					if (entries[0].isIntersecting) {
-						type();
-						observer.disconnect();
-					}
-				}, { threshold: 0.5 });
+				const observer = new IntersectionObserver(
+					(entries) => {
+						if (entries[0].isIntersecting) {
+							type();
+							observer.disconnect();
+						}
+					},
+					{ threshold: 0.5 },
+				);
 
-				observer.observe(document.querySelector('.py-28'));
+				observer.observe(document.querySelector(".py-28"));
 			}
 
 			document.addEventListener("DOMContentLoaded", () => {
 				initTypewriter();
-				
+
 				// 1. LOADER HIDER
 				const loader = document.getElementById("loader-overlay");
 				const body = document.body;
@@ -913,11 +1106,14 @@ import isoImg from "../assets/iso-9001.webp";
 				// 3. COOKIE BANNER
 				const cookieBanner = document.getElementById("cookie-banner");
 				const cookieOverlay = document.getElementById("cookie-overlay");
-				const cookieAcceptBtn = document.getElementById("cookie-accept");
-				const cookieRejectBtn = document.getElementById("cookie-reject");
+				const cookieAcceptBtn =
+					document.getElementById("cookie-accept");
+				const cookieRejectBtn =
+					document.getElementById("cookie-reject");
 
 				const hideCookies = () => {
-					if (cookieBanner) cookieBanner.style.transform = "translateY(100%)";
+					if (cookieBanner)
+						cookieBanner.style.transform = "translateY(100%)";
 					if (cookieOverlay) {
 						cookieOverlay.classList.remove("opacity-100");
 						cookieOverlay.classList.add("opacity-0");
@@ -925,15 +1121,20 @@ import isoImg from "../assets/iso-9001.webp";
 					}
 					setTimeout(() => {
 						if (cookieBanner) cookieBanner.classList.add("hidden");
-						if (cookieOverlay) cookieOverlay.classList.add("hidden");
+						if (cookieOverlay)
+							cookieOverlay.classList.add("hidden");
 					}, 500);
 				};
 
 				if (!localStorage.getItem("prevca_cookies_accepted")) {
 					setTimeout(() => {
-						if (cookieBanner) cookieBanner.style.transform = "translateY(0)";
+						if (cookieBanner)
+							cookieBanner.style.transform = "translateY(0)";
 						if (cookieOverlay) {
-							cookieOverlay.classList.remove("opacity-0", "pointer-events-none");
+							cookieOverlay.classList.remove(
+								"opacity-0",
+								"pointer-events-none",
+							);
 							cookieOverlay.classList.add("opacity-100");
 						}
 					}, 1500);

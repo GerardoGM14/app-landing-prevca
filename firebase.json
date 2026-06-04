@@ -7,7 +7,7 @@
       "rewrites": [
         { "source": "/madera/**", "destination": "/producto/index.html" },
         { "source": "/cafe/**", "destination": "/producto/index.html" },
-        { "source": "/hospitalidad/**", "destination": "/producto/index.html" },
+        { "source": "/alojamiento/**", "destination": "/producto/index.html" },
         { "source": "/transporte/**", "destination": "/producto/index.html" }
       ]
     },

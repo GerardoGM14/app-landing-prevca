@@ -29,7 +29,7 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Hospitalidad | Grupo Prevca</title>
+		<title>Alojamiento | Grupo Prevca</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -190,9 +190,9 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 					>Madera</a
 				>
 				<a
-					href="/hospitalidad"
+					href="/alojamiento"
 					class="nav-link text-white border-b-2 border-white cursor-pointer"
-					>Hospitalidad</a
+					>Alojamiento</a
 				>
 				<a
 					href="/cafe"
@@ -255,9 +255,9 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 					>Madera</a
 				>
 				<a
-					href="/hospitalidad"
+					href="/alojamiento"
 					class="border-b border-white/10 pb-4 cursor-pointer"
-					>Hospitalidad</a
+					>Alojamiento</a
 				>
 				<a
 					href="/cafe"
@@ -297,11 +297,11 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 			<div class="absolute inset-0 bg-black/50 z-10"></div>
 			<img 
 				src={hospImg01.src} 
-				alt="División Hospitalidad" 
+				alt="División Alojamiento" 
 				class="absolute inset-0 w-full h-full object-cover"
 			/>
 			<div class="relative z-20 text-center text-white px-6 max-w-4xl mx-auto reveal-item">
-				<span class="font-ui tracking-[0.3em] text-sm md:text-base font-bold uppercase mb-4 block opacity-80">División Hospitalidad</span>
+				<span class="font-ui tracking-[0.3em] text-sm md:text-base font-bold uppercase mb-4 block opacity-80">División Alojamiento</span>
 				<h1 class="text-4xl md:text-6xl font-extrabold font-display leading-tight mb-6">
 					Experiencias Inigualables, <br/><span class="text-[#1d4c74] bg-white px-4 inline-block mt-2">Confort Absoluto</span>
 				</h1>
@@ -318,7 +318,7 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 						Redefiniendo el Lujo y el Servicio al Cliente
 					</h2>
 					<p class="text-gray-600 font-body mb-6 text-lg leading-relaxed">
-						En Grupo Prevca, nuestra división de hospitalidad se dedica a crear espacios donde la elegancia contemporánea se encuentra con un servicio excepcionalmente cálido y anticipatorio.
+						En Grupo Prevca, nuestra división de alojamiento se dedica a crear espacios donde la elegancia contemporánea se encuentra con un servicio excepcionalmente cálido y anticipatorio.
 					</p>
 					<p class="text-gray-600 font-body mb-8 text-lg leading-relaxed">
 						Desde hoteles boutique de clase mundial hasta desarrollos turísticos de lujo, cuidamos meticulosamente cada detalle para garantizar que las estadías de nuestros huéspedes se conviertan en memorias extraordinarias.
@@ -329,7 +329,7 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-none"></div>
 					<img 
 						src={hospImg02.src} 
-						alt="Servicio de Hospitalidad" 
+						alt="Servicio de Alojamiento" 
 						class="relative z-10 w-full h-auto rounded-none"
 					/>
 				</div>
@@ -411,7 +411,7 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 				</div>
 
 				<!-- Grid of Products (dinámico: se carga desde la API pública) -->
-				<div id="hospitalidad-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]">
+				<div id="alojamiento-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]">
 					<!-- Los productos se hidratan aquí desde Firestore via /public/products?division=HOSPITALIDAD -->
 				</div>
 
@@ -757,11 +757,11 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 			});
 		</script>
 
-		<!-- Carga dinámica del catálogo de Hospitalidad desde la API pública -->
+		<!-- Carga dinámica del catálogo de Alojamiento desde la API pública -->
 		<script>
 			import { renderProductGrid, renderSkeleton } from "../lib/product-grid.js";
-			renderSkeleton("hospitalidad-products-grid", 4);
-			renderProductGrid("hospitalidad-products-grid", "HOSPITALIDAD", "/hospitalidad");
+			renderSkeleton("alojamiento-products-grid", 4);
+			renderProductGrid("alojamiento-products-grid", "HOSPITALIDAD", "/alojamiento");
 		</script>
 	</body>
 </html>
