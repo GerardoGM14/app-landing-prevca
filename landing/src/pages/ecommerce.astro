@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { FaBars, FaTimes, FaShoppingCart, FaArrowLeft } from "react-icons/fa";
+import logoPrevca from "../assets/logo-prevca.png";
 
 // El catálogo se carga dinámicamente desde Firestore vía `/public/products` en el script de cliente.
 // Ver landing/src/lib/api.js
@@ -64,16 +65,8 @@ import { FaBars, FaTimes, FaShoppingCart, FaArrowLeft } from "react-icons/fa";
 			class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300"
 		>
 			<div class="flex items-center gap-3">
-				<a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-					<div
-						class="w-7 h-7 md:w-8 md:h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base md:text-lg shadow-none rounded-none"
-					>
-						P
-					</div>
-					<span
-						class="text-xl md:text-2xl font-extrabold tracking-widest font-display uppercase"
-						>GRUPO PREVCA</span
-					>
+				<a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+					<img src={logoPrevca.src} alt="Grupo Prevca" class="h-10 md:h-14 w-auto object-contain brightness-0 invert" />
 				</a>
 			</div>
 
