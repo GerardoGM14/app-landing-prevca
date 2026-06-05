@@ -11,12 +11,13 @@ import {
 	FaStar,
 	FaUtensils,
 	FaSpa,
-	FaShoppingCart
+	FaShoppingCart,
 } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import { LuCookie } from "react-icons/lu";
 import libroImg from "../assets/libro-reclamaciones.png";
+import logoAlojamiento from "../assets/logo-alojamiento.png";
 
 // Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import hospImg01 from "../assets/hospitalidad/hosp-image-01.png";
@@ -158,17 +159,16 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 		<nav
 			class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300"
 		>
-			<div class="flex items-center gap-3">
-				<div
-					class="w-7 h-7 md:w-8 md:h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base md:text-lg shadow-none"
-				>
-					P
-				</div>
-				<span
-					class="text-xl md:text-2xl font-extrabold tracking-widest font-display uppercase"
-					>GRUPO PREVCA</span
-				>
-			</div>
+			<a
+				href="/"
+				class="flex items-center gap-3 hover:opacity-90 transition-opacity"
+			>
+				<img
+					src={logoAlojamiento.src}
+					alt="Alojamiento Prevca"
+					class="h-10 md:h-14 w-auto object-contain brightness-0 invert"
+				/>
+			</a>
 
 			<!-- Desktop Menu -->
 			<div
@@ -219,7 +219,8 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 					<span
 						id="cart-count-desktop"
 						class="absolute top-[-6px] right-[-14px] w-4 h-4 flex items-center justify-center bg-white text-[#2a3035] text-[10px] font-extrabold rounded-full shadow-md leading-none pt-[1px]"
-					>0</span>
+						>0</span
+					>
 				</a>
 			</div>
 
@@ -265,7 +266,8 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 				>
 				<a
 					href="/transporte"
-					class="border-b border-white/10 pb-4 cursor-pointer">Transporte</a
+					class="border-b border-white/10 pb-4 cursor-pointer"
+					>Transporte</a
 				>
 				<a
 					href="/#contact-section"
@@ -293,17 +295,29 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 		</div>
 
 		<!-- Hero Section -->
-		<header class="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
+		<header
+			class="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden"
+		>
 			<div class="absolute inset-0 bg-black/50 z-10"></div>
-			<img 
-				src={hospImg01.src} 
-				alt="División Alojamiento" 
+			<img
+				src={hospImg01.src}
+				alt="División Alojamiento"
 				class="absolute inset-0 w-full h-full object-cover"
 			/>
-			<div class="relative z-20 text-center text-white px-6 max-w-4xl mx-auto reveal-item">
-				<span class="font-ui tracking-[0.3em] text-sm md:text-base font-bold uppercase mb-4 block opacity-80">División Alojamiento</span>
-				<h1 class="text-4xl md:text-6xl font-extrabold font-display leading-tight mb-6">
-					Experiencias Inigualables, <br/><span class="text-[#1d4c74] bg-white px-4 inline-block mt-2">Confort Absoluto</span>
+			<div
+				class="relative z-20 text-center text-white px-6 max-w-4xl mx-auto reveal-item"
+			>
+				<span
+					class="font-ui tracking-[0.3em] text-sm md:text-base font-bold uppercase mb-4 block opacity-80"
+					>División Alojamiento</span
+				>
+				<h1
+					class="text-4xl md:text-6xl font-extrabold font-display leading-tight mb-6"
+				>
+					Experiencias Inigualables, <br /><span
+						class="text-[#1d4c74] bg-white px-4 inline-block mt-2"
+						>Confort Absoluto</span
+					>
 				</h1>
 				<div class="w-24 h-1 bg-white mx-auto mt-8 opacity-50"></div>
 			</div>
@@ -311,25 +325,53 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 
 		<!-- Info Section -->
 		<section class="py-24 px-6 md:px-8 bg-white overflow-hidden">
-			<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+			<div
+				class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+			>
 				<div class="reveal-item">
-					<h4 class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4">Nuestra Diferencia</h4>
-					<h2 class="text-3xl md:text-4xl font-extrabold font-display text-[#2a3035] leading-tight mb-6">
-						Redefiniendo el Lujo y el Servicio al Cliente
+					<h4
+						class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4"
+					>
+						Nuestra Diferencia
+					</h4>
+					<h2
+						class="text-3xl md:text-4xl font-extrabold font-display text-[#2a3035] leading-tight mb-6"
+					>
+						Redefiniendo el Lujo y la Experiencia de Hospedaje
 					</h2>
-					<p class="text-gray-600 font-body mb-6 text-lg leading-relaxed">
-						En Grupo Prevca, nuestra división de alojamiento se dedica a crear espacios donde la elegancia contemporánea se encuentra con un servicio excepcionalmente cálido y anticipatorio.
+					<p
+						class="text-gray-600 font-body mb-6 text-lg leading-relaxed"
+					>
+						En Grupo Prevca, nuestra división de hospitalidad ofrece
+						una experiencia exclusiva mediante 2 departamentos
+						completamente equipados, diseñados para brindar confort,
+						elegancia y atención personalizada. Cada espacio ha sido
+						cuidadosamente acondicionado para garantizar una estadía
+						cómoda, segura y orientada al bienestar de nuestros
+						huéspedes, combinando funcionalidad
 					</p>
-					<p class="text-gray-600 font-body mb-8 text-lg leading-relaxed">
-						Desde hoteles boutique de clase mundial hasta desarrollos turísticos de lujo, cuidamos meticulosamente cada detalle para garantizar que las estadías de nuestros huéspedes se conviertan en memorias extraordinarias.
+					<p
+						class="text-gray-600 font-body mb-8 text-lg leading-relaxed"
+					>
+						Nos enfocamos en ofrecer un servicio integral y de alto
+						nivel, acompañando al huésped desde su llegada al
+						aeropuerto o agencia de transporte hasta su recepción y
+						permanencia en el departamento. Nuestro compromiso es
+						brindar una experiencia cálida, eficiente y memorable,
+						cuidando cada detalle para superar las expectativas de
+						quienes confían en Grupo Prevca.
 					</p>
 				</div>
-				
-				<div class="relative reveal-item" style="transition-delay: 200ms">
-					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-none"></div>
-					<img 
-						src={hospImg02.src} 
-						alt="Servicio de Alojamiento" 
+
+				<div
+					class="relative reveal-item"
+					style="transition-delay: 200ms"
+				>
+					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-none">
+					</div>
+					<img
+						src={hospImg02.src}
+						alt="Servicio de Alojamiento"
 						class="relative z-10 w-full h-auto rounded-none"
 					/>
 				</div>
@@ -339,49 +381,98 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 		<!-- Core Capabilities Section -->
 		<section class="py-24 px-6 md:px-8 bg-gray-50">
 			<div class="max-w-7xl mx-auto">
-				<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal-item">
+				<div
+					class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal-item"
+				>
 					<div>
-						<h4 class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4">Pilares de Excelencia</h4>
-						<h2 class="text-3xl md:text-5xl font-extrabold font-display text-[#2a3035] leading-tight max-w-2xl">
+						<h4
+							class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4"
+						>
+							Pilares de Excelencia
+						</h4>
+						<h2
+							class="text-3xl md:text-5xl font-extrabold font-display text-[#2a3035] leading-tight max-w-2xl"
+						>
 							Nuestros Estándares de Servicio
 						</h2>
 					</div>
 					<p class="text-gray-600 font-body max-w-md text-lg">
-						Comprometidos con superar las expectativas globales en cada una de nuestras operaciones turísticas y hoteleras.
+						Comprometidos con superar las expectativas globales en
+						cada una de nuestras operaciones turísticas y hoteleras.
 					</p>
 				</div>
 
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 					<!-- Card 1 -->
-					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]">
-						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+					<div
+						class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]"
+					>
+						<div
+							class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none"
+						>
 							<FaStar />
 						</div>
-						<h3 class="text-xl font-bold font-display text-white mb-4">Atención Personalizada</h3>
-						<p class="text-white/80 font-body text-sm leading-relaxed">
-							Servicio de concierge 24/7 y asistencia anticipatoria que entiende y satisface las necesidades individuales de cada huésped con discreción.
+						<h3
+							class="text-xl font-bold font-display text-white mb-4"
+						>
+							Atención Personalizada y Recepción Exclusiva
+						</h3>
+						<p
+							class="text-white/80 font-body text-sm leading-relaxed"
+						>
+							Recepción exclusiva y servicio orientado al confort,
+							seguridad y bienestar del huésped durante toda su
+							estadía.
 						</p>
 					</div>
-					
+
 					<!-- Card 2 -->
-					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]" style="transition-delay: 100ms;">
-						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+					<div
+						class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]"
+						style="transition-delay: 100ms;"
+					>
+						<div
+							class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none"
+						>
 							<FaUtensils />
 						</div>
-						<h3 class="text-xl font-bold font-display text-white mb-4">Gastronomía de Autor</h3>
-						<p class="text-white/80 font-body text-sm leading-relaxed">
-							Experiencias culinarias excepcionales dirigidas por chefs internacionales, fusionando sabores locales con técnicas de alta cocina global.
+						<h3
+							class="text-xl font-bold font-display text-white mb-4"
+						>
+							Hospédate en el Corazón de la Historia del Norte del
+							Perú
+						</h3>
+						<p
+							class="text-white/80 font-body text-sm leading-relaxed"
+						>
+							Ubicación privilegiada cerca del Museo Tumbas Reales
+							de Sipán y el Museo Brüning, permitiendo disfrutar
+							la historia y cultura del norte del Perú con
+							comodidad y fácil acceso
 						</p>
 					</div>
 
 					<!-- Card 3 -->
-					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]" style="transition-delay: 200ms;">
-						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+					<div
+						class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]"
+						style="transition-delay: 200ms;"
+					>
+						<div
+							class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none"
+						>
 							<FaSpa />
 						</div>
-						<h3 class="text-xl font-bold font-display text-white mb-4">Bienestar Integral</h3>
-						<p class="text-white/80 font-body text-sm leading-relaxed">
-							Centros de spa y wellness de clase mundial, equipados con la última tecnología y terapeutas expertos para una relajación profunda.
+						<h3
+							class="text-xl font-bold font-display text-white mb-4"
+						>
+							Bienestar Integral
+						</h3>
+						<p
+							class="text-white/80 font-body text-sm leading-relaxed"
+						>
+							Centros de spa y wellness de clase mundial,
+							equipados con la última tecnología y terapeutas
+							expertos para una relajación profunda.
 						</p>
 					</div>
 				</div>
@@ -392,36 +483,82 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 		<section class="py-24 px-6 md:px-8 bg-white">
 			<div class="max-w-7xl mx-auto">
 				<!-- Banner Header -->
-				<div class="relative rounded-none overflow-hidden mb-16 h-64 reveal-item flex items-center p-10">
+				<div
+					class="relative rounded-none overflow-hidden mb-16 h-64 reveal-item flex items-center p-10"
+				>
 					<div class="absolute inset-0 bg-[#2a3035]/80 z-10"></div>
-					<img src={hospImg01.src} alt="Nuestros Espacios" class="absolute inset-0 w-full h-full object-cover z-0" />
+					<img
+						src={hospImg01.src}
+						alt="Nuestros Espacios"
+						class="absolute inset-0 w-full h-full object-cover z-0"
+					/>
 					<div class="relative z-20">
-						<h2 class="text-3xl md:text-5xl font-extrabold font-display text-white mb-4">Nuestros Espacios</h2>
-						<p class="text-white/80 font-body text-lg max-w-xl">Descubra una colección curada de habitaciones, suites y servicios diseñados para el confort absoluto.</p>
+						<h2
+							class="text-3xl md:text-5xl font-extrabold font-display text-white mb-4"
+						>
+							Nuestros Espacios
+						</h2>
+						<p class="text-white/80 font-body text-lg max-w-xl">
+							Descubra una colección curada de habitaciones,
+							suites y servicios diseñados para el confort
+							absoluto.
+						</p>
 					</div>
 				</div>
 
 				<!-- Filter placeholder -->
-				<div class="flex flex-wrap gap-4 items-center mb-12 font-ui text-sm reveal-item">
-					<span class="font-bold text-gray-500 tracking-widest uppercase mr-4 hidden md:block">Categorías:</span>
-					<button class="bg-[#1d4c74] text-white px-6 py-2 font-bold cursor-pointer border border-[#1d4c74] rounded-none">Todas</button>
-					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Habitaciones</button>
-					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Gastronomía</button>
-					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Bienestar</button>
+				<div
+					class="flex flex-wrap gap-4 items-center mb-12 font-ui text-sm reveal-item"
+				>
+					<span
+						class="font-bold text-gray-500 tracking-widest uppercase mr-4 hidden md:block"
+						>Categorías:</span
+					>
+					<button
+						class="bg-[#1d4c74] text-white px-6 py-2 font-bold cursor-pointer border border-[#1d4c74] rounded-none"
+						>Todas</button
+					>
+					<button
+						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none"
+						>Habitaciones</button
+					>
+					<button
+						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none"
+						>Gastronomía</button
+					>
+					<button
+						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none"
+						>Bienestar</button
+					>
 				</div>
 
 				<!-- Grid of Products (dinámico: se carga desde la API pública) -->
-				<div id="alojamiento-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]">
+				<div
+					id="alojamiento-products-grid"
+					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]"
+				>
 					<!-- Los productos se hidratan aquí desde Firestore via /public/products?division=HOSPITALIDAD -->
 				</div>
 
 				<!-- CTA Banner -->
-				<div class="mt-16 bg-[#f4f7fa] rounded-none p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 border border-[#1d4c74]/10 reveal-item">
+				<div
+					class="mt-16 bg-[#f4f7fa] rounded-none p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 border border-[#1d4c74]/10 reveal-item"
+				>
 					<div class="text-center md:text-left">
-						<h3 class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] mb-2">¿Planea un evento corporativo?</h3>
-						<p class="text-gray-600 font-body max-w-xl">Contamos con salones de convenciones y paquetes ejecutivos diseñados para el éxito de su empresa.</p>
+						<h3
+							class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] mb-2"
+						>
+							¿Planea un evento corporativo?
+						</h3>
+						<p class="text-gray-600 font-body max-w-xl">
+							Contamos con salones de convenciones y paquetes
+							ejecutivos diseñados para el éxito de su empresa.
+						</p>
 					</div>
-					<a href="/#contact-section" class="bg-[#1d4c74] text-white font-bold px-8 py-4 rounded-none font-ui tracking-wider hover:bg-[#2a3035] transition-colors whitespace-nowrap">
+					<a
+						href="/#contact-section"
+						class="bg-[#1d4c74] text-white font-bold px-8 py-4 rounded-none font-ui tracking-wider hover:bg-[#2a3035] transition-colors whitespace-nowrap"
+					>
 						Contactar Asesor
 					</a>
 				</div>
@@ -560,120 +697,284 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 				</div>
 			</div>
 			<!-- Bank Accounts Section -->
-			<div class="max-w-7xl mx-auto border-t border-white/5 py-12 flex flex-col items-center gap-8 reveal-item">
-				<h4 class="font-extrabold text-[11px] opacity-50 tracking-[0.2em] uppercase text-center text-white">
+			<div
+				class="max-w-7xl mx-auto border-t border-white/5 py-12 flex flex-col items-center gap-8 reveal-item"
+			>
+				<h4
+					class="font-extrabold text-[11px] opacity-50 tracking-[0.2em] uppercase text-center text-white"
+				>
 					Cuentas Corrientes Bancarias
 				</h4>
-				<div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full relative">
+				<div
+					class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full relative"
+				>
 					<!-- BCP -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bcp.png" alt="BCP" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bcp.png"
+							alt="BCP"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#002C6C] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#002C6C] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">305-7227583095</p>
-									<div class="bg-[#EEF4FA] border border-[#D5E4F2] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#002C6C] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#002C6C] tracking-tighter">002-30500722758309517</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										305-7227583095
+									</p>
+									<div
+										class="bg-[#EEF4FA] border border-[#D5E4F2] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#002C6C] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#002C6C] tracking-tighter"
+										>
+											002-30500722758309517
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- BBVA -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bbva.png" alt="BBVA" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bbva.png"
+							alt="BBVA"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#004481] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#004481] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-center">
-									<p class="text-sm font-bold text-gray-700">Cuenta disponible a solicitud</p>
-									<p class="text-xs text-gray-400 mt-2 leading-relaxed">Por favor consulte con su asesor comercial o de administración.</p>
+									<p class="text-sm font-bold text-gray-700">
+										Cuenta disponible a solicitud
+									</p>
+									<p
+										class="text-xs text-gray-400 mt-2 leading-relaxed"
+									>
+										Por favor consulte con su asesor
+										comercial o de administración.
+									</p>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Scotiabank -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/scotiabank.png" alt="Scotiabank" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/scotiabank.png"
+							alt="Scotiabank"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#ED1C24] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#ED1C24] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">401-0329813</p>
-									<div class="bg-[#FFEAEA] border border-[#FFD1D1] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#ED1C24] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#ED1C24] tracking-tighter">009-174-204010329813-43</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										401-0329813
+									</p>
+									<div
+										class="bg-[#FFEAEA] border border-[#FFD1D1] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#ED1C24] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#ED1C24] tracking-tighter"
+										>
+											009-174-204010329813-43
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Interbank -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/interbank.png" alt="Interbank" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/interbank.png"
+							alt="Interbank"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#00A859] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#00A859] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">7003007114820</p>
-									<div class="bg-[#EAF7F0] border border-[#CDECDA] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#00A859] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#00A859] tracking-tighter">00370000300711482026</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										7003007114820
+									</p>
+									<div
+										class="bg-[#EAF7F0] border border-[#CDECDA] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#00A859] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#00A859] tracking-tighter"
+										>
+											00370000300711482026
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Banco de la Nación -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bn.png" alt="Banco de la Nación" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bn.png"
+							alt="Banco de la Nación"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#7F8C8D] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#7F8C8D] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-center">
-									<p class="text-sm font-bold text-gray-700">Cuenta disponible a solicitud</p>
-									<p class="text-xs text-gray-400 mt-2 leading-relaxed">Por favor consulte con su asesor comercial o de administración.</p>
+									<p class="text-sm font-bold text-gray-700">
+										Cuenta disponible a solicitud
+									</p>
+									<p
+										class="text-xs text-gray-400 mt-2 leading-relaxed"
+									>
+										Por favor consulte con su asesor
+										comercial o de administración.
+									</p>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -745,10 +1046,16 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 
 				// Cart Logic
 				const updateCartUI = () => {
-					const cart = JSON.parse(localStorage.getItem('prevca_cart')) || [];
-					const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-					const desktopBadge = document.getElementById('cart-count-desktop');
-					const mobileBadge = document.getElementById('cart-count-mobile');
+					const cart =
+						JSON.parse(localStorage.getItem("prevca_cart")) || [];
+					const totalItems = cart.reduce(
+						(acc, item) => acc + item.quantity,
+						0,
+					);
+					const desktopBadge =
+						document.getElementById("cart-count-desktop");
+					const mobileBadge =
+						document.getElementById("cart-count-mobile");
 					if (desktopBadge) desktopBadge.textContent = totalItems;
 					if (mobileBadge) mobileBadge.textContent = totalItems;
 				};
@@ -759,9 +1066,16 @@ import hospImg02 from "../assets/hospitalidad/hosp-image-02.png";
 
 		<!-- Carga dinámica del catálogo de Alojamiento desde la API pública -->
 		<script>
-			import { renderProductGrid, renderSkeleton } from "../lib/product-grid.js";
+			import {
+				renderProductGrid,
+				renderSkeleton,
+			} from "../lib/product-grid.js";
 			renderSkeleton("alojamiento-products-grid", 4);
-			renderProductGrid("alojamiento-products-grid", "HOSPITALIDAD", "/alojamiento");
+			renderProductGrid(
+				"alojamiento-products-grid",
+				"HOSPITALIDAD",
+				"/alojamiento",
+			);
 		</script>
 	</body>
 </html>

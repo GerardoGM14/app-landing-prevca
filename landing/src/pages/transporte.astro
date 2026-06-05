@@ -11,11 +11,12 @@ import {
 	FaTruck,
 	FaShip,
 	FaRoute,
-	FaShoppingCart
+	FaShoppingCart,
 } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import libroImg from "../assets/libro-reclamaciones.png";
+import logoTransporte from "../assets/logo-transporte.png";
 
 // Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import transporteImg01 from "../assets/transporte/transporte-image-01.png";
@@ -94,17 +95,16 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 		<nav
 			class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300"
 		>
-			<div class="flex items-center gap-3">
-				<div
-					class="w-7 h-7 md:w-8 md:h-8 bg-white text-[#2a3035] font-extrabold flex items-center justify-center font-display text-base md:text-lg shadow-none rounded-none"
-				>
-					P
-				</div>
-				<span
-					class="text-xl md:text-2xl font-extrabold tracking-widest font-display uppercase"
-					>GRUPO PREVCA</span
-				>
-			</div>
+			<a
+				href="/"
+				class="flex items-center gap-3 hover:opacity-90 transition-opacity"
+			>
+				<img
+					src={logoTransporte.src}
+					alt="Transporte Prevca"
+					class="h-10 md:h-14 w-auto object-contain brightness-0 invert"
+				/>
+			</a>
 
 			<!-- Desktop Menu -->
 			<div
@@ -155,7 +155,8 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 					<span
 						id="cart-count-desktop"
 						class="absolute top-[-6px] right-[-14px] w-4 h-4 flex items-center justify-center bg-white text-[#2a3035] text-[10px] font-extrabold rounded-full shadow-md leading-none pt-[1px]"
-					>0</span>
+						>0</span
+					>
 				</a>
 			</div>
 
@@ -201,7 +202,8 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 				>
 				<a
 					href="/transporte"
-					class="border-b border-white/10 pb-4 cursor-pointer">Transporte</a
+					class="border-b border-white/10 pb-4 cursor-pointer"
+					>Transporte</a
 				>
 				<a
 					href="/#contact-section"
@@ -229,17 +231,29 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 		</div>
 
 		<!-- Hero Section -->
-		<header class="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
+		<header
+			class="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden"
+		>
 			<div class="absolute inset-0 bg-black/60 z-10"></div>
-			<img 
-				src={transporteImg01.src} 
-				alt="División Transporte" 
+			<img
+				src={transporteImg01.src}
+				alt="División Transporte"
 				class="absolute inset-0 w-full h-full object-cover"
 			/>
-			<div class="relative z-20 text-center text-white px-6 max-w-4xl mx-auto reveal-item">
-				<span class="font-ui tracking-[0.3em] text-sm md:text-base font-bold uppercase mb-4 block opacity-80">División Transporte</span>
-				<h1 class="text-4xl md:text-6xl font-extrabold font-display leading-tight mb-6">
-					Soluciones Logísticas, <br/><span class="text-[#1d4c74] bg-white px-4 inline-block mt-2">Sin Fronteras</span>
+			<div
+				class="relative z-20 text-center text-white px-6 max-w-4xl mx-auto reveal-item"
+			>
+				<span
+					class="font-ui tracking-[0.3em] text-sm md:text-base font-bold uppercase mb-4 block opacity-80"
+					>División Transporte</span
+				>
+				<h1
+					class="text-4xl md:text-6xl font-extrabold font-display leading-tight mb-6"
+				>
+					Soluciones Logísticas, <br /><span
+						class="text-[#1d4c74] bg-white px-4 inline-block mt-2"
+						>Sin Fronteras</span
+					>
 				</h1>
 				<div class="w-24 h-1 bg-white mx-auto mt-8 opacity-50"></div>
 			</div>
@@ -247,25 +261,51 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 
 		<!-- Info Section -->
 		<section class="py-24 px-6 md:px-8 bg-white overflow-hidden">
-			<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+			<div
+				class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+			>
 				<div class="reveal-item">
-					<h4 class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4">Nuestra Diferencia</h4>
-					<h2 class="text-3xl md:text-4xl font-extrabold font-display text-[#2a3035] leading-tight mb-6">
+					<h4
+						class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4"
+					>
+						Nuestra Diferencia
+					</h4>
+					<h2
+						class="text-3xl md:text-4xl font-extrabold font-display text-[#2a3035] leading-tight mb-6"
+					>
 						Precisión en Cada Entrega
 					</h2>
-					<p class="text-gray-600 font-body mb-6 text-lg leading-relaxed">
-						En Grupo Prevca, integramos soluciones de transporte terrestre y logística internacional para asegurar que su carga llegue a tiempo y segura.
+					<p
+						class="text-gray-600 font-body mb-6 text-lg leading-relaxed"
+					>
+						En Grupo Prevca, brindamos soluciones integrales de
+						transporte terrestre y logística a nivel nacional,
+						garantizando que su carga llegue de manera segura,
+						oportuna y eficiente a cualquier destino del país.
 					</p>
-					<p class="text-gray-600 font-body mb-8 text-lg leading-relaxed">
-						Contamos con una flota moderna y alianzas estratégicas globales, permitiéndonos ofrecer un servicio de distribución eficiente, desde el puerto hasta la última milla, adaptándonos a las exigencias de su cadena de suministro.
+					<p
+						class="text-gray-600 font-body mb-8 text-lg leading-relaxed"
+					>
+						Contamos con una flota moderna, personal especializado y
+						una amplia cobertura operativa, lo que nos permite
+						ofrecer servicios de distribución confiables desde los
+						principales centros logísticos hasta la última milla.
+						Nos adaptamos a las necesidades de cada cliente para
+						optimizar su cadena de suministro y asegurar la
+						continuidad de sus operaciones en todo el territorio
+						peruano.
 					</p>
 				</div>
-				
-				<div class="relative reveal-item" style="transition-delay: 200ms">
-					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-none"></div>
-					<img 
-						src={transporteImg02.src} 
-						alt="Proceso Logístico" 
+
+				<div
+					class="relative reveal-item"
+					style="transition-delay: 200ms"
+				>
+					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-none">
+					</div>
+					<img
+						src={transporteImg02.src}
+						alt="Proceso Logístico"
 						class="relative z-10 w-full h-auto rounded-none"
 					/>
 				</div>
@@ -275,49 +315,97 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 		<!-- Core Capabilities Section -->
 		<section class="py-24 px-6 md:px-8 bg-gray-50">
 			<div class="max-w-7xl mx-auto">
-				<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal-item">
+				<div
+					class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 reveal-item"
+				>
 					<div>
-						<h4 class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4">Proceso Logístico</h4>
-						<h2 class="text-3xl md:text-5xl font-extrabold font-display text-[#2a3035] leading-tight max-w-2xl">
+						<h4
+							class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4"
+						>
+							Proceso Logístico
+						</h4>
+						<h2
+							class="text-3xl md:text-5xl font-extrabold font-display text-[#2a3035] leading-tight max-w-2xl"
+						>
 							Nuestros Pilares de Transporte
 						</h2>
 					</div>
 					<p class="text-gray-600 font-body max-w-md text-lg">
-						Comprometidos con la excelencia operativa en cada kilómetro recorrido.
+						Comprometidos con la excelencia operativa en cada
+						kilómetro recorrido.
 					</p>
 				</div>
 
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 					<!-- Card 1 -->
-					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]">
-						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+					<div
+						class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]"
+					>
+						<div
+							class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none"
+						>
 							<FaTruck />
 						</div>
-						<h3 class="text-xl font-bold font-display text-white mb-4">Flota Moderna</h3>
-						<p class="text-white/80 font-body text-sm leading-relaxed">
-							Unidades de transporte de última generación, equipadas con tecnología de rastreo satelital para monitoreo 24/7.
+						<h3
+							class="text-xl font-bold font-display text-white mb-4"
+						>
+							Flota Moderna
+						</h3>
+						<p
+							class="text-white/80 font-body text-sm leading-relaxed"
+						>
+							Unidades de transporte de última generación,
+							equipadas con tecnología de rastreo satelital para
+							monitoreo 24/7.
 						</p>
 					</div>
-					
+
 					<!-- Card 2 -->
-					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]" style="transition-delay: 100ms;">
-						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+					<div
+						class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]"
+						style="transition-delay: 100ms;"
+					>
+						<div
+							class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none"
+						>
 							<FaShip />
 						</div>
-						<h3 class="text-xl font-bold font-display text-white mb-4">Conectividad Global</h3>
-						<p class="text-white/80 font-body text-sm leading-relaxed">
-							Soluciones integrales de carga internacional marítima y aérea, optimizando costos y tiempos de tránsito.
+						<h3
+							class="text-xl font-bold font-display text-white mb-4"
+						>
+							Transporte Nacional
+						</h3>
+						<p
+							class="text-white/80 font-body text-sm leading-relaxed"
+						>
+							Cobertura logística a nivel nacional mediante
+							soluciones de transporte de carga eficientes,
+							seguras y adaptadas a las necesidades de cada
+							cliente.
 						</p>
 					</div>
 
 					<!-- Card 3 -->
-					<div class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]" style="transition-delay: 200ms;">
-						<div class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none">
+					<div
+						class="bg-[#1d4c74] p-10 transition-all duration-300 reveal-item group border border-[#1d4c74] hover:bg-[#153a5b]"
+						style="transition-delay: 200ms;"
+					>
+						<div
+							class="w-14 h-14 bg-white/10 flex items-center justify-center text-white text-2xl mb-8 rounded-none"
+						>
 							<FaRoute />
 						</div>
-						<h3 class="text-xl font-bold font-display text-white mb-4">Rutas Optimizadas</h3>
-						<p class="text-white/80 font-body text-sm leading-relaxed">
-							Planificación inteligente de rutas y logística de última milla para garantizar entregas puntuales y seguras.
+						<h3
+							class="text-xl font-bold font-display text-white mb-4"
+						>
+							Rutas Optimizadas
+						</h3>
+						<p
+							class="text-white/80 font-body text-sm leading-relaxed"
+						>
+							Planificación inteligente de rutas y logística de
+							última milla para garantizar entregas puntuales y
+							seguras.
 						</p>
 					</div>
 				</div>
@@ -328,36 +416,81 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 		<section class="py-24 px-6 md:px-8 bg-white">
 			<div class="max-w-7xl mx-auto">
 				<!-- Banner Header -->
-				<div class="relative rounded-none overflow-hidden mb-16 h-64 reveal-item flex items-center p-10">
+				<div
+					class="relative rounded-none overflow-hidden mb-16 h-64 reveal-item flex items-center p-10"
+				>
 					<div class="absolute inset-0 bg-[#2a3035]/80 z-10"></div>
-					<img src={transporteImg01.src} alt="Nuestros Servicios" class="absolute inset-0 w-full h-full object-cover z-0" />
+					<img
+						src={transporteImg01.src}
+						alt="Nuestros Servicios"
+						class="absolute inset-0 w-full h-full object-cover z-0"
+					/>
 					<div class="relative z-20">
-						<h2 class="text-3xl md:text-5xl font-extrabold font-display text-white mb-4">Nuestros Servicios</h2>
-						<p class="text-white/80 font-body text-lg max-w-xl">Descubra nuestras soluciones integrales diseñadas para cada necesidad logística.</p>
+						<h2
+							class="text-3xl md:text-5xl font-extrabold font-display text-white mb-4"
+						>
+							Nuestros Servicios
+						</h2>
+						<p class="text-white/80 font-body text-lg max-w-xl">
+							Descubra nuestras soluciones integrales diseñadas
+							para cada necesidad logística.
+						</p>
 					</div>
 				</div>
 
 				<!-- Filter placeholder -->
-				<div class="flex flex-wrap gap-4 items-center mb-12 font-ui text-sm reveal-item">
-					<span class="font-bold text-gray-500 tracking-widest uppercase mr-4 hidden md:block">Categorías:</span>
-					<button class="bg-[#1d4c74] text-white px-6 py-2 font-bold cursor-pointer border border-[#1d4c74] rounded-none">Todas</button>
-					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Nacional</button>
-					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Internacional</button>
-					<button class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none">Especializado</button>
+				<div
+					class="flex flex-wrap gap-4 items-center mb-12 font-ui text-sm reveal-item"
+				>
+					<span
+						class="font-bold text-gray-500 tracking-widest uppercase mr-4 hidden md:block"
+						>Categorías:</span
+					>
+					<button
+						class="bg-[#1d4c74] text-white px-6 py-2 font-bold cursor-pointer border border-[#1d4c74] rounded-none"
+						>Todas</button
+					>
+					<button
+						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none"
+						>Nacional</button
+					>
+					<button
+						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none"
+						>Internacional</button
+					>
+					<button
+						class="bg-transparent text-gray-600 hover:bg-[#1d4c74] hover:text-white border border-gray-200 hover:border-[#1d4c74] px-6 py-2 font-semibold transition-colors cursor-pointer rounded-none"
+						>Especializado</button
+					>
 				</div>
 
 				<!-- Grid of Products (dinámico: se carga desde la API pública) -->
-				<div id="transporte-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]">
+				<div
+					id="transporte-products-grid"
+					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item min-h-[400px]"
+				>
 					<!-- Los productos se hidratan aquí desde Firestore via /public/products?division=TRANSPORTE -->
 				</div>
 
 				<!-- CTA Banner -->
-				<div class="mt-16 bg-[#f4f7fa] rounded-none p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 border border-[#1d4c74]/10 reveal-item">
+				<div
+					class="mt-16 bg-[#f4f7fa] rounded-none p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 border border-[#1d4c74]/10 reveal-item"
+				>
 					<div class="text-center md:text-left">
-						<h3 class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] mb-2">¿Requiere soluciones a medida?</h3>
-						<p class="text-gray-600 font-body max-w-xl">Ofrecemos asesoría logística, evaluación de rutas y presupuestos corporativos personalizados.</p>
+						<h3
+							class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] mb-2"
+						>
+							¿Requiere soluciones a medida?
+						</h3>
+						<p class="text-gray-600 font-body max-w-xl">
+							Ofrecemos asesoría logística, evaluación de rutas y
+							presupuestos corporativos personalizados.
+						</p>
 					</div>
-					<a href="/ecommerce" class="bg-[#1d4c74] text-white font-bold px-8 py-4 rounded-none font-ui tracking-wider hover:bg-[#2a3035] transition-colors whitespace-nowrap">
+					<a
+						href="/ecommerce"
+						class="bg-[#1d4c74] text-white font-bold px-8 py-4 rounded-none font-ui tracking-wider hover:bg-[#2a3035] transition-colors whitespace-nowrap"
+					>
 						Cotizar Servicio
 					</a>
 				</div>
@@ -496,120 +629,284 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 				</div>
 			</div>
 			<!-- Bank Accounts Section -->
-			<div class="max-w-7xl mx-auto border-t border-white/5 py-12 flex flex-col items-center gap-8 reveal-item">
-				<h4 class="font-extrabold text-[11px] opacity-50 tracking-[0.2em] uppercase text-center text-white">
+			<div
+				class="max-w-7xl mx-auto border-t border-white/5 py-12 flex flex-col items-center gap-8 reveal-item"
+			>
+				<h4
+					class="font-extrabold text-[11px] opacity-50 tracking-[0.2em] uppercase text-center text-white"
+				>
 					Cuentas Corrientes Bancarias
 				</h4>
-				<div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full relative">
+				<div
+					class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full relative"
+				>
 					<!-- BCP -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bcp.png" alt="BCP" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bcp.png"
+							alt="BCP"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#002C6C] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#002C6C] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">305-7227583095</p>
-									<div class="bg-[#EEF4FA] border border-[#D5E4F2] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#002C6C] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#002C6C] tracking-tighter">002-30500722758309517</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										305-7227583095
+									</p>
+									<div
+										class="bg-[#EEF4FA] border border-[#D5E4F2] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#002C6C] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#002C6C] tracking-tighter"
+										>
+											002-30500722758309517
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- BBVA -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bbva.png" alt="BBVA" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bbva.png"
+							alt="BBVA"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#004481] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#004481] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-center">
-									<p class="text-sm font-bold text-gray-700">Cuenta disponible a solicitud</p>
-									<p class="text-xs text-gray-400 mt-2 leading-relaxed">Por favor consulte con su asesor comercial o de administración.</p>
+									<p class="text-sm font-bold text-gray-700">
+										Cuenta disponible a solicitud
+									</p>
+									<p
+										class="text-xs text-gray-400 mt-2 leading-relaxed"
+									>
+										Por favor consulte con su asesor
+										comercial o de administración.
+									</p>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Scotiabank -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/scotiabank.png" alt="Scotiabank" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/scotiabank.png"
+							alt="Scotiabank"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#ED1C24] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#ED1C24] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">401-0329813</p>
-									<div class="bg-[#FFEAEA] border border-[#FFD1D1] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#ED1C24] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#ED1C24] tracking-tighter">009-174-204010329813-43</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										401-0329813
+									</p>
+									<div
+										class="bg-[#FFEAEA] border border-[#FFD1D1] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#ED1C24] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#ED1C24] tracking-tighter"
+										>
+											009-174-204010329813-43
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Interbank -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/interbank.png" alt="Interbank" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/interbank.png"
+							alt="Interbank"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#00A859] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#00A859] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">7003007114820</p>
-									<div class="bg-[#EAF7F0] border border-[#CDECDA] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#00A859] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#00A859] tracking-tighter">00370000300711482026</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										7003007114820
+									</p>
+									<div
+										class="bg-[#EAF7F0] border border-[#CDECDA] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#00A859] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#00A859] tracking-tighter"
+										>
+											00370000300711482026
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Banco de la Nación -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bn.png" alt="Banco de la Nación" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bn.png"
+							alt="Banco de la Nación"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#7F8C8D] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#7F8C8D] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-center">
-									<p class="text-sm font-bold text-gray-700">Cuenta disponible a solicitud</p>
-									<p class="text-xs text-gray-400 mt-2 leading-relaxed">Por favor consulte con su asesor comercial o de administración.</p>
+									<p class="text-sm font-bold text-gray-700">
+										Cuenta disponible a solicitud
+									</p>
+									<p
+										class="text-xs text-gray-400 mt-2 leading-relaxed"
+									>
+										Por favor consulte con su asesor
+										comercial o de administración.
+									</p>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -681,10 +978,16 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 
 				// Cart Logic
 				const updateCartUI = () => {
-					const cart = JSON.parse(localStorage.getItem('prevca_cart')) || [];
-					const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-					const desktopBadge = document.getElementById('cart-count-desktop');
-					const mobileBadge = document.getElementById('cart-count-mobile');
+					const cart =
+						JSON.parse(localStorage.getItem("prevca_cart")) || [];
+					const totalItems = cart.reduce(
+						(acc, item) => acc + item.quantity,
+						0,
+					);
+					const desktopBadge =
+						document.getElementById("cart-count-desktop");
+					const mobileBadge =
+						document.getElementById("cart-count-mobile");
 					if (desktopBadge) desktopBadge.textContent = totalItems;
 					if (mobileBadge) mobileBadge.textContent = totalItems;
 				};
@@ -695,9 +998,16 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 
 		<!-- Carga dinámica del catálogo de Transporte desde la API pública -->
 		<script>
-			import { renderProductGrid, renderSkeleton } from "../lib/product-grid.js";
+			import {
+				renderProductGrid,
+				renderSkeleton,
+			} from "../lib/product-grid.js";
 			renderSkeleton("transporte-products-grid", 4);
-			renderProductGrid("transporte-products-grid", "TRANSPORTE", "/transporte");
+			renderProductGrid(
+				"transporte-products-grid",
+				"TRANSPORTE",
+				"/transporte",
+			);
 		</script>
 	</body>
 </html>
