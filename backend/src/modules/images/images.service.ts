@@ -7,8 +7,18 @@ import { productsRepository, ProductImage } from '../products/products.repositor
 import { ReorderImagesInput, UpdateImageInput } from './images.schema';
 
 const bucket = () => storage.bucket();
-const publicUrl = (storagePath: string) =>
-  `https://storage.googleapis.com/${bucket().name}/${storagePath}`;
+
+const isEmulator = (): boolean =>
+  Boolean(process.env.STORAGE_EMULATOR_HOST || process.env.FIREBASE_STORAGE_EMULATOR_HOST);
+
+const publicUrl = (storagePath: string): string => {
+  if (isEmulator()) {
+    const host = (process.env.STORAGE_EMULATOR_HOST ?? 'http://localhost:9199').replace(/\/$/, '');
+    const normalized = host.startsWith('http') ? host : `http://${host}`;
+    return `${normalized}/v0/b/${bucket().name}/o/${encodeURIComponent(storagePath)}?alt=media`;
+  }
+  return `https://storage.googleapis.com/${bucket().name}/${storagePath}`;
+};
 
 export const imagesService = {
   async upload(productId: string, files: Express.Multer.File[]) {
@@ -38,9 +48,11 @@ export const imagesService = {
       const storagePath = `${STORAGE_PATHS.PRODUCT_IMAGES}/${productId}/${filename}`;
       const fileRef = bucket().file(storagePath);
 
+      // En el emulador, `public: true` falla porque no soporta ACL reales.
+      // En producción sí lo necesitamos para que la URL pública funcione sin token.
       await fileRef.save(optimized, {
         contentType: 'image/webp',
-        public: true,
+        ...(isEmulator() ? {} : { public: true }),
         metadata: { cacheControl: 'public, max-age=31536000, immutable' },
       });
 
