@@ -9,6 +9,7 @@ import {
 	FaTwitter,
 	FaBars,
 	FaTimes,
+	FaChevronDown,
 	FaCheckCircle,
 	FaTree,
 	FaIndustry,
@@ -162,8 +163,15 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 		<nav
 			class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50 transition-all duration-300"
 		>
-			<a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
-				<img src={logoAserradero.src} alt="Aserradero Prevca" class="h-10 md:h-14 w-auto object-contain brightness-0 invert" />
+			<a
+				href="/"
+				class="flex items-center gap-3 hover:opacity-90 transition-opacity"
+			>
+				<img
+					src={logoAserradero.src}
+					alt="Aserradero Prevca"
+					class="h-10 md:h-14 w-auto object-contain brightness-0 invert"
+				/>
 			</a>
 
 			<!-- Desktop Menu -->
@@ -180,11 +188,29 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
 					>Sobre Nosotros</a
 				>
-				<a
-					href="/madera"
-					class="nav-link text-white border-b-2 border-white cursor-pointer"
-					>Aserradero Prevca</a
-				>
+				<!-- Dropdown Madera -->
+				<div class="relative group">
+					<a
+						href="/madera"
+						class="nav-link text-white border-b-2 border-white cursor-pointer flex items-center gap-1.5"
+						>Madera <FaChevronDown className="text-[10px]" /></a
+					>
+					<div class="absolute left-0 top-full pt-3 hidden group-hover:block z-50 min-w-[300px]">
+						<div class="bg-[#2a3035] border border-white/10 shadow-2xl">
+							<a href="/madera" class="block px-5 py-3 text-xs uppercase tracking-widest font-semibold hover:bg-white/10 transition-colors border-b border-white/5">
+								Ver división completa
+							</a>
+							<a href="/madera/aserradero-prevca" class="block px-5 py-3 hover:bg-white/10 transition-colors">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Aserradero PREVCA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Producción y subproductos</span>
+							</a>
+							<a href="/madera/corporacion-maderera-copesa" class="block px-5 py-3 hover:bg-white/10 transition-colors border-t border-white/5">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Maderera COPESA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Catálogo de especies</span>
+							</a>
+						</div>
+					</div>
+				</div>
 				<a
 					href="/alojamiento"
 					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
@@ -233,11 +259,17 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 					class="border-b border-white/10 pb-4 cursor-pointer"
 					>Sobre Nosotros</a
 				>
-				<a
-					href="/madera"
-					class="border-b border-white/10 pb-4 cursor-pointer"
-					>Aserradero Prevca</a
-				>
+				<details class="border-b border-white/10 pb-4" open>
+					<summary class="cursor-pointer flex items-center justify-between">
+						<span>Madera</span>
+						<FaChevronDown className="accordion-icon text-base" />
+					</summary>
+					<div class="pl-4 mt-4 flex flex-col gap-3 text-base normal-case tracking-normal">
+						<a href="/madera" class="opacity-80 hover:opacity-100 text-white">Ver división completa</a>
+						<a href="/madera/aserradero-prevca" class="opacity-80 hover:opacity-100">Aserradero PREVCA</a>
+						<a href="/madera/corporacion-maderera-copesa" class="opacity-80 hover:opacity-100">Maderera COPESA</a>
+					</div>
+				</details>
 				<a
 					href="/alojamiento"
 					class="border-b border-white/10 pb-4 cursor-pointer"
@@ -449,7 +481,7 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 						<h3
 							class="text-xl font-bold font-display text-white mb-4"
 						>
-							Limpieza
+							Cepillado
 						</h3>
 						<p
 							class="text-white/80 font-body text-sm leading-relaxed"
@@ -467,71 +499,104 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 		<!-- Catalog Section -->
 		<section class="py-24 px-6 md:px-8 bg-white">
 			<div class="max-w-7xl mx-auto">
-				<!-- Banner Header -->
-				<div
-					class="relative rounded-none overflow-hidden mb-16 h-64 reveal-item flex items-center p-10"
-				>
-					<div class="absolute inset-0 bg-[#2a3035]/80 z-10"></div>
-					<img
-						src={maderaImg01.src}
-						alt="Catálogo Madera"
-						class="absolute inset-0 w-full h-full object-cover z-0"
-					/>
-					<div class="relative z-20">
-						<h2
-							class="text-3xl md:text-5xl font-extrabold font-display text-white mb-4"
-						>
-							Catálogo de División
-						</h2>
-						<p class="text-white/80 font-body text-lg max-w-xl">
-							Madera premium de origen sostenible para
-							construcción global y aplicaciones industriales.
-						</p>
-					</div>
+				<!-- Hub Header -->
+				<div class="text-center mb-16 reveal-item">
+					<h4
+						class="text-[#1d4c74] font-ui font-bold uppercase tracking-widest text-sm mb-4"
+					>
+						Nuestras Líneas
+					</h4>
+					<h2
+						class="text-3xl md:text-5xl font-extrabold font-display text-[#2a3035] uppercase tracking-tight"
+					>
+						Explore nuestro Catálogo
+					</h2>
+					<div class="w-24 h-1 bg-[#1d4c74] mx-auto mt-6"></div>
+					<p
+						class="text-gray-600 font-body mt-6 max-w-2xl mx-auto leading-relaxed"
+					>
+						La división de Madera opera bajo dos líneas comerciales
+						claramente diferenciadas. Seleccione la que mejor se
+						adapte a su necesidad.
+					</p>
 				</div>
 
-				<!-- ============ SECCIÓN 1: ASERRADERO PREVCA ============ -->
-				<div class="mb-20 reveal-item">
-					<div class="border-l-4 border-[#1d4c74] pl-6 mb-10">
-						<span class="font-ui text-xs font-bold tracking-widest text-[#1d4c74] uppercase">
-							División de Producción
-						</span>
-						<h3 class="text-3xl md:text-4xl font-display font-extrabold text-[#2a3035] mt-2">
-							Aserradero PREVCA
-						</h3>
-						<p class="text-gray-600 font-body mt-3 max-w-2xl">
-							Madera aserrada, subproductos industriales y productos terminados fabricados en
-							nuestro propio aserradero. Calidad garantizada y suministro permanente.
-						</p>
-					</div>
-					<div
-						id="prevca-products-grid"
-						class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 min-h-[400px]"
+				<!-- ============ 2 CARDS HUB ============ -->
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<!-- Card 1: Aserradero PREVCA -->
+					<a
+						href="/madera/aserradero-prevca"
+						class="group block bg-[#2a3035] text-white hover:bg-[#1d4c74] transition-colors reveal-item overflow-hidden"
 					>
-						<!-- Productos PREVCA cargados desde la API -->
-					</div>
-				</div>
+						<div class="aspect-[16/9] overflow-hidden bg-black">
+							<img
+								src={maderaImg01.src}
+								alt="Aserradero PREVCA"
+								class="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+							/>
+						</div>
+						<div class="p-8 md:p-10">
+							<span
+								class="font-ui text-xs font-bold tracking-widest uppercase opacity-70"
+							>
+								División de Producción
+							</span>
+							<h3
+								class="text-2xl md:text-3xl font-display font-extrabold mt-2 mb-4"
+							>
+								Aserradero PREVCA
+							</h3>
+							<p class="font-body text-white/80 mb-8 leading-relaxed">
+								Madera aserrada, subproductos industriales y
+								productos terminados fabricados en nuestro propio
+								aserradero. Calidad garantizada y suministro
+								permanente.
+							</p>
+							<span
+								class="inline-flex items-center gap-3 border-2 border-white px-6 py-3 font-ui font-bold uppercase tracking-widest text-sm group-hover:bg-white group-hover:text-[#1d4c74] transition-colors"
+							>
+								Ver catálogo <FaArrowRight />
+							</span>
+						</div>
+					</a>
 
-				<!-- ============ SECCIÓN 2: CORPORACIÓN MADERERA COPESA ============ -->
-				<div class="reveal-item">
-					<div class="border-l-4 border-[#1d4c74] pl-6 mb-10">
-						<span class="font-ui text-xs font-bold tracking-widest text-[#1d4c74] uppercase">
-							Catálogo de Especies
-						</span>
-						<h3 class="text-3xl md:text-4xl font-display font-extrabold text-[#2a3035] mt-2">
-							Corporación Maderera COPESA
-						</h3>
-						<p class="text-gray-600 font-body mt-3 max-w-2xl">
-							Biblioteca técnica de las especies de madera que comercializamos. Conozca origen,
-							características y aplicaciones de cada una para elegir la más adecuada para su proyecto.
-						</p>
-					</div>
-					<div
-						id="copesa-products-grid"
-						class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]"
+					<!-- Card 2: Corporación Maderera COPESA -->
+					<a
+						href="/madera/corporacion-maderera-copesa"
+						class="group block bg-[#1d4c74] text-white hover:bg-[#153a5b] transition-colors reveal-item overflow-hidden"
+						style="transition-delay: 100ms"
 					>
-						<!-- Maderas COPESA cargadas desde la API (estilo librería) -->
-					</div>
+						<div class="aspect-[16/9] overflow-hidden bg-black">
+							<img
+								src={maderaImg02.src}
+								alt="Corporación Maderera COPESA"
+								class="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+							/>
+						</div>
+						<div class="p-8 md:p-10">
+							<span
+								class="font-ui text-xs font-bold tracking-widest uppercase opacity-70"
+							>
+								Catálogo de Especies
+							</span>
+							<h3
+								class="text-2xl md:text-3xl font-display font-extrabold mt-2 mb-4"
+							>
+								Corporación Maderera COPESA
+							</h3>
+							<p class="font-body text-white/80 mb-8 leading-relaxed">
+								Biblioteca técnica de las especies de madera que
+								comercializamos. Conozca origen, características y
+								aplicaciones de cada una para elegir la más
+								adecuada para su proyecto.
+							</p>
+							<span
+								class="inline-flex items-center gap-3 border-2 border-white px-6 py-3 font-ui font-bold uppercase tracking-widest text-sm group-hover:bg-white group-hover:text-[#1d4c74] transition-colors"
+							>
+								Explorar especies <FaArrowRight />
+							</span>
+						</div>
+					</a>
 				</div>
 
 				<!-- CTA Banner -->
@@ -691,120 +756,284 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 				</div>
 			</div>
 			<!-- Bank Accounts Section -->
-			<div class="max-w-7xl mx-auto border-t border-white/5 py-12 flex flex-col items-center gap-8 reveal-item">
-				<h4 class="font-extrabold text-[11px] opacity-50 tracking-[0.2em] uppercase text-center text-white">
+			<div
+				class="max-w-7xl mx-auto border-t border-white/5 py-12 flex flex-col items-center gap-8 reveal-item"
+			>
+				<h4
+					class="font-extrabold text-[11px] opacity-50 tracking-[0.2em] uppercase text-center text-white"
+				>
 					Cuentas Corrientes Bancarias
 				</h4>
-				<div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full relative">
+				<div
+					class="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full relative"
+				>
 					<!-- BCP -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bcp.png" alt="BCP" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bcp.png"
+							alt="BCP"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#002C6C] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#002C6C] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">305-7227583095</p>
-									<div class="bg-[#EEF4FA] border border-[#D5E4F2] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#002C6C] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#002C6C] tracking-tighter">002-30500722758309517</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										305-7227583095
+									</p>
+									<div
+										class="bg-[#EEF4FA] border border-[#D5E4F2] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#002C6C] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#002C6C] tracking-tighter"
+										>
+											002-30500722758309517
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- BBVA -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bbva.png" alt="BBVA" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bbva.png"
+							alt="BBVA"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#004481] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#004481] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-center">
-									<p class="text-sm font-bold text-gray-700">Cuenta disponible a solicitud</p>
-									<p class="text-xs text-gray-400 mt-2 leading-relaxed">Por favor consulte con su asesor comercial o de administración.</p>
+									<p class="text-sm font-bold text-gray-700">
+										Cuenta disponible a solicitud
+									</p>
+									<p
+										class="text-xs text-gray-400 mt-2 leading-relaxed"
+									>
+										Por favor consulte con su asesor
+										comercial o de administración.
+									</p>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Scotiabank -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/scotiabank.png" alt="Scotiabank" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/scotiabank.png"
+							alt="Scotiabank"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#ED1C24] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#ED1C24] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">401-0329813</p>
-									<div class="bg-[#FFEAEA] border border-[#FFD1D1] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#ED1C24] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#ED1C24] tracking-tighter">009-174-204010329813-43</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										401-0329813
+									</p>
+									<div
+										class="bg-[#FFEAEA] border border-[#FFD1D1] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#ED1C24] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#ED1C24] tracking-tighter"
+										>
+											009-174-204010329813-43
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Interbank -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/interbank.png" alt="Interbank" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/interbank.png"
+							alt="Interbank"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#00A859] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#00A859] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-left">
-									<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">Nº CTA SOLES:</p>
-									<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">7003007114820</p>
-									<div class="bg-[#EAF7F0] border border-[#CDECDA] p-3 rounded-sm">
-										<p class="text-[9px] font-bold text-[#00A859] tracking-wider uppercase mb-1">CÓDIGO DE CTA. INTERBANCARIA SOLES</p>
-										<p class="text-xs font-extrabold text-[#00A859] tracking-tighter">00370000300711482026</p>
+									<p
+										class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1"
+									>
+										Nº CTA SOLES:
+									</p>
+									<p
+										class="text-base font-extrabold text-gray-800 tracking-tight mb-4"
+									>
+										7003007114820
+									</p>
+									<div
+										class="bg-[#EAF7F0] border border-[#CDECDA] p-3 rounded-sm"
+									>
+										<p
+											class="text-[9px] font-bold text-[#00A859] tracking-wider uppercase mb-1"
+										>
+											CÓDIGO DE CTA. INTERBANCARIA SOLES
+										</p>
+										<p
+											class="text-xs font-extrabold text-[#00A859] tracking-tighter"
+										>
+											00370000300711482026
+										</p>
 									</div>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 
 					<!-- Banco de la Nación -->
-					<div class="group relative flex justify-center cursor-pointer">
-						<img src="/bancos/bn.png" alt="Banco de la Nación" class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300" />
+					<div
+						class="group relative flex justify-center cursor-pointer"
+					>
+						<img
+							src="/bancos/bn.png"
+							alt="Banco de la Nación"
+							class="h-8 md:h-9 object-contain filter brightness-0 invert opacity-50 hover:opacity-100 hover:filter-none transition-all duration-300"
+						/>
 						<!-- Tooltip -->
-						<div class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
-							<div class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100">
-								<div class="bg-[#7F8C8D] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide">
-									Aserradero Prevca SRL<br>
-									<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: 20605999264</span>
+						<div
+							class="absolute bottom-full mb-4 flex flex-col items-center z-50 w-72 transition-all duration-300 transform scale-95 opacity-0 translate-y-2 pointer-events-none group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto"
+						>
+							<div
+								class="bg-white text-gray-800 shadow-2xl rounded-sm overflow-hidden flex flex-col text-center border border-gray-100"
+							>
+								<div
+									class="bg-[#7F8C8D] text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
+								>
+									Aserradero Prevca SRL<br />
+									<span
+										class="text-[10px] font-normal opacity-80 tracking-normal"
+										>RUC: 20605999264</span
+									>
 								</div>
 								<div class="p-5 bg-white text-center">
-									<p class="text-sm font-bold text-gray-700">Cuenta disponible a solicitud</p>
-									<p class="text-xs text-gray-400 mt-2 leading-relaxed">Por favor consulte con su asesor comercial o de administración.</p>
+									<p class="text-sm font-bold text-gray-700">
+										Cuenta disponible a solicitud
+									</p>
+									<p
+										class="text-xs text-gray-400 mt-2 leading-relaxed"
+									>
+										Por favor consulte con su asesor
+										comercial o de administración.
+									</p>
 								</div>
 							</div>
 							<!-- Arrow -->
-							<div class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"></div>
+							<div
+								class="w-3 h-3 bg-white rotate-45 border-r border-b border-gray-100 -mt-1.5 shadow-sm"
+							>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -932,26 +1161,10 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 			});
 		</script>
 
-		<!-- Carga dinámica del catálogo de Madera desde la API pública -->
-		<script>
-			import {
-				renderProductGrid,
-				renderSkeleton,
-			} from "../lib/product-grid.js";
+		<!--
+			Esta página es un HUB — no hace fetch a la API.
+			Los catálogos viven en /madera/aserradero-prevca y /madera/corporacion-maderera-copesa.
+		-->
 
-			// Sección 1: Aserradero PREVCA (estilo ecommerce)
-			renderSkeleton("prevca-products-grid", 4);
-			renderProductGrid("prevca-products-grid", "MADERA", "/madera", {
-				categorySlug: "aserradero-prevca",
-				variant: "ecommerce",
-			});
-
-			// Sección 2: Corporación Maderera COPESA (estilo librería)
-			renderSkeleton("copesa-products-grid", 3);
-			renderProductGrid("copesa-products-grid", "MADERA", "/madera", {
-				categorySlug: "corporacion-maderera-copesa",
-				variant: "library",
-			});
-		</script>
 	</body>
 </html>

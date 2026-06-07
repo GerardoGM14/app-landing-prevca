@@ -1,0 +1,285 @@
+---
+import "../../styles/global.css";
+import {
+	FaBars,
+	FaTimes,
+	FaChevronDown,
+	FaLinkedinIn,
+	FaInstagram,
+	FaTwitter,
+	FaPhoneSquareAlt,
+} from "react-icons/fa";
+import { MdMarkEmailRead } from "react-icons/md";
+import libroImg from "../../assets/libro-reclamaciones.png";
+import logoAserradero from "../../assets/logo-aserradero.png";
+import maderaImg02 from "../../assets/madera/madera-image-02.png";
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Corporación Maderera COPESA | División Madera | Grupo Prevca</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@400;600&family=Inter:wght@300;400&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			@keyframes spin { to { transform: rotate(360deg); } }
+			.loader-spinner {
+				border: 3px solid rgba(255, 255, 255, 0.1);
+				border-left-color: #1d4c74;
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				animation: spin 0.8s linear infinite;
+			}
+			.reveal-item {
+				opacity: 0;
+				transform: translateY(20px);
+				transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+			}
+			.reveal-item.active { opacity: 1; transform: translateY(0); }
+			.nav-link { position: relative; }
+			.nav-link::after {
+				content: "";
+				position: absolute;
+				bottom: -2px;
+				left: 0;
+				width: 0;
+				height: 2px;
+				background-color: white;
+				transition: width 0.3s ease;
+			}
+			.nav-link:hover::after { width: 100%; }
+			details > summary { list-style: none; }
+			details > summary::-webkit-details-marker { display: none; }
+			details[open] .accordion-icon { transform: rotate(180deg); }
+		</style>
+	</head>
+	<body class="bg-gray-50 text-gray-800 font-body selection:bg-[#1d4c74] selection:text-white overflow-x-hidden">
+		<div id="loader-overlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 bg-white">
+			<div class="loader-spinner"></div>
+		</div>
+
+		<nav class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50">
+			<a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+				<img src={logoAserradero.src} alt="Maderera Prevca" class="h-10 md:h-14 w-auto object-contain brightness-0 invert" />
+			</a>
+
+			<div class="hidden lg:flex gap-8 text-sm font-semibold tracking-wide uppercase items-center">
+				<a href="/" class="nav-link hover:text-gray-300 transition-colors">Inicio</a>
+				<a href="/nosotros" class="nav-link hover:text-gray-300 transition-colors">Sobre Nosotros</a>
+
+				<div class="relative group">
+					<a href="/madera" class="nav-link text-white border-b-2 border-white cursor-pointer flex items-center gap-1.5">
+						Madera <FaChevronDown className="text-[10px]" />
+					</a>
+					<div class="absolute left-0 top-full pt-3 hidden group-hover:block z-50 min-w-[300px]">
+						<div class="bg-[#2a3035] border border-white/10 shadow-2xl">
+							<a href="/madera" class="block px-5 py-3 text-xs uppercase tracking-widest font-semibold hover:bg-white/10 transition-colors border-b border-white/5">
+								Ver división completa
+							</a>
+							<a href="/madera/aserradero-prevca" class="block px-5 py-3 hover:bg-white/10 transition-colors">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Aserradero PREVCA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Producción y subproductos</span>
+							</a>
+							<a href="/madera/corporacion-maderera-copesa" class="block px-5 py-3 hover:bg-white/10 transition-colors border-t border-white/5">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Maderera COPESA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Catálogo de especies</span>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<a href="/alojamiento" class="nav-link hover:text-gray-300 transition-colors">Alojamiento</a>
+				<a href="/cafe" class="nav-link hover:text-gray-300 transition-colors">Café</a>
+				<a href="/transporte" class="nav-link hover:text-gray-300 transition-colors">Transporte</a>
+				<a href="/#contact-section" class="nav-link hover:text-gray-300 transition-colors">Contacto</a>
+			</div>
+
+			<button id="menu-toggle" class="lg:hidden text-2xl text-white cursor-pointer">
+				<div id="icon-bars"><FaBars /></div>
+				<div id="icon-times" class="hidden"><FaTimes /></div>
+			</button>
+		</nav>
+
+		<div id="mobile-menu" class="fixed inset-0 bg-[#2a3035] z-40 transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-8 overflow-y-auto">
+			<div class="flex flex-col gap-6 text-xl text-white font-ui uppercase font-bold tracking-widest">
+				<a href="/" class="border-b border-white/10 pb-4">Inicio</a>
+				<a href="/nosotros" class="border-b border-white/10 pb-4">Sobre Nosotros</a>
+
+				<details class="border-b border-white/10 pb-4" open>
+					<summary class="cursor-pointer flex items-center justify-between">
+						<span>Madera</span>
+						<FaChevronDown className="accordion-icon text-base transition-transform" />
+					</summary>
+					<div class="pl-4 mt-4 flex flex-col gap-3 text-base">
+						<a href="/madera" class="opacity-80 hover:opacity-100">Ver división completa</a>
+						<a href="/madera/aserradero-prevca" class="opacity-80 hover:opacity-100">Aserradero PREVCA</a>
+						<a href="/madera/corporacion-maderera-copesa" class="opacity-80 hover:opacity-100 text-white">→ Maderera COPESA</a>
+					</div>
+				</details>
+
+				<a href="/alojamiento" class="border-b border-white/10 pb-4">Alojamiento</a>
+				<a href="/cafe" class="border-b border-white/10 pb-4">Café</a>
+				<a href="/transporte" class="border-b border-white/10 pb-4">Transporte</a>
+				<a href="/#contact-section" class="border-b border-white/10 pb-4">Contacto</a>
+				<a href="/ecommerce" class="bg-[#1d4c74] text-center py-4 mt-2 text-sm">Tienda Virtual</a>
+			</div>
+		</div>
+
+		<!-- Breadcrumb -->
+		<div class="bg-white border-b border-gray-200">
+			<div class="max-w-7xl mx-auto px-6 md:px-8 py-4 text-sm font-ui text-gray-500 uppercase tracking-widest font-bold">
+				<a href="/madera" class="hover:text-[#1d4c74] transition-colors">División Madera</a>
+				<span class="mx-2">/</span>
+				<span class="text-[#1d4c74]">Corporación Maderera COPESA</span>
+			</div>
+		</div>
+
+		<!-- Hero -->
+		<header class="relative h-[40vh] flex items-center justify-center overflow-hidden">
+			<div class="absolute inset-0 bg-black/55 z-10"></div>
+			<img src={maderaImg02.src} alt="Corporación Maderera COPESA" class="absolute inset-0 w-full h-full object-cover" />
+			<div class="relative z-20 text-center px-6 reveal-item active">
+				<span class="font-ui tracking-[0.3em] text-xs md:text-sm font-bold uppercase block opacity-80 text-white mb-3">Catálogo de Especies</span>
+				<h1 class="text-3xl md:text-5xl font-extrabold font-display text-white uppercase tracking-tight">
+					Corporación Maderera COPESA
+				</h1>
+				<div class="w-16 h-1 bg-white mx-auto mt-5 opacity-70"></div>
+			</div>
+		</header>
+
+		<!-- Intro -->
+		<section class="py-16 md:py-20 px-6 md:px-8 bg-white">
+			<div class="max-w-4xl mx-auto text-center reveal-item">
+				<h2 class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] uppercase tracking-tight mb-4">
+					Biblioteca técnica de especies
+				</h2>
+				<div class="w-16 h-1 bg-[#1d4c74] mx-auto mb-6"></div>
+				<p class="text-gray-600 font-body text-base md:text-lg leading-relaxed">
+					Conozca el origen, características técnicas y aplicaciones de cada
+					una de las especies de madera que comercializamos. Información
+					curada para que pueda elegir la más adecuada a su proyecto.
+				</p>
+			</div>
+		</section>
+
+		<!-- Catálogo (estilo librería) -->
+		<section class="pb-24 px-6 md:px-8 bg-white">
+			<div class="max-w-7xl mx-auto">
+				<div id="copesa-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal-item active min-h-[400px]">
+					<!-- Especies cargadas via /public/products?division=MADERA&categorySlug=corporacion-maderera-copesa -->
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<section class="py-16 px-6 md:px-8 bg-gray-50">
+			<div class="max-w-7xl mx-auto bg-white p-8 md:p-12 border border-[#1d4c74]/10 flex flex-col md:flex-row justify-between items-center gap-8 reveal-item">
+				<div class="text-center md:text-left">
+					<h3 class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] mb-2">¿Necesita asesoría técnica?</h3>
+					<p class="text-gray-600 font-body max-w-xl">
+						Nuestro equipo le ayuda a elegir la especie ideal según resistencia,
+						aplicación y disponibilidad para su proyecto.
+					</p>
+				</div>
+				<a href="/#contact-section" class="bg-[#1d4c74] text-white font-bold px-8 py-4 font-ui tracking-wider hover:bg-[#2a3035] transition-colors shadow-lg whitespace-nowrap uppercase text-sm">
+					Hablar con un especialista
+				</a>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer class="bg-[#2a3035] text-white pt-16 pb-8 px-6 md:px-8">
+			<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+				<div class="space-y-6">
+					<div class="flex items-center gap-3">
+						<img src={logoAserradero.src} alt="Maderera Prevca" class="h-12 w-auto object-contain brightness-0 invert" />
+					</div>
+					<p class="text-sm text-gray-400 font-body leading-loose">Inspiramos confianza a través de la excelencia y la sostenibilidad en cada sector donde operamos.</p>
+					<div class="space-y-3 text-sm text-gray-400 font-body">
+						<p class="flex items-center gap-3"><span class="text-white text-xl"><FaPhoneSquareAlt /></span><span>+51 987 654 321</span></p>
+						<p class="flex items-center gap-3"><span class="text-white text-xl"><MdMarkEmailRead /></span><span>info@grupoprevca.com</span></p>
+					</div>
+				</div>
+				<div>
+					<h4 class="mb-6 text-sm opacity-70 text-white">Atención al Cliente</h4>
+					<a href="#" class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg">
+						<img src={libroImg.src} alt="Libro de Reclamaciones" class="w-full h-auto max-h-24 object-contain" />
+					</a>
+					<p class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-2 font-bold">Conforme a la Ley N° 29571</p>
+				</div>
+				<div>
+					<h4 class="font-extrabold mb-6 text-sm opacity-70">Corporativo</h4>
+					<ul class="space-y-3 text-sm text-gray-400 font-body">
+						<li><a href="/nosotros" class="hover:text-white transition-all">Sobre Nosotros</a></li>
+						<li><a href="/madera" class="hover:text-white transition-all">División Madera</a></li>
+						<li><a href="/#contact-section" class="hover:text-white transition-all">Centro de Contacto</a></li>
+					</ul>
+				</div>
+				<div>
+					<h4 class="font-extrabold mb-4 text-sm opacity-70">Síguenos</h4>
+					<div class="flex gap-3">
+						<a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all"><FaLinkedinIn /></a>
+						<a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all"><FaInstagram /></a>
+						<a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-white hover:text-[#2a3035] transition-all"><FaTwitter /></a>
+					</div>
+				</div>
+			</div>
+			<div class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui">
+				&copy; 2026 Grupo Prevca. Todos los derechos reservados.
+			</div>
+		</footer>
+
+		<script>
+			window.addEventListener("load", () => {
+				const loader = document.getElementById("loader-overlay");
+				if (loader) {
+					loader.style.opacity = "0";
+					setTimeout(() => (loader.style.display = "none"), 500);
+				}
+			});
+
+			const toggle = document.getElementById("menu-toggle");
+			const menu = document.getElementById("mobile-menu");
+			const bars = document.getElementById("icon-bars");
+			const times = document.getElementById("icon-times");
+			toggle?.addEventListener("click", () => {
+				if (!menu || !bars || !times) return;
+				const isOpen = menu.classList.contains("translate-x-0");
+				if (isOpen) {
+					menu.classList.replace("translate-x-0", "translate-x-full");
+					bars.classList.remove("hidden");
+					times.classList.add("hidden");
+				} else {
+					menu.classList.replace("translate-x-full", "translate-x-0");
+					bars.classList.add("hidden");
+					times.classList.remove("hidden");
+				}
+			});
+
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) entry.target.classList.add("active");
+				});
+			}, { threshold: 0.15 });
+			document.querySelectorAll(".reveal-item").forEach((el) => observer.observe(el));
+		</script>
+
+		<!-- Catálogo dinámico COPESA (estilo librería) -->
+		<script>
+			import { renderProductGrid, renderSkeleton } from "../../lib/product-grid.js";
+			renderSkeleton("copesa-products-grid", 3);
+			renderProductGrid("copesa-products-grid", "MADERA", "/madera", {
+				categorySlug: "corporacion-maderera-copesa",
+				variant: "library",
+			});
+		</script>
+	</body>
+</html>
