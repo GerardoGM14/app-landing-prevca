@@ -1,0 +1,58 @@
+name: Deploy Functions, Firestore y Storage rules
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - 'firebase.json'
+      - '.firebaserc'
+      - '.github/workflows/deploy-functions.yml'
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias del backend
+        working-directory: backend
+        run: npm ci
+
+      - name: Compilar TypeScript
+        working-directory: backend
+        run: npm run build
+
+      - name: Instalar firebase-tools
+        run: npm install -g firebase-tools
+
+      - name: Escribir Service Account a archivo temporal
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_APP_PREVCA }}' > "$RUNNER_TEMP/sa-key.json"
+
+      - name: Deploy a Firebase (Functions + Firestore + Storage)
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa-key.json
+        run: |
+          firebase deploy \
+            --only functions,firestore:rules,firestore:indexes,storage \
+            --project app-prevca \
+            --non-interactive \
+            --force
+
+      - name: Limpiar credenciales
+        if: always()
+        run: rm -f "$RUNNER_TEMP/sa-key.json"
+
+      - name: Publicar resumen
+        if: success()
+        run: |
+          echo "### Deploy de backend completado" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Cloud Functions: https://us-central1-app-prevca.cloudfunctions.net/api" >> $GITHUB_STEP_SUMMARY
+          echo "- Health check: https://us-central1-app-prevca.cloudfunctions.net/api/health" >> $GITHUB_STEP_SUMMARY
+          echo "- Console: https://console.firebase.google.com/project/app-prevca/functions" >> $GITHUB_STEP_SUMMARY
