@@ -1,0 +1,58 @@
+name: Deploy admin a Firebase Hosting
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - 'firebase.json'
+      - '.firebaserc'
+      - '.github/workflows/deploy-admin.yml'
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar admin (Vite) con env de producción
+        env:
+          VITE_FIREBASE_API_KEY: AIzaSyBsvJmrRjEBVxTR0c_iZPjgx8O5afUOGrM
+          VITE_FIREBASE_AUTH_DOMAIN: app-prevca.firebaseapp.com
+          VITE_FIREBASE_PROJECT_ID: app-prevca
+          VITE_FIREBASE_STORAGE_BUCKET: app-prevca.firebasestorage.app
+          VITE_FIREBASE_MESSAGING_SENDER_ID: '805680798148'
+          VITE_FIREBASE_APP_ID: '1:805680798148:web:16a39997a667cd0e36ac91'
+          VITE_API_BASE_URL: https://us-central1-app-prevca.cloudfunctions.net/api
+          VITE_USE_EMULATORS: 'false'
+        run: npm run build
+
+      - id: deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_APP_PREVCA }}
+          channelId: live
+          projectId: app-prevca
+          target: admin
+          entryPoint: ./
+
+      - name: Publicar URL del deploy en el summary
+        if: steps.deploy.outputs.details_url != ''
+        run: |
+          echo "### Deploy del admin completado" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- URL principal: ${{ steps.deploy.outputs.details_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- URLs: ${{ steps.deploy.outputs.urls }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Admin live: https://prevca-admin.web.app" >> $GITHUB_STEP_SUMMARY
