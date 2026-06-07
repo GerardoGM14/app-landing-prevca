@@ -81,7 +81,7 @@ export interface PaginatedResponse<T> {
 
 export const DIVISION_LABELS: Record<Division, string> = {
   MADERA: 'Madera',
-  HOSPITALIDAD: 'Hospitalidad',
+  HOSPITALIDAD: 'Alojamiento',
   CAFE: 'Café',
   TRANSPORTE: 'Transporte',
 };
