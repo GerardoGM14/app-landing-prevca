@@ -13,6 +13,7 @@ import "../styles/global.css";
 import {
 	FaBars,
 	FaTimes,
+	FaChevronDown,
 	FaShoppingCart,
 	FaLinkedinIn,
 	FaInstagram,
@@ -91,7 +92,27 @@ import logoPrevca from "../assets/logo-prevca.png";
 			</div>
 			<div class="hidden lg:flex gap-8 text-sm font-semibold tracking-wide uppercase items-center">
 				<a href="/" class="nav-link hover:text-gray-300 transition-colors">Inicio</a>
-				<a href="/madera" class="nav-link hover:text-gray-300 transition-colors">Aserradero Prevca</a>
+				<!-- Dropdown Madera -->
+				<div class="relative group">
+					<a href="/madera" class="nav-link hover:text-gray-300 transition-colors flex items-center gap-1.5">
+						Madera <FaChevronDown className="text-[10px]" />
+					</a>
+					<div class="absolute left-0 top-full pt-3 hidden group-hover:block z-50 min-w-[300px]">
+						<div class="bg-[#2a3035] border border-white/10 shadow-2xl">
+							<a href="/madera" class="block px-5 py-3 text-xs uppercase tracking-widest font-semibold hover:bg-white/10 transition-colors border-b border-white/5">
+								Ver división completa
+							</a>
+							<a href="/madera/aserradero-prevca" class="block px-5 py-3 hover:bg-white/10 transition-colors">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Aserradero PREVCA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Producción y subproductos</span>
+							</a>
+							<a href="/madera/corporacion-maderera-copesa" class="block px-5 py-3 hover:bg-white/10 transition-colors border-t border-white/5">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Maderera COPESA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Catálogo de especies</span>
+							</a>
+						</div>
+					</div>
+				</div>
 				<a href="/alojamiento" class="nav-link hover:text-gray-300 transition-colors">Alojamiento</a>
 				<a href="/cafe" class="nav-link hover:text-gray-300 transition-colors">Café</a>
 				<a href="/transporte" class="nav-link hover:text-gray-300 transition-colors">Transporte</a>
@@ -110,7 +131,17 @@ import logoPrevca from "../assets/logo-prevca.png";
 		<div id="mobile-menu" class="fixed inset-0 bg-[#2a3035] z-40 transform translate-x-full transition-transform duration-300 lg:hidden pt-24 px-8 overflow-y-auto">
 			<div class="flex flex-col gap-6 text-xl text-white font-ui uppercase font-bold tracking-widest">
 				<a href="/" class="border-b border-white/10 pb-4">Inicio</a>
-				<a href="/madera" class="border-b border-white/10 pb-4">Aserradero Prevca</a>
+				<details class="border-b border-white/10 pb-4">
+					<summary class="cursor-pointer flex items-center justify-between">
+						<span>Madera</span>
+						<FaChevronDown className="accordion-icon text-base" />
+					</summary>
+					<div class="pl-4 mt-4 flex flex-col gap-3 text-base normal-case tracking-normal">
+						<a href="/madera" class="opacity-80 hover:opacity-100">Ver división completa</a>
+						<a href="/madera/aserradero-prevca" class="opacity-80 hover:opacity-100">Aserradero PREVCA</a>
+						<a href="/madera/corporacion-maderera-copesa" class="opacity-80 hover:opacity-100">Maderera COPESA</a>
+					</div>
+				</details>
 				<a href="/alojamiento" class="border-b border-white/10 pb-4">Alojamiento</a>
 				<a href="/cafe" class="border-b border-white/10 pb-4">Café</a>
 				<a href="/transporte" class="border-b border-white/10 pb-4">Transporte</a>

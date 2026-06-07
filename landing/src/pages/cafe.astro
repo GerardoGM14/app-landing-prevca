@@ -4,6 +4,7 @@ import {
 	FaSearch,
 	FaBars,
 	FaTimes,
+	FaChevronDown,
 	FaArrowRight,
 	FaLinkedinIn,
 	FaInstagram,
@@ -113,11 +114,29 @@ import cafeImg02 from "../assets/cafe/cafe-image-02.png";
 					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
 					>Sobre Nosotros</a
 				>
-				<a
-					href="/madera"
-					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
-					>Madera</a
-				>
+				<!-- Dropdown Madera -->
+				<div class="relative group">
+					<a
+						href="/madera"
+						class="nav-link hover:text-gray-300 transition-colors cursor-pointer flex items-center gap-1.5"
+						>Madera <FaChevronDown className="text-[10px]" /></a
+					>
+					<div class="absolute left-0 top-full pt-3 hidden group-hover:block z-50 min-w-[300px]">
+						<div class="bg-[#2a3035] border border-white/10 shadow-2xl">
+							<a href="/madera" class="block px-5 py-3 text-xs uppercase tracking-widest font-semibold hover:bg-white/10 transition-colors border-b border-white/5">
+								Ver división completa
+							</a>
+							<a href="/madera/aserradero-prevca" class="block px-5 py-3 hover:bg-white/10 transition-colors">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Aserradero PREVCA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Producción y subproductos</span>
+							</a>
+							<a href="/madera/corporacion-maderera-copesa" class="block px-5 py-3 hover:bg-white/10 transition-colors border-t border-white/5">
+								<span class="block text-xs uppercase tracking-widest font-semibold">Maderera COPESA</span>
+								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Catálogo de especies</span>
+							</a>
+						</div>
+					</div>
+				</div>
 				<a
 					href="/alojamiento"
 					class="nav-link hover:text-gray-300 transition-colors cursor-pointer"
@@ -178,11 +197,17 @@ import cafeImg02 from "../assets/cafe/cafe-image-02.png";
 					class="border-b border-white/10 pb-4 cursor-pointer"
 					>Sobre Nosotros</a
 				>
-				<a
-					href="/madera"
-					class="border-b border-white/10 pb-4 cursor-pointer"
-					>Madera</a
-				>
+				<details class="border-b border-white/10 pb-4">
+					<summary class="cursor-pointer flex items-center justify-between">
+						<span>Madera</span>
+						<FaChevronDown className="accordion-icon text-base" />
+					</summary>
+					<div class="pl-4 mt-4 flex flex-col gap-3 text-base normal-case tracking-normal">
+						<a href="/madera" class="opacity-80 hover:opacity-100">Ver división completa</a>
+						<a href="/madera/aserradero-prevca" class="opacity-80 hover:opacity-100">Aserradero PREVCA</a>
+						<a href="/madera/corporacion-maderera-copesa" class="opacity-80 hover:opacity-100">Maderera COPESA</a>
+					</div>
+				</details>
 				<a
 					href="/alojamiento"
 					class="border-b border-white/10 pb-4 cursor-pointer"
