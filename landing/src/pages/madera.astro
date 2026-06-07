@@ -26,6 +26,10 @@ import logoAserradero from "../assets/logo-aserradero.png";
 // Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import maderaImg01 from "../assets/madera/madera-image-01.png";
 import maderaImg02 from "../assets/madera/madera-image-02.png";
+import maderaImg03 from "../assets/madera/madera-image-03.png";
+import maderaImg04 from "../assets/madera/madera-image-04.png";
+import maderaImg05 from "../assets/madera/madera-image-05.png";
+import maderaImg06 from "../assets/madera/madera-image-06.png";
 ---
 
 <html lang="es">
@@ -195,18 +199,43 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 						class="nav-link text-white border-b-2 border-white cursor-pointer flex items-center gap-1.5"
 						>Madera <FaChevronDown className="text-[10px]" /></a
 					>
-					<div class="absolute left-0 top-full pt-3 hidden group-hover:block z-50 min-w-[300px]">
-						<div class="bg-[#2a3035] border border-white/10 shadow-2xl">
-							<a href="/madera" class="block px-5 py-3 text-xs uppercase tracking-widest font-semibold hover:bg-white/10 transition-colors border-b border-white/5">
+					<div
+						class="absolute left-0 top-full pt-3 hidden group-hover:block z-50 min-w-[300px]"
+					>
+						<div
+							class="bg-[#2a3035] border border-white/10 shadow-2xl"
+						>
+							<a
+								href="/madera"
+								class="block px-5 py-3 text-xs uppercase tracking-widest font-semibold hover:bg-white/10 transition-colors border-b border-white/5"
+							>
 								Ver división completa
 							</a>
-							<a href="/madera/aserradero-prevca" class="block px-5 py-3 hover:bg-white/10 transition-colors">
-								<span class="block text-xs uppercase tracking-widest font-semibold">Aserradero PREVCA</span>
-								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Producción y subproductos</span>
+							<a
+								href="/madera/aserradero-prevca"
+								class="block px-5 py-3 hover:bg-white/10 transition-colors"
+							>
+								<span
+									class="block text-xs uppercase tracking-widest font-semibold"
+									>Aserradero PREVCA</span
+								>
+								<span
+									class="block text-[10px] opacity-60 mt-1 normal-case font-normal"
+									>Producción y subproductos</span
+								>
 							</a>
-							<a href="/madera/corporacion-maderera-copesa" class="block px-5 py-3 hover:bg-white/10 transition-colors border-t border-white/5">
-								<span class="block text-xs uppercase tracking-widest font-semibold">Maderera COPESA</span>
-								<span class="block text-[10px] opacity-60 mt-1 normal-case font-normal">Catálogo de especies</span>
+							<a
+								href="/madera/corporacion-maderera-copesa"
+								class="block px-5 py-3 hover:bg-white/10 transition-colors border-t border-white/5"
+							>
+								<span
+									class="block text-xs uppercase tracking-widest font-semibold"
+									>Maderera COPESA</span
+								>
+								<span
+									class="block text-[10px] opacity-60 mt-1 normal-case font-normal"
+									>Catálogo de especies</span
+								>
 							</a>
 						</div>
 					</div>
@@ -260,14 +289,30 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 					>Sobre Nosotros</a
 				>
 				<details class="border-b border-white/10 pb-4" open>
-					<summary class="cursor-pointer flex items-center justify-between">
+					<summary
+						class="cursor-pointer flex items-center justify-between"
+					>
 						<span>Madera</span>
 						<FaChevronDown className="accordion-icon text-base" />
 					</summary>
-					<div class="pl-4 mt-4 flex flex-col gap-3 text-base normal-case tracking-normal">
-						<a href="/madera" class="opacity-80 hover:opacity-100 text-white">Ver división completa</a>
-						<a href="/madera/aserradero-prevca" class="opacity-80 hover:opacity-100">Aserradero PREVCA</a>
-						<a href="/madera/corporacion-maderera-copesa" class="opacity-80 hover:opacity-100">Maderera COPESA</a>
+					<div
+						class="pl-4 mt-4 flex flex-col gap-3 text-base normal-case tracking-normal"
+					>
+						<a
+							href="/madera"
+							class="opacity-80 hover:opacity-100 text-white"
+							>Ver división completa</a
+						>
+						<a
+							href="/madera/aserradero-prevca"
+							class="opacity-80 hover:opacity-100"
+							>Aserradero PREVCA</a
+						>
+						<a
+							href="/madera/corporacion-maderera-copesa"
+							class="opacity-80 hover:opacity-100"
+							>Maderera COPESA</a
+						>
 					</div>
 				</details>
 				<a
@@ -385,7 +430,7 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-sm">
 					</div>
 					<img
-						src={maderaImg02.src}
+						src={maderaImg03.src}
 						alt="Procesamiento de Madera"
 						class="relative z-10 w-full h-auto rounded-sm shadow-2xl"
 					/>
@@ -530,7 +575,7 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 					>
 						<div class="aspect-[16/9] overflow-hidden bg-black">
 							<img
-								src={maderaImg01.src}
+								src={maderaImg02.src}
 								alt="Aserradero PREVCA"
 								class="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
 							/>
@@ -546,11 +591,13 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 							>
 								Aserradero PREVCA
 							</h3>
-							<p class="font-body text-white/80 mb-8 leading-relaxed">
+							<p
+								class="font-body text-white/80 mb-8 leading-relaxed"
+							>
 								Madera aserrada, subproductos industriales y
-								productos terminados fabricados en nuestro propio
-								aserradero. Calidad garantizada y suministro
-								permanente.
+								productos terminados fabricados en nuestro
+								propio aserradero. Calidad garantizada y
+								suministro permanente.
 							</p>
 							<span
 								class="inline-flex items-center gap-3 border-2 border-white px-6 py-3 font-ui font-bold uppercase tracking-widest text-sm group-hover:bg-white group-hover:text-[#1d4c74] transition-colors"
@@ -568,7 +615,7 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 					>
 						<div class="aspect-[16/9] overflow-hidden bg-black">
 							<img
-								src={maderaImg02.src}
+								src={maderaImg06.src}
 								alt="Corporación Maderera COPESA"
 								class="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
 							/>
@@ -584,10 +631,12 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 							>
 								Corporación Maderera COPESA
 							</h3>
-							<p class="font-body text-white/80 mb-8 leading-relaxed">
+							<p
+								class="font-body text-white/80 mb-8 leading-relaxed"
+							>
 								Biblioteca técnica de las especies de madera que
-								comercializamos. Conozca origen, características y
-								aplicaciones de cada una para elegir la más
+								comercializamos. Conozca origen, características
+								y aplicaciones de cada una para elegir la más
 								adecuada para su proyecto.
 							</p>
 							<span
@@ -1165,6 +1214,5 @@ import maderaImg02 from "../assets/madera/madera-image-02.png";
 			Esta página es un HUB — no hace fetch a la API.
 			Los catálogos viven en /madera/aserradero-prevca y /madera/corporacion-maderera-copesa.
 		-->
-
 	</body>
 </html>
