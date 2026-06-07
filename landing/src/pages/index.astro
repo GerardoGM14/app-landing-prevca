@@ -22,6 +22,7 @@ import {
 import { LuCookie } from "react-icons/lu";
 import libroImg from "../assets/libro-reclamaciones.png";
 import logoPrevca from "../assets/logo-prevca.png";
+import logoProinnovate from "../assets/logo-proinnovate.png";
 ---
 
 <html lang="es">
@@ -1052,20 +1053,31 @@ import logoPrevca from "../assets/logo-prevca.png";
 						Atención al Cliente
 					</h4>
 					<div class="flex flex-col gap-3 mt-2">
-						<a
-							href="#"
-							class="bg-white p-1 rounded-sm hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg"
-						>
-							<img
-								src={libroImg.src}
-								alt="Libro de Reclamaciones"
-								class="w-full h-auto max-h-24 object-contain"
-							/>
-						</a>
+						<div class="flex flex-row gap-3 items-stretch">
+							<a
+								href="#"
+								class="bg-white p-1 rounded-sm hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg"
+							>
+								<img
+									src={libroImg.src}
+									alt="Libro de Reclamaciones"
+									class="w-full h-auto max-h-24 object-contain"
+								/>
+							</a>
+							<div
+								class="bg-white p-2 rounded-sm border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg"
+							>
+								<img
+									src={logoProinnovate.src}
+									alt="Proinnovate"
+									class="w-full h-auto max-h-20 object-contain"
+								/>
+							</div>
+						</div>
 						<p
 							class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-1 font-bold"
 						>
-							Conforme a la Ley N° 29571
+							Conforme a la Ley N° 29571 · Apoyo Proinnovate
 						</p>
 					</div>
 				</div>

@@ -17,6 +17,7 @@ import {
 import { MdMarkEmailRead } from "react-icons/md";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import libroImg from "../assets/libro-reclamaciones.png";
+import logoProinnovate from "../assets/logo-proinnovate.png";
 import logoTransporte from "../assets/logo-transporte.png";
 
 // Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
@@ -598,20 +599,31 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 						Atención al Cliente
 					</h4>
 					<div class="flex flex-col gap-3 mt-2">
-						<a
-							href="#"
-							class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg rounded-none"
-						>
-							<img
-								src={libroImg.src}
-								alt="Libro de Reclamaciones"
-								class="w-full h-auto max-h-24 object-contain rounded-none"
-							/>
-						</a>
+						<div class="flex flex-row gap-3 items-stretch">
+							<a
+								href="#"
+								class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg rounded-none"
+							>
+								<img
+									src={libroImg.src}
+									alt="Libro de Reclamaciones"
+									class="w-full h-auto max-h-24 object-contain rounded-none"
+								/>
+							</a>
+							<div
+								class="bg-white p-2 border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg rounded-none"
+							>
+								<img
+									src={logoProinnovate.src}
+									alt="Proinnovate"
+									class="w-full h-auto max-h-20 object-contain rounded-none"
+								/>
+							</div>
+						</div>
 						<p
 							class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-1 font-bold"
 						>
-							Conforme a la Ley N° 29571
+							Conforme a la Ley N° 29571 · Apoyo Proinnovate
 						</p>
 					</div>
 				</div>
@@ -940,7 +952,7 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 			<div
 				class="max-w-7xl mx-auto border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-xs font-ui tracking-[0.2em] text-gray-500 uppercase font-bold"
 			>
-				<p>© 2024 GRUPO PREVCA. TODOS LOS DERECHOS RESERVADOS.</p>
+				<p>© 2026 GRUPO PREVCA. TODOS LOS DERECHOS RESERVADOS.</p>
 				<p>
 					DISCUSIÓN Y DISEÑO POR <span class="text-white"
 						>TRIGA S.A.C.</span

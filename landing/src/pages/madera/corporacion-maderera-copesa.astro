@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
 import libroImg from "../../assets/libro-reclamaciones.png";
+import logoProinnovate from "../../assets/logo-proinnovate.png";
 import logoAserradero from "../../assets/logo-aserradero.png";
 import maderaImg02 from "../../assets/madera/madera-image-02.png";
 ---
@@ -210,10 +211,15 @@ import maderaImg02 from "../../assets/madera/madera-image-02.png";
 				</div>
 				<div>
 					<h4 class="mb-6 text-sm opacity-70 text-white">Atención al Cliente</h4>
-					<a href="#" class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[200px] w-full flex justify-center items-center shadow-lg">
-						<img src={libroImg.src} alt="Libro de Reclamaciones" class="w-full h-auto max-h-24 object-contain" />
-					</a>
-					<p class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-2 font-bold">Conforme a la Ley N° 29571</p>
+					<div class="flex flex-row gap-3 items-stretch">
+						<a href="#" class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg">
+							<img src={libroImg.src} alt="Libro de Reclamaciones" class="w-full h-auto max-h-24 object-contain" />
+						</a>
+						<div class="bg-white p-2 border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg">
+							<img src={logoProinnovate.src} alt="Proinnovate" class="w-full h-auto max-h-20 object-contain" />
+						</div>
+					</div>
+					<p class="text-[11px] text-gray-500 font-body uppercase tracking-widest pl-1 mt-2 font-bold">Conforme a la Ley N° 29571 · Apoyo Proinnovate</p>
 				</div>
 				<div>
 					<h4 class="font-extrabold mb-6 text-sm opacity-70">Corporativo</h4>
