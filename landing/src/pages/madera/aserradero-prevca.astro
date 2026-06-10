@@ -245,7 +245,24 @@ import BankBanner from "../../components/BankBanner.astro";
 					</div>
 				</div>
 			</div>
-			<BankBanner />
+			<BankBanner
+				companyName="Aserradero Prevca SRL"
+				ruc="20605999264"
+				accounts={{
+					bcp: {
+						soles: "305-7227583095",
+						cci: "002-30500722758309517",
+					},
+					scotia: {
+						soles: "401-0329813",
+						cci: "009-174-204010329813-43",
+					},
+					inter: {
+						soles: "7003007114820",
+						cci: "00370000300711482026",
+					},
+				}}
+			/>
 			<div class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui">
 				&copy; 2026 Grupo Prevca. Todos los derechos reservados.
 			</div>

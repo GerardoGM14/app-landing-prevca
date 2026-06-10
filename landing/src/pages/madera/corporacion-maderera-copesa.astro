@@ -239,7 +239,19 @@ import BankBanner from "../../components/BankBanner.astro";
 					</div>
 				</div>
 			</div>
-			<BankBanner />
+			<BankBanner
+				companyName="Corporación Maderera COPESA"
+				ruc="20607294543"
+				accounts={{
+					bcp: {
+						soles: "305-7326490-0-56",
+					},
+					scotia: {
+						soles: "401-0329813",
+						cci: "00917420401032981343",
+					},
+				}}
+			/>
 			<div class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui">
 				&copy; 2026 Grupo Prevca. Todos los derechos reservados.
 			</div>
