@@ -201,9 +201,27 @@ import logoPrevca from "../assets/logo-prevca.png";
 					<div class="bg-white border border-[#1d4c74] p-8 sticky top-24 rounded-none shadow-xl">
 						<h3 class="text-xl font-extrabold font-display text-[#2a3035] uppercase tracking-wider mb-6 border-b border-gray-100 pb-4">Resumen</h3>
 						
-						<div class="flex justify-between items-center text-gray-600 font-body mb-8">
+						<div class="flex justify-between items-center text-gray-600 font-body mb-3">
 							<span>Total de Ítems:</span>
 							<span id="summary-total-items" class="font-bold text-[#2a3035] text-xl">0</span>
+						</div>
+
+						<div id="summary-money" class="hidden border-t border-gray-100 pt-3 mb-6 space-y-1 text-sm font-body">
+							<div class="flex justify-between text-gray-600">
+								<span>Subtotal estimado</span>
+								<span id="summary-subtotal" class="font-bold text-[#2a3035]">S/ 0.00</span>
+							</div>
+							<p class="text-[10px] text-gray-400">Envío se calcula en el checkout.</p>
+						</div>
+
+						<!-- Botón principal: Pagar ahora (visible solo si TODOS los items son pagables) -->
+						<a id="btn-checkout" href="/checkout" class="hidden mb-3 w-full bg-[#1d4c74] text-white font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-[#153a5b] transition-colors border border-[#1d4c74] flex items-center justify-center gap-3 cursor-pointer shadow-md rounded-none text-sm">
+							Pagar ahora →
+						</a>
+
+						<!-- Aviso mixto: hay items que solo aceptan cotización -->
+						<div id="mixed-cart-warning" class="hidden mb-4 bg-yellow-50 border-l-4 border-yellow-500 p-3 text-xs font-body text-yellow-800">
+							Algunos productos solo aceptan cotización. Use el formulario de abajo para que un asesor le responda.
 						</div>
 
 						<form id="quote-form" class="space-y-4">
@@ -249,6 +267,8 @@ import logoPrevca from "../assets/logo-prevca.png";
 				div: string;
 				ref: string;
 				desc: string;
+				price: number | null;
+				allowsDirectPurchase: boolean;
 			}
 
 			interface CartItem {
@@ -305,6 +325,8 @@ import logoPrevca from "../assets/logo-prevca.png";
 								div: DIVISION_LABELS[p.division as keyof typeof DIVISION_LABELS] ?? p.division,
 								ref: p.ref,
 								desc: p.shortDesc,
+								price: typeof p.price === "number" ? p.price : null,
+								allowsDirectPurchase: !!p.allowsDirectPurchase,
 							},
 						]),
 					);
@@ -322,6 +344,40 @@ import logoPrevca from "../assets/logo-prevca.png";
 					if (desktopBadge) desktopBadge.textContent = String(totalItems);
 					if (mobileBadge) mobileBadge.textContent = String(totalItems);
 					if (summaryTotal) summaryTotal.textContent = String(totalItems);
+
+					// === Lógica de "Pagar ahora" vs cotización ===
+					// Mostrar botón checkout solo si TODOS los items aceptan pago directo y tienen precio
+					const allPayable = cart.length > 0 && cart.every((item: CartItem) => {
+						const p = catalog[item.id];
+						return p && p.allowsDirectPurchase && p.price !== null;
+					});
+					const someNotPayable = cart.length > 0 && cart.some((item: CartItem) => {
+						const p = catalog[item.id];
+						return !p || !p.allowsDirectPurchase || p.price === null;
+					});
+
+					const checkoutBtn = document.getElementById('btn-checkout');
+					const mixedWarning = document.getElementById('mixed-cart-warning');
+					const summaryMoney = document.getElementById('summary-money');
+					const subtotalEl = document.getElementById('summary-subtotal');
+
+					if (allPayable) {
+						const subtotal = cart.reduce(
+							(sum: number, item: CartItem) => sum + (catalog[item.id].price ?? 0) * item.quantity,
+							0,
+						);
+						if (subtotalEl) subtotalEl.textContent = `S/ ${subtotal.toFixed(2)}`;
+						summaryMoney?.classList.remove('hidden');
+						checkoutBtn?.classList.remove('hidden');
+					} else {
+						summaryMoney?.classList.add('hidden');
+						checkoutBtn?.classList.add('hidden');
+					}
+					if (someNotPayable && cart.length > 0) {
+						mixedWarning?.classList.remove('hidden');
+					} else {
+						mixedWarning?.classList.add('hidden');
+					}
 
 					if (cart.length === 0) {
 						if (container) {
