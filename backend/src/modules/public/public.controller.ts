@@ -1,14 +1,19 @@
+import { randomUUID } from 'node:crypto';
 import { Request, Response } from 'express';
+import { storage } from '../../config/firebase';
+import { PROOF_CONFIG, STORAGE_PATHS } from '../../config/constants';
 import { asyncHandler } from '../../shared/utils/async-handler';
-import { NotFoundError } from '../../shared/errors/app-error';
+import { NotFoundError, ValidationError } from '../../shared/errors/app-error';
 import { productsRepository } from '../products/products.repository';
 import { categoriesRepository } from '../categories/categories.repository';
 import { ordersService } from '../orders/orders.service';
+import { settingsService } from '../settings/settings.service';
 import { ProductQuery } from '../products/products.schema';
 import { CategoryQuery } from '../categories/categories.schema';
-import { CreateOrderInput } from '../orders/orders.schema';
+import { CheckoutInput, CreateOrderInput } from '../orders/orders.schema';
 
 type SlugParams = { slug: string };
+type CodeParams = { code: string };
 
 const PUBLIC_FIELDS = (p: Awaited<ReturnType<typeof productsRepository.findById>>) =>
   p && {
@@ -28,11 +33,26 @@ const PUBLIC_FIELDS = (p: Awaited<ReturnType<typeof productsRepository.findById>
     datasheetUrl: p.datasheetUrl,
     price: p.showPrice ? p.price : null,
     showPrice: p.showPrice,
+    /** Indica si el carrito puede llevarlo a checkout con pago */
+    allowsDirectPurchase: p.allowsDirectPurchase,
     stock: p.showStock ? p.stock : null,
     showStock: p.showStock,
     isFeatured: p.isFeatured,
     images: p.images,
   };
+
+const isEmulator = (): boolean =>
+  Boolean(process.env.STORAGE_EMULATOR_HOST || process.env.FIREBASE_STORAGE_EMULATOR_HOST);
+
+const buildProofUrl = (storagePath: string): string => {
+  const bucket = storage.bucket();
+  if (isEmulator()) {
+    const host = (process.env.STORAGE_EMULATOR_HOST ?? 'http://localhost:9199').replace(/\/$/, '');
+    const normalized = host.startsWith('http') ? host : `http://${host}`;
+    return `${normalized}/v0/b/${bucket.name}/o/${encodeURIComponent(storagePath)}?alt=media`;
+  }
+  return `https://storage.googleapis.com/${bucket.name}/${storagePath}`;
+};
 
 export const publicController = {
   listProducts: asyncHandler(async (req: Request, res: Response) => {
@@ -78,5 +98,92 @@ export const publicController = {
       code: order.code,
       message: 'Cotización recibida. Un asesor se comunicará pronto.',
     });
+  }),
+
+  /**
+   * Checkout con pago. Calcula totales en server y crea la orden.
+   * Devuelve el código + info necesaria para que el cliente complete el pago
+   * (URL de QR Yape, transactionId placeholder para PayPal/Culqi, etc.)
+   */
+  checkout: asyncHandler(async (req: Request, res: Response) => {
+    const input = req.body as CheckoutInput;
+    const order = await ordersService.checkout(input);
+    const paymentConfig = await settingsService.getPublicPaymentConfig();
+
+    let paymentInfo: Record<string, unknown> = {};
+    switch (input.paymentMethod) {
+      case 'YAPE':
+        paymentInfo = { yape: paymentConfig.yape };
+        break;
+      case 'TRANSFERENCIA':
+        paymentInfo = { transfer: paymentConfig.transfer };
+        break;
+      case 'PAYPAL':
+        paymentInfo = { paypal: paymentConfig.paypal };
+        break;
+      case 'CULQI':
+        paymentInfo = { culqi: paymentConfig.culqi };
+        break;
+    }
+
+    res.status(201).json({
+      code: order.code,
+      subtotal: order.subtotal,
+      shippingCost: order.shippingCost,
+      total: order.total,
+      paymentMethod: order.paymentMethod,
+      paymentStatus: order.paymentStatus,
+      paymentInfo,
+    });
+  }),
+
+  /**
+   * Cliente sube captura de pago (Yape/Transferencia).
+   * Multipart espera campo `proof` con la imagen/PDF.
+   */
+  uploadProof: asyncHandler(async (req: Request<CodeParams>, res: Response) => {
+    const files = (req.files as Express.Multer.File[]) ?? [];
+    if (files.length === 0) {
+      throw new ValidationError([{ path: 'proof', message: 'No se envió ningún archivo' }]);
+    }
+    const file = files[0];
+    if (!PROOF_CONFIG.ALLOWED_MIME_TYPES.includes(file.mimetype as never)) {
+      throw new ValidationError([
+        { path: 'proof', message: `Tipo no permitido: ${file.mimetype}` },
+      ]);
+    }
+
+    const ext = file.mimetype.split('/').pop() ?? 'bin';
+    const filename = `${randomUUID()}.${ext === 'jpeg' ? 'jpg' : ext}`;
+    const storagePath = `${STORAGE_PATHS.PAYMENT_PROOFS}/${req.params.code}/${filename}`;
+    const fileRef = storage.bucket().file(storagePath);
+
+    const saveOptions: Parameters<typeof fileRef.save>[1] = {
+      contentType: file.mimetype,
+      metadata: { cacheControl: 'private, max-age=3600' },
+    };
+    // public: true falla en el Storage emulator; solo en prod
+    if (!isEmulator()) saveOptions.public = true;
+
+    await fileRef.save(file.buffer, saveOptions);
+
+    const url = buildProofUrl(storagePath);
+    const order = await ordersService.attachProof(req.params.code, storagePath, url);
+
+    res.status(201).json({
+      code: order.code,
+      paymentStatus: order.paymentStatus,
+      message: 'Captura recibida. Un asesor validará el pago en breve.',
+    });
+  }),
+
+  getShippingRates: asyncHandler(async (_req: Request, res: Response) => {
+    const { rates } = await settingsService.getShippingRates();
+    res.json({ rates });
+  }),
+
+  getPaymentMethods: asyncHandler(async (_req: Request, res: Response) => {
+    const config = await settingsService.getPublicPaymentConfig();
+    res.json(config);
   }),
 };
