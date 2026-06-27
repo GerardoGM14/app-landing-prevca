@@ -1,5 +1,5 @@
-import { useEffect, useState, type FormEvent } from 'react';
-import { FaSave } from 'react-icons/fa';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { FaSave, FaUpload, FaTimes } from 'react-icons/fa';
 import { Button } from '@/components/ui/Button';
 import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -8,7 +8,11 @@ import { Spinner } from '@/components/ui/Spinner';
 import { Toggle } from '@/components/ui/Toggle';
 import { useToast } from '@/core/toast/ToastContext';
 import type { PaymentConfig } from '@/types/api';
-import { usePaymentConfig, useUpdatePaymentConfig } from '../hooks/useSettings';
+import {
+  usePaymentConfig,
+  useUpdatePaymentConfig,
+  useUploadYapeQr,
+} from '../hooks/useSettings';
 
 const buildInitial = (cfg?: PaymentConfig): Omit<PaymentConfig, 'updatedAt'> => ({
   yapeEnabled: cfg?.yapeEnabled ?? false,
@@ -35,7 +39,9 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 export const PaymentConfigPage = () => {
   const { data, isLoading } = usePaymentConfig();
   const update = useUpdatePaymentConfig();
+  const uploadQr = useUploadYapeQr();
   const toast = useToast();
+  const qrInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState<Omit<PaymentConfig, 'updatedAt'>>(buildInitial());
 
@@ -55,6 +61,19 @@ export const PaymentConfigPage = () => {
       toast.error((err as Error).message, 'No se pudo guardar');
     }
   };
+
+  const handleQrUpload = async (file: File) => {
+    try {
+      const result = await uploadQr.mutateAsync(file);
+      set('yapeQrUrl', result.url);
+      toast.success('QR subido correctamente.', 'Imagen actualizada');
+      if (qrInputRef.current) qrInputRef.current.value = '';
+    } catch (err) {
+      toast.error((err as Error).message, 'No se pudo subir el QR');
+    }
+  };
+
+  const handleQrRemove = () => set('yapeQrUrl', null);
 
   if (isLoading) {
     return (
@@ -86,15 +105,83 @@ export const PaymentConfigPage = () => {
             </div>
           </CardHeader>
           <CardBody className="space-y-4">
-            <Input
-              label="URL del código QR (imagen pública)"
-              hint="Sube tu QR a Firebase Storage o un CDN y pega el enlace aquí. Pronto reemplazaremos esto por uploader directo."
-              placeholder="https://..."
-              value={form.yapeQrUrl ?? ''}
-              onChange={(e) => set('yapeQrUrl', e.target.value || null)}
-              disabled={!form.yapeEnabled}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* === Uploader visual del QR === */}
+            <div>
+              <label className="block text-xs font-ui font-bold uppercase tracking-widest text-gray-500 mb-2">
+                Código QR de Yape
+              </label>
+              <input
+                ref={qrInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) void handleQrUpload(file);
+                }}
+                disabled={!form.yapeEnabled}
+              />
+              {form.yapeQrUrl ? (
+                <div className="border border-gray-200 p-4 flex flex-col sm:flex-row items-center gap-4">
+                  <div className="bg-gray-50 border border-gray-200 p-2 flex-shrink-0">
+                    <img
+                      src={form.yapeQrUrl}
+                      alt="QR Yape actual"
+                      className="w-32 h-32 object-contain"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0 w-full">
+                    <p className="text-xs text-gray-500 font-body mb-3 break-all">
+                      {form.yapeQrUrl.length > 80
+                        ? `${form.yapeQrUrl.slice(0, 80)}…`
+                        : form.yapeQrUrl}
+                    </p>
+                    <div className="flex gap-2 flex-wrap">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        loading={uploadQr.isPending}
+                        onClick={() => qrInputRef.current?.click()}
+                        disabled={!form.yapeEnabled}
+                      >
+                        <FaUpload />
+                        Reemplazar
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleQrRemove}
+                        disabled={!form.yapeEnabled}
+                      >
+                        <FaTimes />
+                        Quitar
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onClick={() => form.yapeEnabled && qrInputRef.current?.click()}
+                  className={`border-2 border-dashed border-gray-300 p-8 text-center transition-colors ${
+                    form.yapeEnabled
+                      ? 'cursor-pointer hover:border-prevca-blue hover:bg-prevca-blue/5'
+                      : 'opacity-50 cursor-not-allowed'
+                  }`}
+                >
+                  <FaUpload className="text-3xl text-gray-400 mx-auto mb-3" />
+                  <p className="text-sm font-body text-prevca-dark font-semibold mb-1">
+                    {uploadQr.isPending ? 'Subiendo...' : 'Subir código QR'}
+                  </p>
+                  <p className="text-xs text-gray-500 font-body">
+                    Click para seleccionar · JPG / PNG / WebP · máx. 5 MB
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               <Input
                 label="Número Yape"
                 placeholder="+51 987 654 321"

@@ -3,8 +3,22 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
+    // Imágenes de productos (catálogo público)
     match /products/{productId}/{allPaths=**} {
       allow read: if true;
+      allow write: if false;
+    }
+
+    // Configuración de pagos: QR de Yape, logos de bancos (público)
+    match /payment-config/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Capturas de pago: NO públicas. Solo se acceden vía la URL guardada en la
+    // orden (que incluye token de descarga) o desde el admin con Admin SDK.
+    match /payment-proofs/{orderCode}/{allPaths=**} {
+      allow read: if false;
       allow write: if false;
     }
   }

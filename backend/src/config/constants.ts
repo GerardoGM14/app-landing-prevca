@@ -128,6 +128,7 @@ export const SETTINGS_DOCS = {
 export const STORAGE_PATHS = {
   PRODUCT_IMAGES: 'products',
   PAYMENT_PROOFS: 'payment-proofs',
+  PAYMENT_CONFIG: 'payment-config',
 } as const;
 
 export const IMAGE_CONFIG = {

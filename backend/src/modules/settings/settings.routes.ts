@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { validate } from '../../shared/middleware/validate.middleware';
+import { parseMultipart } from '../../shared/middleware/multipart.middleware';
 import { settingsController } from './settings.controller';
 import {
   updatePaymentConfigSchema,
@@ -21,3 +22,10 @@ settingsRouter.put(
   validate(updatePaymentConfigSchema),
   settingsController.updatePaymentConfig,
 );
+
+const qrUpload = parseMultipart({
+  maxFiles: 1,
+  maxFileSizeMb: 5,
+  fieldName: 'qr',
+});
+settingsRouter.post('/yape-qr', qrUpload, settingsController.uploadYapeQr);

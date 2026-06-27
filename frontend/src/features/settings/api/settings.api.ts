@@ -29,4 +29,13 @@ export const settingsApi = {
     const { data } = await apiClient.put('/admin/settings/payment-config', input);
     return data;
   },
+
+  uploadYapeQr: async (file: File): Promise<{ url: string; storagePath: string; config: PaymentConfig }> => {
+    const formData = new FormData();
+    formData.append('qr', file);
+    const { data } = await apiClient.post('/admin/settings/yape-qr', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data;
+  },
 };

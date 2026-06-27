@@ -632,6 +632,33 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 				}
 			};
 
+			/* === Uploader visual de captura (drag&drop + preview) === */
+			const buildProofUploaderHtml = (label: string) => `
+				<div class="border-t border-gray-100 pt-5 mt-5">
+					<p class="text-xs font-bold font-ui text-gray-500 uppercase tracking-widest mb-3">${label} *</p>
+					<input id="proof-file" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" class="hidden" />
+					<div id="proof-dropzone" class="border-2 border-dashed border-gray-300 hover:border-[#1d4c74] hover:bg-[#1d4c74]/5 transition-colors cursor-pointer p-6 text-center">
+						<svg class="w-10 h-10 mx-auto text-gray-400 mb-2" fill="currentColor" viewBox="0 0 20 20"><path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"/><path d="M9 13h2v5a1 1 0 11-2 0v-5z"/></svg>
+						<p class="text-sm font-body text-[#2a3035] font-semibold mb-1">Click o arrastra tu archivo aquí</p>
+						<p class="text-xs text-gray-500">JPG, PNG, WebP o PDF · máx. 5 MB</p>
+					</div>
+					<div id="proof-preview" class="hidden mt-4 border border-gray-200 p-3 flex items-center gap-3">
+						<div id="proof-thumb" class="w-16 h-16 bg-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden"></div>
+						<div class="flex-1 min-w-0">
+							<p id="proof-filename" class="font-bold text-[#2a3035] text-sm truncate"></p>
+							<p id="proof-filesize" class="text-xs text-gray-500"></p>
+						</div>
+						<button id="proof-remove" type="button" class="text-red-500 hover:bg-red-50 p-2 cursor-pointer" title="Quitar">
+							<svg width="14" height="14" fill="currentColor" viewBox="0 0 448 512"><path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"/></svg>
+						</button>
+					</div>
+					<button id="btn-upload-proof" type="button" disabled class="w-full mt-4 bg-[#1d4c74] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest hover:bg-[#153a5b] transition-colors cursor-pointer text-sm disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">
+						Enviar captura
+					</button>
+					<div id="proof-result" class="hidden mt-4 p-3 text-sm font-body"></div>
+				</div>
+			`;
+
 			/* === PASO 5: RENDER POST-PAGO === */
 			const renderPaymentResult = (response: any) => {
 				const el = $("#payment-result");
@@ -652,18 +679,13 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 					html += `
 						<div class="bg-white border border-gray-200 p-6">
 							<h3 class="font-display font-extrabold text-[#2a3035] uppercase tracking-widest text-sm mb-4">Pago con Yape</h3>
-							${info.yape.qrUrl ? `<img src="${info.yape.qrUrl}" alt="QR Yape" class="max-w-xs mx-auto mb-4 border border-gray-200" />` : '<p class="text-yellow-700 bg-yellow-50 p-3 mb-4">QR no configurado todavía. Contáctenos.</p>'}
-							${info.yape.number ? `<p class="text-center text-sm font-body mb-2">📱 Número: <span class="font-bold">${info.yape.number}</span></p>` : ''}
+							${info.yape.qrUrl
+								? `<div class="bg-gray-50 border border-gray-200 p-4 max-w-xs mx-auto mb-4"><img src="${info.yape.qrUrl}" alt="QR Yape" class="w-full h-auto object-contain" onerror="this.parentElement.innerHTML='<p class=\\'text-yellow-700 text-sm text-center\\'>No se pudo cargar el QR. Use el numero indicado.</p>'" /></div>`
+								: '<p class="text-yellow-700 bg-yellow-50 border-l-4 border-yellow-500 p-3 mb-4 text-sm">QR no configurado todavía. Use el número o contáctenos.</p>'}
+							${info.yape.number ? `<p class="text-center text-sm font-body mb-2">Número: <span class="font-bold">${info.yape.number}</span></p>` : ''}
 							${info.yape.ownerName ? `<p class="text-center text-sm font-body mb-4">Titular: ${info.yape.ownerName}</p>` : ''}
-							<p class="text-center text-lg font-bold text-[#1d4c74] mb-6">Monto: ${total}</p>
-							<div class="border-t border-gray-100 pt-4">
-								<label class="block text-xs font-bold font-ui text-gray-500 uppercase tracking-widest mb-2">Sube tu captura del Yape *</label>
-								<input id="proof-file" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" class="w-full border border-gray-300 bg-gray-50 p-3 outline-none font-body" />
-								<button id="btn-upload-proof" type="button" class="w-full mt-3 bg-[#1d4c74] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest hover:bg-[#153a5b] transition-colors cursor-pointer text-sm disabled:opacity-50">
-									Enviar captura
-								</button>
-								<div id="proof-result" class="hidden mt-4 p-3 text-sm font-body"></div>
-							</div>
+							<p class="text-center text-lg font-bold text-[#1d4c74] mb-2">Monto: ${total}</p>
+							${buildProofUploaderHtml('Sube tu captura del Yape')}
 						</div>
 					`;
 				} else if (method === 'TRANSFERENCIA' && info.transfer) {
@@ -676,15 +698,8 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 								${info.transfer.accountNumber ? `<li><strong>Cuenta:</strong> ${info.transfer.accountNumber}</li>` : ''}
 								${info.transfer.cci ? `<li><strong>CCI:</strong> ${info.transfer.cci}</li>` : ''}
 							</ul>
-							<p class="text-lg font-bold text-[#1d4c74] mb-6">Monto a transferir: ${total}</p>
-							<div class="border-t border-gray-100 pt-4">
-								<label class="block text-xs font-bold font-ui text-gray-500 uppercase tracking-widest mb-2">Sube el voucher de transferencia *</label>
-								<input id="proof-file" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" class="w-full border border-gray-300 bg-gray-50 p-3 outline-none font-body" />
-								<button id="btn-upload-proof" type="button" class="w-full mt-3 bg-[#1d4c74] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest hover:bg-[#153a5b] transition-colors cursor-pointer text-sm disabled:opacity-50">
-									Enviar voucher
-								</button>
-								<div id="proof-result" class="hidden mt-4 p-3 text-sm font-body"></div>
-							</div>
+							<p class="text-lg font-bold text-[#1d4c74] mb-2">Monto a transferir: ${total}</p>
+							${buildProofUploaderHtml('Sube el voucher de transferencia')}
 						</div>
 					`;
 				} else if (method === 'PAYPAL' || method === 'CULQI') {
@@ -701,38 +716,107 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 
 				html += `<p class="text-center text-sm text-gray-500 mt-6">Guarda tu código <strong>${code}</strong> para futuras consultas.</p>`;
 				el.innerHTML = html;
+				wireProofUploader(code);
+			};
 
-				// Wire upload de captura
-				const proofBtn = document.getElementById("btn-upload-proof") as HTMLButtonElement | null;
-				const proofInput = document.getElementById("proof-file") as HTMLInputElement | null;
-				const proofResult = document.getElementById("proof-result");
-				if (proofBtn && proofInput && proofResult) {
-					proofBtn.addEventListener("click", async () => {
-						const file = proofInput.files?.[0];
-						if (!file) {
-							proofResult.className = "mt-4 p-3 text-sm font-body bg-red-50 border-l-4 border-red-500 text-red-700";
-							proofResult.classList.remove("hidden");
-							proofResult.textContent = "Seleccione un archivo primero.";
-							return;
-						}
-						proofBtn.disabled = true;
-						proofBtn.textContent = "Subiendo...";
-						try {
-							const { uploadPaymentProof } = await import("../lib/api.js");
-							const result = await uploadPaymentProof(code, file);
-							proofResult.className = "mt-4 p-3 text-sm font-body bg-green-50 border-l-4 border-green-500 text-green-700";
-							proofResult.classList.remove("hidden");
-							proofResult.innerHTML = `<strong>✓ Captura recibida</strong><br>${result.message}`;
-							proofBtn.textContent = "Captura enviada";
-						} catch (err) {
-							proofResult.className = "mt-4 p-3 text-sm font-body bg-red-50 border-l-4 border-red-500 text-red-700";
-							proofResult.classList.remove("hidden");
-							proofResult.textContent = (err as Error).message;
-							proofBtn.disabled = false;
-							proofBtn.textContent = "Reintentar";
-						}
-					});
-				}
+			/* === Wire del uploader de captura con drag&drop, preview y submit === */
+			const wireProofUploader = (code: string) => {
+				const input = document.getElementById("proof-file") as HTMLInputElement | null;
+				const dropzone = document.getElementById("proof-dropzone");
+				const preview = document.getElementById("proof-preview");
+				const thumb = document.getElementById("proof-thumb");
+				const filenameEl = document.getElementById("proof-filename");
+				const filesizeEl = document.getElementById("proof-filesize");
+				const removeBtn = document.getElementById("proof-remove");
+				const submitBtn = document.getElementById("btn-upload-proof") as HTMLButtonElement | null;
+				const result = document.getElementById("proof-result");
+				if (!input || !dropzone || !preview || !thumb || !filenameEl || !filesizeEl || !removeBtn || !submitBtn || !result) return;
+
+				const showResult = (kind: 'ok' | 'error', html: string) => {
+					result.className = `mt-4 p-3 text-sm font-body ${kind === 'ok' ? 'bg-green-50 border-l-4 border-green-500 text-green-700' : 'bg-red-50 border-l-4 border-red-500 text-red-700'}`;
+					result.classList.remove("hidden");
+					result.innerHTML = html;
+				};
+
+				const setFile = (file: File) => {
+					if (file.size > 5 * 1024 * 1024) {
+						showResult('error', 'El archivo excede 5 MB. Comprime la imagen e intenta de nuevo.');
+						return;
+					}
+					filenameEl.textContent = file.name;
+					filesizeEl.textContent = `${(file.size / 1024).toFixed(0)} KB · ${file.type}`;
+					if (file.type.startsWith('image/')) {
+						const reader = new FileReader();
+						reader.onload = (e) => {
+							thumb.innerHTML = `<img src="${e.target?.result}" class="w-full h-full object-cover" alt="preview" />`;
+						};
+						reader.readAsDataURL(file);
+					} else {
+						thumb.innerHTML = '<svg class="w-8 h-8 text-[#1d4c74]" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z"/><path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>';
+					}
+					preview.classList.remove("hidden");
+					dropzone.classList.add("hidden");
+					submitBtn.disabled = false;
+					result.classList.add("hidden");
+				};
+
+				const clearFile = () => {
+					input.value = "";
+					preview.classList.add("hidden");
+					dropzone.classList.remove("hidden");
+					submitBtn.disabled = true;
+					thumb.innerHTML = "";
+				};
+
+				// Click en dropzone = abre file picker
+				dropzone.addEventListener("click", () => input.click());
+
+				// Drag & drop
+				dropzone.addEventListener("dragover", (e) => {
+					e.preventDefault();
+					dropzone.classList.add("border-[#1d4c74]", "bg-[#1d4c74]/10");
+				});
+				dropzone.addEventListener("dragleave", () => {
+					dropzone.classList.remove("border-[#1d4c74]", "bg-[#1d4c74]/10");
+				});
+				dropzone.addEventListener("drop", (e) => {
+					e.preventDefault();
+					dropzone.classList.remove("border-[#1d4c74]", "bg-[#1d4c74]/10");
+					const file = e.dataTransfer?.files?.[0];
+					if (file) {
+						input.files = e.dataTransfer.files;
+						setFile(file);
+					}
+				});
+
+				// File picker change
+				input.addEventListener("change", () => {
+					const file = input.files?.[0];
+					if (file) setFile(file);
+				});
+
+				// Remove button
+				removeBtn.addEventListener("click", clearFile);
+
+				// Submit
+				submitBtn.addEventListener("click", async () => {
+					const file = input.files?.[0];
+					if (!file) return;
+					submitBtn.disabled = true;
+					submitBtn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-current border-r-transparent rounded-full animate-spin"></span> Subiendo...';
+					try {
+						const { uploadPaymentProof } = await import("../lib/api.js");
+						const r = await uploadPaymentProof(code, file);
+						showResult('ok', `<strong>✓ Captura recibida</strong><br>${r.message ?? 'Un asesor validará el pago en breve.'}`);
+						submitBtn.innerHTML = '✓ Captura enviada';
+						removeBtn.style.display = 'none';
+						dropzone.style.pointerEvents = 'none';
+					} catch (err) {
+						showResult('error', (err as Error).message);
+						submitBtn.disabled = false;
+						submitBtn.innerHTML = 'Reintentar';
+					}
+				});
 			};
 
 			/* === MOBILE MENU === */

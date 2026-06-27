@@ -37,3 +37,11 @@ export const useUpdatePaymentConfig = () => {
     onSuccess: () => qc.invalidateQueries({ queryKey: KEYS.paymentConfig }),
   });
 };
+
+export const useUploadYapeQr = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (file: File) => settingsApi.uploadYapeQr(file),
+    onSuccess: () => qc.invalidateQueries({ queryKey: KEYS.paymentConfig }),
+  });
+};
