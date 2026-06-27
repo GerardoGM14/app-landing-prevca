@@ -1,15 +1,34 @@
 import { NavLink } from 'react-router-dom';
-import { FaBoxes, FaShoppingCart, FaTags, FaTachometerAlt } from 'react-icons/fa';
+import {
+  FaBoxes,
+  FaCreditCard,
+  FaShoppingCart,
+  FaTachometerAlt,
+  FaTags,
+  FaTruck,
+} from 'react-icons/fa';
 
-const navItems = [
+const mainItems = [
   { to: '/', label: 'Dashboard', icon: FaTachometerAlt, end: true },
   { to: '/products', label: 'Productos', icon: FaBoxes },
   { to: '/categories', label: 'Categorías', icon: FaTags },
   { to: '/orders', label: 'Cotizaciones', icon: FaShoppingCart },
 ];
 
+const settingsItems = [
+  { to: '/settings/shipping', label: 'Tarifas de envío', icon: FaTruck },
+  { to: '/settings/payment', label: 'Métodos de pago', icon: FaCreditCard },
+];
+
+const linkClasses = ({ isActive }: { isActive: boolean }) =>
+  `flex items-center gap-4 px-6 py-3 text-sm font-ui font-semibold transition-colors border-l-4 ${
+    isActive
+      ? 'bg-prevca-blue text-white border-white'
+      : 'text-white/70 hover:bg-white/5 hover:text-white border-transparent'
+  }`;
+
 export const Sidebar = () => (
-  <aside className="fixed inset-y-0 left-0 w-64 bg-prevca-dark text-white hidden lg:flex flex-col z-30">
+  <aside className="fixed inset-y-0 left-0 w-64 bg-prevca-dark text-white hidden lg:flex flex-col z-30 overflow-y-auto">
     <div className="p-6 border-b border-white/10 flex items-center gap-3">
       <div className="w-8 h-8 bg-white text-prevca-dark font-extrabold flex items-center justify-center font-display">
         P
@@ -25,19 +44,18 @@ export const Sidebar = () => (
     </div>
 
     <nav className="flex-1 py-6">
-      {navItems.map(({ to, label, icon: Icon, end }) => (
-        <NavLink
-          key={to}
-          to={to}
-          end={end}
-          className={({ isActive }) =>
-            `flex items-center gap-4 px-6 py-3 text-sm font-ui font-semibold transition-colors border-l-4 ${
-              isActive
-                ? 'bg-prevca-blue text-white border-white'
-                : 'text-white/70 hover:bg-white/5 hover:text-white border-transparent'
-            }`
-          }
-        >
+      {mainItems.map(({ to, label, icon: Icon, end }) => (
+        <NavLink key={to} to={to} end={end} className={linkClasses}>
+          <Icon className="text-base flex-shrink-0" />
+          <span>{label}</span>
+        </NavLink>
+      ))}
+
+      <p className="text-[10px] text-white/40 font-ui uppercase tracking-widest px-6 mt-8 mb-2">
+        Configuración
+      </p>
+      {settingsItems.map(({ to, label, icon: Icon }) => (
+        <NavLink key={to} to={to} className={linkClasses}>
           <Icon className="text-base flex-shrink-0" />
           <span>{label}</span>
         </NavLink>
