@@ -23,6 +23,12 @@ export const createProductSchema = z.object({
   datasheetUrl: z.string().url().max(500).optional().nullable(),
   price: z.number().nonnegative().optional().nullable(),
   showPrice: z.boolean().default(false),
+  /**
+   * Si true, el producto puede comprarse directo (checkout con pago).
+   * Si false (default), solo permite agregarse a una solicitud de cotización.
+   * Requiere price definido cuando es true.
+   */
+  allowsDirectPurchase: z.boolean().default(false),
   stock: z.number().int().nonnegative().default(0),
   showStock: z.boolean().default(false),
   trackStock: z.boolean().default(true),

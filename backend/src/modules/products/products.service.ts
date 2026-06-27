@@ -34,6 +34,13 @@ export const productsService = {
     if (slugConflict) throw new ConflictError(`Slug "${input.slug}" ya está en uso`);
     if (refConflict) throw new ConflictError(`Ref "${input.ref}" ya está en uso`);
 
+    // Si se marcó como pago directo, debe tener precio definido
+    if (input.allowsDirectPurchase && (input.price === null || input.price === undefined)) {
+      throw new ConflictError(
+        'Un producto con pago directo debe tener un precio definido',
+      );
+    }
+
     const id = await productsRepository.create({
       slug: input.slug,
       ref: input.ref,
@@ -50,6 +57,7 @@ export const productsService = {
       datasheetUrl: input.datasheetUrl ?? null,
       price: input.price ?? null,
       showPrice: input.showPrice,
+      allowsDirectPurchase: input.allowsDirectPurchase,
       stock: input.stock,
       showStock: input.showStock,
       trackStock: input.trackStock,

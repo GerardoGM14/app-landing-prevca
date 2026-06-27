@@ -28,6 +28,7 @@ export interface ProductDoc {
   datasheetUrl: string | null;
   price: number | null;
   showPrice: boolean;
+  allowsDirectPurchase: boolean;
   stock: number;
   showStock: boolean;
   trackStock: boolean;
