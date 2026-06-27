@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting on merge
+name: Deploy landing a Firebase Hosting
 on:
   push:
     branches:
@@ -8,6 +8,12 @@ on:
       - 'firebase.json'
       - '.firebaserc'
       - '.github/workflows/firebase-hosting-merge.yml'
+
+# Evita races cuando hay 2 pushes seguidos: deja terminar el último
+concurrency:
+  group: deploy-landing-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -16,26 +22,52 @@ jobs:
         working-directory: landing
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
           cache-dependency-path: landing/package-lock.json
-      - run: npm ci
-      - run: npm run build
-      - id: deploy
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_APP_PREVCA }}
-          channelId: live
-          projectId: app-prevca
-          target: landing
-          entryPoint: ./
-      - name: Publicar URL del deploy en el summary
-        if: steps.deploy.outputs.details_url != ''
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar Astro
+        run: npm run build
+
+      - name: Instalar firebase-tools
+        run: npm install -g firebase-tools
+
+      - name: Escribir Service Account a archivo temporal
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_APP_PREVCA }}' > "$RUNNER_TEMP/sa-key.json"
+
+      - name: Deploy a Firebase Hosting (target landing)
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa-key.json
         run: |
-          echo "### Deploy a produccion completado" >> $GITHUB_STEP_SUMMARY
+          set -e
+          # Capturamos la salida; si falla, revisamos si es "current active version" (no-op real)
+          OUTPUT=$(firebase deploy \
+            --only hosting:landing \
+            --project app-prevca \
+            --non-interactive 2>&1) || EXIT=$?
+          echo "$OUTPUT"
+          if [ "${EXIT:-0}" -ne 0 ]; then
+            if echo "$OUTPUT" | grep -q "is the current active version"; then
+              echo "::notice::Sin cambios reales que desplegar — la version ya estaba activa. OK."
+              exit 0
+            fi
+            exit "$EXIT"
+          fi
+
+      - name: Limpiar credenciales
+        if: always()
+        run: rm -f "$RUNNER_TEMP/sa-key.json"
+
+      - name: Publicar resumen
+        if: success()
+        run: |
+          echo "### Deploy de landing completado" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- URL principal: ${{ steps.deploy.outputs.details_url }}" >> $GITHUB_STEP_SUMMARY
-          echo "- URLs: ${{ steps.deploy.outputs.urls }}" >> $GITHUB_STEP_SUMMARY
+          echo "- URL principal: https://app-prevca.web.app" >> $GITHUB_STEP_SUMMARY
+          echo "- Console: https://console.firebase.google.com/project/app-prevca/hosting/sites/app-prevca" >> $GITHUB_STEP_SUMMARY
