@@ -1,14 +1,23 @@
 import { apiClient } from '@/core/api/client';
-import type { Order, OrderStatus, PaginatedResponse } from '@/types/api';
+import type {
+  Order,
+  OrderStatus,
+  PaginatedResponse,
+  PaymentMethod,
+  PaymentStatus,
+} from '@/types/api';
 
 export interface OrderListParams {
   status?: OrderStatus;
+  paymentStatus?: PaymentStatus;
+  paymentMethod?: PaymentMethod;
   pageSize?: number;
   cursor?: string;
 }
 
 export interface OrderUpdateInput {
   status?: OrderStatus;
+  paymentStatus?: PaymentStatus;
   internalNotes?: string | null;
 }
 
