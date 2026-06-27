@@ -26,8 +26,13 @@ const buildInitial = (initial?: Product): ProductInput => ({
   description: initial?.description ?? '',
   specs: initial?.specs ?? '',
   features: initial?.features ?? [],
+  scientificName: initial?.scientificName ?? null,
+  origin: initial?.origin ?? null,
+  applications: initial?.applications ?? null,
+  datasheetUrl: initial?.datasheetUrl ?? null,
   price: initial?.price ?? null,
   showPrice: initial?.showPrice ?? false,
+  allowsDirectPurchase: initial?.allowsDirectPurchase ?? false,
   stock: initial?.stock ?? 0,
   showStock: initial?.showStock ?? false,
   trackStock: initial?.trackStock ?? true,
@@ -238,6 +243,12 @@ export const ProductForm = ({ initial, submitLabel, loading, onSubmit }: Product
               onChange={(e) => update('stock', Number(e.target.value) || 0)}
             />
             <div className="divide-y divide-gray-200 border-t border-gray-200 -mx-6 px-6">
+              <Toggle
+                label="Permite pago directo"
+                description="Si está activo, el cliente puede comprarlo y pagarlo desde el carrito (Yape/Transferencia/PayPal/Culqi). Si está apagado, solo va a cotización."
+                checked={form.allowsDirectPurchase}
+                onChange={(v) => update('allowsDirectPurchase', v)}
+              />
               <Toggle
                 label="Mostrar precio"
                 description="Si está apagado, aparece 'Consultar precio'."

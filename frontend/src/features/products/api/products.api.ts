@@ -25,8 +25,13 @@ export interface ProductInput {
   description: string;
   specs?: string | null;
   features: string[];
+  scientificName?: string | null;
+  origin?: string | null;
+  applications?: string | null;
+  datasheetUrl?: string | null;
   price?: number | null;
   showPrice: boolean;
+  allowsDirectPurchase: boolean;
   stock: number;
   showStock: boolean;
   trackStock: boolean;
