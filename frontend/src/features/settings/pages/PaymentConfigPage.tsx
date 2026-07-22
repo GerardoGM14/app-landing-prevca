@@ -28,6 +28,8 @@ const buildInitial = (cfg?: PaymentConfig): Omit<PaymentConfig, 'updatedAt'> => 
   paypalClientId: cfg?.paypalClientId ?? null,
   culqiEnabled: cfg?.culqiEnabled ?? false,
   culqiPublicKey: cfg?.culqiPublicKey ?? null,
+  mercadopagoEnabled: cfg?.mercadopagoEnabled ?? false,
+  mercadopagoPublicKey: cfg?.mercadopagoPublicKey ?? null,
 });
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
@@ -297,6 +299,35 @@ export const PaymentConfigPage = () => {
             <p className="text-xs text-gray-500 font-body">
               ⚠️ La Secret Key (sk_live_...) se configura por separado como variable de
               entorno en el backend.
+            </p>
+          </CardBody>
+        </Card>
+
+        {/* === MERCADOPAGO === */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between gap-4">
+              <SectionTitle>MercadoPago</SectionTitle>
+              <Toggle
+                label=""
+                checked={form.mercadopagoEnabled}
+                onChange={(v) => set('mercadopagoEnabled', v)}
+              />
+            </div>
+          </CardHeader>
+          <CardBody className="space-y-4">
+            <Input
+              label="Public Key (APP_USR-... o TEST-...)"
+              hint="En mercadopago.com.pe → Tus integraciones → Credenciales. Use la de PRUEBA para probar."
+              placeholder="APP_USR-..."
+              value={form.mercadopagoPublicKey ?? ''}
+              onChange={(e) => set('mercadopagoPublicKey', e.target.value || null)}
+              disabled={!form.mercadopagoEnabled}
+            />
+            <p className="text-xs text-gray-500 font-body">
+              ⚠️ El Access Token (secreto) se configura en el backend como variable de
+              entorno <span className="font-mono">MERCADOPAGO_ACCESS_TOKEN</span>, no aquí.
+              Al pagar, el cliente será redirigido a MercadoPago (Checkout Pro).
             </p>
           </CardBody>
         </Card>

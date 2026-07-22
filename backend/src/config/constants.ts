@@ -20,6 +20,7 @@ export const PAYMENT_METHODS = [
   'TRANSFERENCIA',
   'PAYPAL',
   'CULQI',
+  'MERCADOPAGO',
 ] as const;
 export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
 

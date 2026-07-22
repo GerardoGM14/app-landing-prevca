@@ -23,6 +23,8 @@ import {
  */
 const initialPaymentStatus = (method: PaymentMethod): PaymentStatus => {
   if (method === 'QUOTE') return 'NONE';
+  // MercadoPago no sube captura: el webhook de la pasarela confirma el pago.
+  if (method === 'MERCADOPAGO') return 'PENDING_VERIFICATION';
   return 'PENDING_PROOF';
 };
 
@@ -245,6 +247,50 @@ export const ordersService = {
       },
       'PENDING_VERIFICATION',
     );
+
+    return ordersService.findById(order.id);
+  },
+
+  /**
+   * Confirma (o rechaza) el pago de una orden de pasarela (MercadoPago) a partir
+   * del webhook. Idempotente: si ya está PAID no la vuelve a tocar.
+   */
+  async confirmGatewayPayment(
+    code: string,
+    result: {
+      approved: boolean;
+      transactionId: string | null;
+      rawPayload: Record<string, unknown> | null;
+    },
+  ) {
+    const order = await ordersService.findByCode(code);
+
+    if (order.paymentMethod !== 'MERCADOPAGO') {
+      throw new ConflictError('Esta orden no se paga con MercadoPago');
+    }
+    // Idempotencia: no reprocesar un pago ya confirmado.
+    if (order.paymentStatus === 'PAID') return order;
+
+    if (result.approved) {
+      await ordersRepository.updatePayment(
+        order.id,
+        {
+          transactionId: result.transactionId,
+          rawPayload: result.rawPayload,
+          paidAt: Timestamp.now(),
+        },
+        'PAID',
+      );
+    } else {
+      await ordersRepository.updatePayment(
+        order.id,
+        {
+          transactionId: result.transactionId,
+          rawPayload: result.rawPayload,
+        },
+        'REJECTED',
+      );
+    }
 
     return ordersService.findById(order.id);
   },

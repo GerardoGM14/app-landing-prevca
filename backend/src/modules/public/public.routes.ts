@@ -28,3 +28,6 @@ const proofUpload = parseMultipart({
   fieldName: 'proof',
 });
 publicRouter.post('/orders/:code/proof', proofUpload, publicController.uploadProof);
+
+// Webhook de MercadoPago (Checkout Pro) — confirma pagos vía IPN
+publicRouter.post('/webhooks/mercadopago', publicController.mercadopagoWebhook);

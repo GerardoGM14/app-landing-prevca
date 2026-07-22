@@ -52,6 +52,7 @@ export const settingsService = {
         : null,
       paypal: cfg.paypalEnabled ? { clientId: cfg.paypalClientId } : null,
       culqi: cfg.culqiEnabled ? { publicKey: cfg.culqiPublicKey } : null,
+      mercadopago: cfg.mercadopagoEnabled ? { publicKey: cfg.mercadopagoPublicKey } : null,
     };
   },
 

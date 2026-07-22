@@ -322,7 +322,7 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 			import { UBIGEO_PERU, DEPARTMENT_LABELS, getProvinces, getDistricts } from "../data/ubigeo-peru.js";
 
 			type CartItem = { id: string; quantity: number };
-			type EnabledMethod = { key: 'YAPE' | 'TRANSFERENCIA' | 'PAYPAL' | 'CULQI'; label: string; description: string; available: boolean };
+			type EnabledMethod = { key: 'YAPE' | 'TRANSFERENCIA' | 'PAYPAL' | 'CULQI' | 'MERCADOPAGO'; label: string; description: string; available: boolean };
 
 			const $ = <T extends HTMLElement = HTMLElement>(sel: string): T => document.querySelector(sel) as T;
 			const $$ = <T extends HTMLElement = HTMLElement>(sel: string): NodeListOf<T> => document.querySelectorAll(sel) as NodeListOf<T>;
@@ -551,12 +551,14 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 
 				try {
 					paymentConfig = await fetchPaymentMethods();
-					const methods: EnabledMethod[] = [
+					const allMethods: EnabledMethod[] = [
 						{ key: 'YAPE', label: 'Yape', description: 'Paga con QR y sube tu captura', available: !!paymentConfig.yape },
 						{ key: 'TRANSFERENCIA', label: 'Transferencia bancaria', description: 'BCP / Interbank / BBVA', available: !!paymentConfig.transfer },
+						{ key: 'MERCADOPAGO', label: 'MercadoPago', description: 'Tarjeta, Yape, PagoEfectivo y más', available: !!paymentConfig.mercadopago },
 						{ key: 'PAYPAL', label: 'PayPal', description: 'Tarjeta o cuenta PayPal', available: !!paymentConfig.paypal },
 						{ key: 'CULQI', label: 'Culqi (tarjetas)', description: 'Visa, Mastercard, Yape vía Culqi', available: !!paymentConfig.culqi },
-					].filter((m) => m.available);
+					];
+					const methods: EnabledMethod[] = allMethods.filter((m) => m.available);
 
 					loader.classList.add("hidden");
 
@@ -702,6 +704,18 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 							${buildProofUploaderHtml('Sube el voucher de transferencia')}
 						</div>
 					`;
+				} else if (method === 'MERCADOPAGO' && info.mercadopago?.redirectUrl) {
+					html += `
+						<div class="bg-white border border-gray-200 p-6 text-center">
+							<h3 class="font-display font-extrabold text-[#2a3035] uppercase tracking-widest text-sm mb-3">Pago con MercadoPago</h3>
+							<p class="text-lg font-bold text-[#1d4c74] mb-4">Monto: ${total}</p>
+							<p class="text-sm text-gray-600 font-body mb-5">Te estamos redirigiendo a MercadoPago para completar tu pago de forma segura…</p>
+							<a href="${info.mercadopago.redirectUrl}" id="mp-redirect-btn" class="inline-block bg-[#009ee3] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest hover:bg-[#008fcc] transition-colors cursor-pointer text-sm">
+								Ir a MercadoPago
+							</a>
+							<p class="text-xs text-gray-500 mt-4">Si no eres redirigido automáticamente, usa el botón de arriba.</p>
+						</div>
+					`;
 				} else if (method === 'PAYPAL' || method === 'CULQI') {
 					html += `
 						<div class="bg-yellow-50 border-l-4 border-yellow-500 p-6">
@@ -716,6 +730,13 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 
 				html += `<p class="text-center text-sm text-gray-500 mt-6">Guarda tu código <strong>${code}</strong> para futuras consultas.</p>`;
 				el.innerHTML = html;
+
+				// MercadoPago: redirección automática a Checkout Pro
+				if (method === 'MERCADOPAGO' && info.mercadopago?.redirectUrl) {
+					setTimeout(() => { window.location.href = info.mercadopago.redirectUrl; }, 1800);
+					return;
+				}
+
 				wireProofUploader(code);
 			};
 

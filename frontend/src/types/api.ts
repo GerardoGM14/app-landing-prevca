@@ -2,7 +2,7 @@ export type Division = 'MADERA' | 'HOSPITALIDAD' | 'CAFE' | 'TRANSPORTE';
 
 export type OrderStatus = 'PENDIENTE' | 'CONTACTADO' | 'COTIZADO' | 'CERRADO' | 'RECHAZADO';
 
-export type PaymentMethod = 'QUOTE' | 'YAPE' | 'TRANSFERENCIA' | 'PAYPAL' | 'CULQI';
+export type PaymentMethod = 'QUOTE' | 'YAPE' | 'TRANSFERENCIA' | 'PAYPAL' | 'CULQI' | 'MERCADOPAGO';
 
 export type PaymentStatus =
   | 'NONE'
@@ -172,6 +172,8 @@ export interface PaymentConfig {
   paypalClientId: string | null;
   culqiEnabled: boolean;
   culqiPublicKey: string | null;
+  mercadopagoEnabled: boolean;
+  mercadopagoPublicKey: string | null;
   updatedAt: FirestoreTimestamp | null;
 }
 
@@ -201,6 +203,7 @@ export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   TRANSFERENCIA: 'Transferencia',
   PAYPAL: 'PayPal',
   CULQI: 'Culqi',
+  MERCADOPAGO: 'MercadoPago',
 };
 
 export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {

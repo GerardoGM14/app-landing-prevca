@@ -28,6 +28,8 @@ export interface PaymentConfigDoc {
   paypalClientId: string | null;
   culqiEnabled: boolean;
   culqiPublicKey: string | null;
+  mercadopagoEnabled: boolean;
+  mercadopagoPublicKey: string | null;
   updatedAt: FirebaseFirestore.Timestamp | null;
 }
 
@@ -45,6 +47,8 @@ const DEFAULT_PAYMENT_CONFIG: Omit<PaymentConfigDoc, 'updatedAt'> = {
   paypalClientId: null,
   culqiEnabled: false,
   culqiPublicKey: null,
+  mercadopagoEnabled: false,
+  mercadopagoPublicKey: null,
 };
 
 export const settingsRepository = {

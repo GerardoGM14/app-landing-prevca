@@ -27,6 +27,8 @@ export const updatePaymentConfigSchema = z.object({
   paypalClientId: z.string().max(200).optional().nullable(),
   culqiEnabled: z.boolean().optional(),
   culqiPublicKey: z.string().max(200).optional().nullable(),
+  mercadopagoEnabled: z.boolean().optional(),
+  mercadopagoPublicKey: z.string().max(200).optional().nullable(),
 });
 
 export type UpdateShippingRatesInput = z.infer<typeof updateShippingRatesSchema>;

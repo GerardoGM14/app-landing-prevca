@@ -8,6 +8,7 @@ import { productsRepository } from '../products/products.repository';
 import { categoriesRepository } from '../categories/categories.repository';
 import { ordersService } from '../orders/orders.service';
 import { settingsService } from '../settings/settings.service';
+import { mercadopagoService } from '../payments/mercadopago.service';
 import { ProductQuery } from '../products/products.schema';
 import { CategoryQuery } from '../categories/categories.schema';
 import { CheckoutInput, CreateOrderInput } from '../orders/orders.schema';
@@ -124,6 +125,12 @@ export const publicController = {
       case 'CULQI':
         paymentInfo = { culqi: paymentConfig.culqi };
         break;
+      case 'MERCADOPAGO': {
+        // Genera el link de pago de Checkout Pro; la landing redirige a él.
+        const pref = await mercadopagoService.createPreference(order);
+        paymentInfo = { mercadopago: { redirectUrl: pref.initPoint, preferenceId: pref.preferenceId } };
+        break;
+      }
     }
 
     res.status(201).json({
@@ -185,5 +192,46 @@ export const publicController = {
   getPaymentMethods: asyncHandler(async (_req: Request, res: Response) => {
     const config = await settingsService.getPublicPaymentConfig();
     res.json(config);
+  }),
+
+  /**
+   * Webhook de MercadoPago (IPN v2). MP nos avisa cuando cambia un pago;
+   * consultamos el pago real por su ID y confirmamos/rechazamos la orden.
+   * Siempre respondemos 200 rápido para que MP no reintente en bucle.
+   */
+  mercadopagoWebhook: asyncHandler(async (req: Request, res: Response) => {
+    // MP manda el id del pago en query (?id=&topic=payment) o en el body (data.id).
+    const type = (req.query.type ?? req.query.topic ?? req.body?.type) as string | undefined;
+    const paymentId =
+      (req.query['data.id'] as string | undefined) ??
+      (req.body?.data?.id as string | undefined) ??
+      (req.query.id as string | undefined);
+
+    // Solo nos interesan notificaciones de pago con id.
+    if (type && type !== 'payment') {
+      res.status(200).json({ received: true, ignored: type });
+      return;
+    }
+    if (!paymentId) {
+      res.status(200).json({ received: true, ignored: 'no-payment-id' });
+      return;
+    }
+
+    try {
+      const result = await mercadopagoService.fetchPaymentResult(String(paymentId));
+      if (result.orderCode) {
+        await ordersService.confirmGatewayPayment(result.orderCode, {
+          approved: result.approved,
+          transactionId: result.transactionId,
+          rawPayload: result.rawPayload,
+        });
+      }
+    } catch (err) {
+      // No propagamos: responder 200 evita que MP reintente indefinidamente.
+      // eslint-disable-next-line no-console
+      console.error('[mercadopago-webhook] error procesando pago', paymentId, err);
+    }
+
+    res.status(200).json({ received: true });
   }),
 };

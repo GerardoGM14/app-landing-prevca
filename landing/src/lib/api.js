@@ -68,7 +68,7 @@ export async function submitOrder(payload) {
  *   billing: { receiptType, documentType, documentNumber, businessName? },
  *   message?: string,
  *   items: Array<{ productId, quantity }>,
- *   paymentMethod: 'YAPE'|'TRANSFERENCIA'|'PAYPAL'|'CULQI'
+ *   paymentMethod: 'YAPE'|'TRANSFERENCIA'|'PAYPAL'|'CULQI'|'MERCADOPAGO'
  * }} payload
  */
 export async function submitCheckout(payload) {
@@ -104,8 +104,8 @@ export async function fetchShippingRates() {
 }
 
 /**
- * Devuelve `{ yape, transfer, paypal, culqi }`. Cada uno es null si está
- * deshabilitado o un objeto con sus datos públicos (QR, número, clientId, etc.)
+ * Devuelve `{ yape, transfer, paypal, culqi, mercadopago }`. Cada uno es null si
+ * está deshabilitado o un objeto con sus datos públicos (QR, número, publicKey, etc.)
  */
 export async function fetchPaymentMethods() {
   return request('/public/payment-methods');

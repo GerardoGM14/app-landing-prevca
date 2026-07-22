@@ -1,0 +1,145 @@
+---
+/**
+ * Página de retorno tras el pago en MercadoPago (Checkout Pro).
+ * Se usa en /pago-exitoso, /pago-pendiente y /pago-fallido.
+ *
+ * MercadoPago devuelve al cliente aquí con ?code=ORD-2026-NNNNN en la URL.
+ * La confirmación real del pago la hace el webhook en el backend; esta página
+ * es solo el mensaje visual para el cliente.
+ */
+import "../styles/global.css";
+import { FaCheck, FaClock, FaTimes, FaShoppingCart } from "react-icons/fa";
+import libroImg from "../assets/libro-reclamaciones.png";
+import logoPrevca from "../assets/logo-prevca.png";
+import logoProinnovate from "../assets/logo-proinnovate.png";
+
+type Variant = "success" | "pending" | "failure";
+
+interface Props {
+  variant: Variant;
+  title: string;
+  message: string;
+}
+
+const { variant, title, message } = Astro.props;
+
+const THEME: Record<
+  Variant,
+  { color: string; bg: string; border: string; text: string; Icon: any }
+> = {
+  success: { color: "#16a34a", bg: "bg-green-50", border: "border-green-500", text: "text-green-700", Icon: FaCheck },
+  pending: { color: "#ca8a04", bg: "bg-yellow-50", border: "border-yellow-500", text: "text-yellow-700", Icon: FaClock },
+  failure: { color: "#dc2626", bg: "bg-red-50", border: "border-red-500", text: "text-red-700", Icon: FaTimes },
+};
+
+const t = THEME[variant];
+const Icon = t.Icon;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | Grupo Prevca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@400;600;700&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 text-gray-800 font-body selection:bg-[#1d4c74] selection:text-white overflow-x-hidden min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50">
+      <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+        <img src={logoPrevca.src} alt="Grupo Prevca" class="h-10 md:h-14 w-auto object-contain brightness-0 invert" />
+      </a>
+      <a href="/ecommerce" class="relative cursor-pointer hover:text-gray-300 transition-colors flex items-center">
+        <div class="text-xl"><FaShoppingCart /></div>
+      </a>
+    </nav>
+
+    <main class="flex-grow py-16 px-6 md:px-8 flex items-center justify-center">
+      <div class="max-w-lg w-full">
+        <div class="bg-white border border-gray-200 p-8 md:p-12 text-center">
+          <div
+            class="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center text-white text-3xl"
+            style={`background-color: ${t.color}`}
+          >
+            <Icon />
+          </div>
+
+          <h1 class="text-2xl md:text-3xl font-extrabold font-display text-[#2a3035] uppercase tracking-tight mb-3">
+            {title}
+          </h1>
+          <div class="w-16 h-1.5 bg-[#1d4c74] mx-auto mb-6"></div>
+
+          <p class="text-gray-600 font-body mb-6 leading-relaxed">{message}</p>
+
+          <div id="order-code-box" class={`hidden ${t.bg} border-l-4 ${t.border} p-4 mb-6 text-left`}>
+            <p class="text-xs uppercase tracking-widest font-bold text-gray-500 mb-1">Código de pedido</p>
+            <p class={`font-mono font-bold text-lg ${t.text}`} id="order-code"></p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              href="/ecommerce"
+              class="bg-[#1d4c74] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest hover:bg-[#153a5b] transition-colors border border-[#1d4c74] text-sm"
+            >
+              Seguir comprando
+            </a>
+            <a
+              href="/"
+              class="border-2 border-[#1d4c74] text-[#1d4c74] font-bold px-8 py-3 uppercase font-ui tracking-widest hover:bg-[#1d4c74] hover:text-white transition-colors text-sm"
+            >
+              Ir al inicio
+            </a>
+          </div>
+
+          {variant === "failure" && (
+            <a
+              href="/checkout"
+              class="inline-block mt-4 text-sm text-[#1d4c74] font-bold font-ui uppercase tracking-widest hover:text-[#153a5b]"
+            >
+              Reintentar pago →
+            </a>
+          )}
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-[#2a3035] text-white pt-12 pb-6 px-6 md:px-8 mt-auto">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-xs font-ui tracking-[0.2em] text-gray-400 uppercase font-bold">© 2026 Grupo Prevca</p>
+        <div class="flex items-center gap-3">
+          <a href="#" class="bg-white p-1 max-w-[100px] block">
+            <img src={libroImg.src} alt="Libro de Reclamaciones" class="w-full h-auto max-h-14 object-contain" />
+          </a>
+          <div class="bg-white p-1 max-w-[100px]">
+            <img src={logoProinnovate.src} alt="Proinnovate" class="w-full h-auto max-h-14 object-contain" />
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Muestra el código de pedido que MercadoPago devuelve en ?code=
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      if (code) {
+        const box = document.getElementById("order-code-box");
+        const el = document.getElementById("order-code");
+        if (box && el) {
+          el.textContent = code;
+          box.classList.remove("hidden");
+        }
+      }
+      // El pago ya se registró; limpiamos el carrito por si quedó algo.
+      try {
+        localStorage.removeItem("prevca_cart");
+      } catch {}
+    </script>
+  </body>
+</html>
