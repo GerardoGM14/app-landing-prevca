@@ -67,7 +67,7 @@ export async function submitOrder(payload) {
  *   shipping: { department, province, district, address, reference? },
  *   billing: { receiptType, documentType, documentNumber, businessName? },
  *   message?: string,
- *   items: Array<{ productId, quantity }>,
+ *   items: Array<{ productId, quantity, woodType? }>,
  *   paymentMethod: 'YAPE'|'TRANSFERENCIA'|'PAYPAL'|'CULQI'|'MERCADOPAGO'
  * }} payload
  */

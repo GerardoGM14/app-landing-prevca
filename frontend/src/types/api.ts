@@ -4,6 +4,25 @@ export type OrderStatus = 'PENDIENTE' | 'CONTACTADO' | 'COTIZADO' | 'CERRADO' | 
 
 export type PaymentMethod = 'QUOTE' | 'YAPE' | 'TRANSFERENCIA' | 'PAYPAL' | 'CULQI' | 'MERCADOPAGO';
 
+/** Tipos de madera con los que Aserradero PREVCA fabrica sus productos */
+export type WoodType = 'TORNILLO' | 'PINO' | 'COPAIBA' | 'CEDRO' | 'ROBLE';
+
+export const WOOD_TYPES: WoodType[] = ['TORNILLO', 'PINO', 'COPAIBA', 'CEDRO', 'ROBLE'];
+
+export const WOOD_TYPE_LABELS: Record<WoodType, string> = {
+  TORNILLO: 'Tornillo',
+  PINO: 'Pino',
+  COPAIBA: 'Copaiba',
+  CEDRO: 'Cedro',
+  ROBLE: 'Roble',
+};
+
+/** Precio de un producto para un tipo de madera concreto */
+export interface WoodVariant {
+  woodType: WoodType;
+  price: number;
+}
+
 export type PaymentStatus =
   | 'NONE'
   | 'PENDING_PROOF'
@@ -71,6 +90,8 @@ export interface Product {
   applications: string | null;
   datasheetUrl: string | null;
   price: number | null;
+  /** Precios por tipo de madera; si tiene elementos, manda sobre `price` */
+  woodVariants: WoodVariant[];
   showPrice: boolean;
   allowsDirectPurchase: boolean;
   stock: number;
@@ -101,6 +122,8 @@ export interface OrderItem {
   priceSnapshot: number | null;
   quantity: number;
   lineTotal: number | null;
+  /** Tipo de madera elegido por el cliente; null si el producto no tiene variantes */
+  woodType: WoodType | null;
 }
 
 export interface OrderShipping {

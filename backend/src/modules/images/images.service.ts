@@ -40,8 +40,14 @@ export const imagesService = {
 
       const optimized = await sharp(file.buffer)
         .rotate()
-        .resize({ width: IMAGE_CONFIG.MAX_WIDTH, withoutEnlargement: true })
-        .webp({ quality: IMAGE_CONFIG.WEBP_QUALITY })
+        .resize({
+          width: IMAGE_CONFIG.MAX_WIDTH,
+          withoutEnlargement: true,
+          // Lanczos3 conserva mejor el detalle al reducir fotos de producto
+          kernel: 'lanczos3',
+        })
+        // effort 6 = comprime más sin tocar la calidad, compensa el q95
+        .webp({ quality: IMAGE_CONFIG.WEBP_QUALITY, effort: 6 })
         .toBuffer();
 
       const filename = `${randomUUID()}.webp`;

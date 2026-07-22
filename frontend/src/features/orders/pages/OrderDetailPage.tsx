@@ -15,6 +15,7 @@ import {
   PAYMENT_METHOD_LABELS,
   PAYMENT_STATUS_LABELS,
   PERU_DEPARTMENT_LABELS,
+  WOOD_TYPE_LABELS,
   type OrderStatus,
   type PaymentStatus,
 } from '@/types/api';
@@ -230,10 +231,18 @@ export const OrderDetailPage = () => {
             </CardHeader>
             <CardBody>
               <ul className="divide-y divide-gray-200">
-                {order.items.map((item) => (
-                  <li key={item.productId} className="py-3 flex justify-between items-start gap-4">
+                {order.items.map((item, idx) => (
+                  <li
+                    key={`${item.productId}-${item.woodType ?? 'base'}-${idx}`}
+                    className="py-3 flex justify-between items-start gap-4"
+                  >
                     <div>
                       <p className="font-display font-bold text-prevca-dark">{item.titleSnapshot}</p>
+                      {item.woodType && (
+                        <p className="text-sm font-ui font-bold text-prevca-blue mt-1">
+                          Madera: {WOOD_TYPE_LABELS[item.woodType]}
+                        </p>
+                      )}
                       <p className="text-xs text-gray-400 font-mono mt-1">{item.productId}</p>
                     </div>
                     <div className="text-right">

@@ -1,7 +1,17 @@
 import { z } from 'zod';
-import { DIVISIONS } from '../../config/constants';
+import { DIVISIONS, WOOD_TYPES } from '../../config/constants';
 
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/**
+ * Precio del producto según el tipo de madera. Si el array tiene elementos,
+ * el producto es "con variantes": el cliente elige la madera y ese es el
+ * precio. Si está vacío, se usa el `price` simple del producto.
+ */
+const woodVariantSchema = z.object({
+  woodType: z.enum(WOOD_TYPES),
+  price: z.number().nonnegative(),
+});
 
 export const createProductSchema = z.object({
   slug: z
@@ -22,6 +32,19 @@ export const createProductSchema = z.object({
   applications: z.string().max(2000).optional().nullable(),
   datasheetUrl: z.string().url().max(500).optional().nullable(),
   price: z.number().nonnegative().optional().nullable(),
+  /**
+   * Variantes de precio por tipo de madera. Si tiene elementos, el producto
+   * se vende "por tipo de madera" y `price` se ignora en el checkout.
+   * No se permiten tipos de madera repetidos.
+   */
+  woodVariants: z
+    .array(woodVariantSchema)
+    .max(WOOD_TYPES.length)
+    .default([])
+    .refine(
+      (variants) => new Set(variants.map((v) => v.woodType)).size === variants.length,
+      { message: 'No se puede repetir el mismo tipo de madera' },
+    ),
   showPrice: z.boolean().default(false),
   /**
    * Si true, el producto puede comprarse directo (checkout con pago).

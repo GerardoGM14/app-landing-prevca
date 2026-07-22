@@ -9,6 +9,7 @@ import {
   PeruDepartment,
   ReceiptType,
   SETTINGS_DOCS,
+  WoodType,
 } from '../../config/constants';
 
 const col = () => db.collection(COLLECTIONS.ORDERS);
@@ -20,6 +21,8 @@ export interface OrderItem {
   quantity: number;
   /** Subtotal de este item (priceSnapshot * quantity) — null si es cotización */
   lineTotal: number | null;
+  /** Tipo de madera elegido; null en productos sin variantes */
+  woodType: WoodType | null;
 }
 
 export interface OrderCustomer {

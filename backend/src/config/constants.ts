@@ -43,6 +43,22 @@ export const PAYMENT_STATUS = [
 ] as const;
 export type PaymentStatus = (typeof PAYMENT_STATUS)[number];
 
+/**
+ * Tipos de madera con los que Aserradero PREVCA fabrica sus productos.
+ * Un producto puede ofrecer solo algunos; el precio varía según cuál elija
+ * el cliente (ver `woodVariants` en el producto).
+ */
+export const WOOD_TYPES = ['TORNILLO', 'PINO', 'COPAIBA', 'CEDRO', 'ROBLE'] as const;
+export type WoodType = (typeof WOOD_TYPES)[number];
+
+export const WOOD_TYPE_LABELS: Record<WoodType, string> = {
+  TORNILLO: 'Tornillo',
+  PINO: 'Pino',
+  COPAIBA: 'Copaiba',
+  CEDRO: 'Cedro',
+  ROBLE: 'Roble',
+};
+
 export const RECEIPT_TYPES = ['BOLETA', 'FACTURA'] as const;
 export type ReceiptType = (typeof RECEIPT_TYPES)[number];
 
@@ -132,9 +148,14 @@ export const STORAGE_PATHS = {
   PAYMENT_CONFIG: 'payment-config',
 } as const;
 
+/**
+ * Las fotos de catálogo (muebles, puertas) deben verse nítidas: se prioriza
+ * calidad sobre peso. WebP q95 a 2400px queda visualmente igual al original
+ * pesando bastante menos que un PNG.
+ */
 export const IMAGE_CONFIG = {
-  MAX_WIDTH: 1600,
-  WEBP_QUALITY: 82,
+  MAX_WIDTH: 2400,
+  WEBP_QUALITY: 95,
   MAX_FILE_SIZE_MB: 10,
   ALLOWED_MIME_TYPES: ['image/jpeg', 'image/png', 'image/webp'] as const,
 } as const;

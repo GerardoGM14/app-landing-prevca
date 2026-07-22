@@ -4,6 +4,7 @@ import type {
   PaginatedResponse,
   Product,
   ProductImage,
+  WoodVariant,
 } from '@/types/api';
 
 export interface ProductListParams {
@@ -30,6 +31,8 @@ export interface ProductInput {
   applications?: string | null;
   datasheetUrl?: string | null;
   price?: number | null;
+  /** Precios por tipo de madera; si tiene elementos, manda sobre `price` */
+  woodVariants: WoodVariant[];
   showPrice: boolean;
   allowsDirectPurchase: boolean;
   stock: number;

@@ -6,6 +6,7 @@ import {
   PAYMENT_STATUS,
   PERU_DEPARTMENTS,
   RECEIPT_TYPES,
+  WOOD_TYPES,
 } from '../../config/constants';
 
 const customerSchema = z.object({
@@ -35,6 +36,11 @@ const itemsSchema = z
     z.object({
       productId: z.string().min(1),
       quantity: z.number().int().positive(),
+      /**
+       * Tipo de madera elegido, solo para productos con variantes.
+       * El precio SIEMPRE se resuelve en servidor a partir de este valor.
+       */
+      woodType: z.enum(WOOD_TYPES).optional(),
     }),
   )
   .min(1)

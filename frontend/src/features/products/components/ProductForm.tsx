@@ -6,7 +6,13 @@ import { Select } from '@/components/ui/Select';
 import { Textarea } from '@/components/ui/Textarea';
 import { Toggle } from '@/components/ui/Toggle';
 import { Card, CardBody, CardHeader } from '@/components/ui/Card';
-import { DIVISION_LABELS, type Division, type Product } from '@/types/api';
+import {
+  DIVISION_LABELS,
+  WOOD_TYPES,
+  WOOD_TYPE_LABELS,
+  type Division,
+  type Product,
+} from '@/types/api';
 import type { ProductInput } from '../api/products.api';
 
 interface ProductFormProps {
@@ -31,6 +37,7 @@ const buildInitial = (initial?: Product): ProductInput => ({
   applications: initial?.applications ?? null,
   datasheetUrl: initial?.datasheetUrl ?? null,
   price: initial?.price ?? null,
+  woodVariants: initial?.woodVariants ?? [],
   showPrice: initial?.showPrice ?? false,
   allowsDirectPurchase: initial?.allowsDirectPurchase ?? false,
   stock: initial?.stock ?? 0,
@@ -235,6 +242,49 @@ export const ProductForm = ({ initial, submitLabel, loading, onSubmit }: Product
                 update('price', e.target.value === '' ? null : Number(e.target.value))
               }
             />
+            {/* Precios por tipo de madera (opcional). Si se llena alguno, el
+                producto se vende por madera y el precio simple se ignora. */}
+            <div className="border border-gray-200 p-4">
+              <p className="text-xs font-ui font-bold uppercase tracking-widest text-gray-500 mb-1">
+                Precio por tipo de madera (opcional)
+              </p>
+              <p className="text-xs text-gray-500 font-body mb-4">
+                Si llena al menos uno, el cliente elegirá la madera en la tienda y ese
+                precio manda sobre el precio simple. Deje vacías las maderas que no
+                aplican a este producto.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {WOOD_TYPES.map((wt) => {
+                  const current = form.woodVariants.find((v) => v.woodType === wt);
+                  return (
+                    <Input
+                      key={wt}
+                      label={WOOD_TYPE_LABELS[wt]}
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      placeholder="—"
+                      value={current?.price ?? ''}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        const others = form.woodVariants.filter((v) => v.woodType !== wt);
+                        if (raw === '') {
+                          update('woodVariants', others);
+                          return;
+                        }
+                        const price = Number(raw);
+                        if (Number.isNaN(price)) return;
+                        // Mantener el orden fijo de WOOD_TYPES
+                        const next = [...others, { woodType: wt, price }].sort(
+                          (a, b) => WOOD_TYPES.indexOf(a.woodType) - WOOD_TYPES.indexOf(b.woodType),
+                        );
+                        update('woodVariants', next);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
             <Input
               label="Stock"
               type="number"

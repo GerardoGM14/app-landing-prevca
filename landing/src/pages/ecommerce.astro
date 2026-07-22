@@ -269,12 +269,44 @@ import logoPrevca from "../assets/logo-prevca.png";
 				desc: string;
 				price: number | null;
 				allowsDirectPurchase: boolean;
+				woodVariants: WoodVariant[];
+			}
+
+			type WoodType = 'TORNILLO' | 'PINO' | 'COPAIBA' | 'CEDRO' | 'ROBLE';
+
+			interface WoodVariant {
+				woodType: WoodType;
+				price: number;
 			}
 
 			interface CartItem {
 				id: string;
 				quantity: number;
+				/** Tipo de madera elegido; cada madera es una línea distinta */
+				woodType?: WoodType;
 			}
+
+			const WOOD_LABELS: Record<WoodType, string> = {
+				TORNILLO: 'Tornillo', PINO: 'Pino', COPAIBA: 'Copaiba', CEDRO: 'Cedro', ROBLE: 'Roble',
+			};
+
+			/** Precio unitario según la madera elegida (o el precio simple) */
+			const unitPrice = (p: CatalogItem | undefined, woodType?: WoodType): number => {
+				if (!p) return 0;
+				if (p.woodVariants?.length && woodType) {
+					return p.woodVariants.find((v) => v.woodType === woodType)?.price ?? 0;
+				}
+				return p.price ?? 0;
+			};
+
+			/** True si el item se puede pagar directo (con su madera resuelta) */
+			const isPayable = (p: CatalogItem | undefined, woodType?: WoodType): boolean => {
+				if (!p || !p.allowsDirectPurchase) return false;
+				if (p.woodVariants?.length) {
+					return !!woodType && p.woodVariants.some((v) => v.woodType === woodType);
+				}
+				return p.price !== null;
+			};
 
 			const DIVISION_LABELS = {
 				MADERA: "Madera",
@@ -327,6 +359,7 @@ import logoPrevca from "../assets/logo-prevca.png";
 								desc: p.shortDesc,
 								price: typeof p.price === "number" ? p.price : null,
 								allowsDirectPurchase: !!p.allowsDirectPurchase,
+								woodVariants: Array.isArray(p.woodVariants) ? p.woodVariants : [],
 							},
 						]),
 					);
@@ -347,14 +380,12 @@ import logoPrevca from "../assets/logo-prevca.png";
 
 					// === Lógica de "Pagar ahora" vs cotización ===
 					// Mostrar botón checkout solo si TODOS los items aceptan pago directo y tienen precio
-					const allPayable = cart.length > 0 && cart.every((item: CartItem) => {
-						const p = catalog[item.id];
-						return p && p.allowsDirectPurchase && p.price !== null;
-					});
-					const someNotPayable = cart.length > 0 && cart.some((item: CartItem) => {
-						const p = catalog[item.id];
-						return !p || !p.allowsDirectPurchase || p.price === null;
-					});
+					const allPayable = cart.length > 0 && cart.every((item: CartItem) =>
+						isPayable(catalog[item.id], item.woodType),
+					);
+					const someNotPayable = cart.length > 0 && cart.some((item: CartItem) =>
+						!isPayable(catalog[item.id], item.woodType),
+					);
 
 					const checkoutBtn = document.getElementById('btn-checkout');
 					const mixedWarning = document.getElementById('mixed-cart-warning');
@@ -363,7 +394,8 @@ import logoPrevca from "../assets/logo-prevca.png";
 
 					if (allPayable) {
 						const subtotal = cart.reduce(
-							(sum: number, item: CartItem) => sum + (catalog[item.id].price ?? 0) * item.quantity,
+							(sum: number, item: CartItem) =>
+								sum + unitPrice(catalog[item.id], item.woodType) * item.quantity,
 							0,
 						);
 						if (subtotalEl) subtotalEl.textContent = `S/ ${subtotal.toFixed(2)}`;
@@ -412,18 +444,20 @@ import logoPrevca from "../assets/logo-prevca.png";
 												<span class="text-xs font-bold text-gray-400">Ref: ${details.ref}</span>
 											</div>
 											<h3 class="text-xl font-bold font-display text-[#2a3035]">${details.title}</h3>
+											${item.woodType ? `<p class="text-sm font-body text-gray-600 mt-1">Madera: <span class="font-bold text-[#1d4c74]">${WOOD_LABELS[item.woodType]}</span></p>` : ''}
+											${unitPrice(details, item.woodType) > 0 ? `<p class="text-sm font-bold text-[#1d4c74] mt-1">S/ ${(unitPrice(details, item.woodType) * item.quantity).toFixed(2)}</p>` : ''}
 										</div>
 
 										<div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
 											<!-- Quantity Control -->
 											<div class="flex items-stretch border border-gray-300 bg-white text-[#2a3035] font-ui font-bold h-[40px] rounded-none">
-												<button onclick="updateQty('${item.id}', -1)" class="w-10 hover:bg-gray-100 transition-colors border-r border-gray-300 cursor-pointer text-lg flex items-center justify-center">-</button>
+												<button onclick="updateQty(${index}, -1)" class="w-10 hover:bg-gray-100 transition-colors border-r border-gray-300 cursor-pointer text-lg flex items-center justify-center">-</button>
 												<input type="number" readonly value="${item.quantity}" class="w-12 text-center m-0 p-0 outline-none bg-transparent text-sm [appearance:textfield]" />
-												<button onclick="updateQty('${item.id}', 1)" class="w-10 hover:bg-gray-100 transition-colors border-l border-gray-300 cursor-pointer text-lg flex items-center justify-center">+</button>
+												<button onclick="updateQty(${index}, 1)" class="w-10 hover:bg-gray-100 transition-colors border-l border-gray-300 cursor-pointer text-lg flex items-center justify-center">+</button>
 											</div>
 
 											<div class="flex items-center gap-2">
-												<button onclick="removeItem('${item.id}')" title="Eliminar" class="w-10 h-10 flex items-center justify-center text-red-500 hover:bg-red-50 transition-colors border border-transparent hover:border-red-100 rounded-none cursor-pointer">
+												<button onclick="removeItem(${index})" title="Eliminar" class="w-10 h-10 flex items-center justify-center text-red-500 hover:bg-red-50 transition-colors border border-transparent hover:border-red-100 rounded-none cursor-pointer">
 													<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>
 												</button>
 												<button onclick="toggleAccordion(${index})" class="w-10 h-10 flex items-center justify-center text-[#1d4c74] hover:bg-gray-50 transition-colors border border-gray-200 cursor-pointer rounded-none">
@@ -448,23 +482,26 @@ import logoPrevca from "../assets/logo-prevca.png";
 					}
 				};
 
-				// Global Functions for inline handlers
-				(window as any).updateQty = (id: string, change: number) => {
-					let cart: CartItem[] = JSON.parse(localStorage.getItem('prevca_cart') || '[]') || [];
-					const itemIndex = cart.findIndex((item: CartItem) => item.id === id);
-					if (itemIndex > -1) {
-						cart[itemIndex].quantity += change;
-						if (cart[itemIndex].quantity < 1) cart[itemIndex].quantity = 1;
+				// Global Functions for inline handlers.
+				// Se indexa por POSICIÓN, no por id: un mismo producto puede estar
+				// varias veces en el carrito con distintos tipos de madera.
+				(window as any).updateQty = (index: number, change: number) => {
+					const cart: CartItem[] = JSON.parse(localStorage.getItem('prevca_cart') || '[]') || [];
+					if (index >= 0 && index < cart.length) {
+						cart[index].quantity += change;
+						if (cart[index].quantity < 1) cart[index].quantity = 1;
 						localStorage.setItem('prevca_cart', JSON.stringify(cart));
 						renderCart();
 					}
 				};
 
-				(window as any).removeItem = (id: string) => {
-					let cart: CartItem[] = JSON.parse(localStorage.getItem('prevca_cart') || '[]') || [];
-					cart = cart.filter((item: CartItem) => item.id !== id);
-					localStorage.setItem('prevca_cart', JSON.stringify(cart));
-					renderCart();
+				(window as any).removeItem = (index: number) => {
+					const cart: CartItem[] = JSON.parse(localStorage.getItem('prevca_cart') || '[]') || [];
+					if (index >= 0 && index < cart.length) {
+						cart.splice(index, 1);
+						localStorage.setItem('prevca_cart', JSON.stringify(cart));
+						renderCart();
+					}
 				};
 
 				(window as any).toggleAccordion = (index: number) => {
@@ -507,6 +544,7 @@ import logoPrevca from "../assets/logo-prevca.png";
 						.map((item: CartItem) => ({
 							productId: catalog[item.id].id,
 							quantity: item.quantity,
+							...(item.woodType ? { woodType: item.woodType } : {}),
 						}));
 
 					if (validItems.length === 0) {

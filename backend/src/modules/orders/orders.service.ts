@@ -1,5 +1,10 @@
 import { Timestamp } from 'firebase-admin/firestore';
-import { PaymentMethod, PaymentStatus } from '../../config/constants';
+import {
+  PaymentMethod,
+  PaymentStatus,
+  WOOD_TYPE_LABELS,
+  WoodType,
+} from '../../config/constants';
 import { ConflictError, NotFoundError, ValidationError } from '../../shared/errors/app-error';
 import { productsRepository, Product } from '../products/products.repository';
 import { settingsService } from '../settings/settings.service';
@@ -28,8 +33,41 @@ const initialPaymentStatus = (method: PaymentMethod): PaymentStatus => {
   return 'PENDING_PROOF';
 };
 
+/**
+ * Resuelve el precio unitario de un item en SERVIDOR. Si el producto tiene
+ * variantes por tipo de madera, exige que el cliente haya elegido una válida
+ * y usa ese precio; nunca el que venga del cliente.
+ */
+const resolveUnitPrice = (
+  product: Product,
+  woodType: WoodType | undefined,
+  idx: number,
+): number | null => {
+  const variants = product.woodVariants ?? [];
+  if (variants.length === 0) return product.price;
+
+  if (!woodType) {
+    throw new ValidationError([
+      {
+        path: `items[${idx}].woodType`,
+        message: `Elija el tipo de madera para "${product.title}"`,
+      },
+    ]);
+  }
+  const variant = variants.find((v) => v.woodType === woodType);
+  if (!variant) {
+    throw new ValidationError([
+      {
+        path: `items[${idx}].woodType`,
+        message: `"${product.title}" no está disponible en ${WOOD_TYPE_LABELS[woodType]}`,
+      },
+    ]);
+  }
+  return variant.price;
+};
+
 const buildItemsSnapshot = (
-  inputItems: { productId: string; quantity: number }[],
+  inputItems: { productId: string; quantity: number; woodType?: WoodType }[],
   products: (Product | null)[],
   requireDirectPurchase: boolean,
 ): { snapshots: OrderItem[]; subtotal: number } => {
@@ -52,6 +90,9 @@ const buildItemsSnapshot = (
       ]);
     }
 
+    // Precio unitario resuelto en servidor (variante de madera si aplica)
+    const unitPrice = resolveUnitPrice(product, item.woodType, idx);
+
     if (requireDirectPurchase) {
       if (!product.allowsDirectPurchase) {
         throw new ValidationError([
@@ -61,7 +102,7 @@ const buildItemsSnapshot = (
           },
         ]);
       }
-      if (product.price === null) {
+      if (unitPrice === null) {
         throw new ValidationError([
           {
             path: `items[${idx}].productId`,
@@ -79,8 +120,8 @@ const buildItemsSnapshot = (
       }
     }
 
-    const lineTotal = requireDirectPurchase && product.price !== null
-      ? +(product.price * item.quantity).toFixed(2)
+    const lineTotal = requireDirectPurchase && unitPrice !== null
+      ? +(unitPrice * item.quantity).toFixed(2)
       : null;
 
     if (lineTotal !== null) subtotal = +(subtotal + lineTotal).toFixed(2);
@@ -88,9 +129,10 @@ const buildItemsSnapshot = (
     snapshots.push({
       productId: product.id,
       titleSnapshot: product.title,
-      priceSnapshot: product.price ?? null,
+      priceSnapshot: unitPrice,
       quantity: item.quantity,
       lineTotal,
+      woodType: item.woodType ?? null,
     });
   });
 

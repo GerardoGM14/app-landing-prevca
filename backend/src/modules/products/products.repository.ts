@@ -1,6 +1,6 @@
 import { FieldValue, Query, Timestamp } from 'firebase-admin/firestore';
 import { db } from '../../config/firebase';
-import { COLLECTIONS, Division } from '../../config/constants';
+import { COLLECTIONS, Division, WoodType } from '../../config/constants';
 
 const col = () => db.collection(COLLECTIONS.PRODUCTS);
 
@@ -10,6 +10,12 @@ export interface ProductImage {
   alt: string | null;
   isPrimary: boolean;
   order: number;
+}
+
+/** Precio del producto para un tipo de madera concreto. */
+export interface WoodVariant {
+  woodType: WoodType;
+  price: number;
 }
 
 export interface ProductDoc {
@@ -27,6 +33,11 @@ export interface ProductDoc {
   applications: string | null;
   datasheetUrl: string | null;
   price: number | null;
+  /**
+   * Si tiene elementos, el producto se vende por tipo de madera: el cliente
+   * elige uno y su precio manda sobre `price`.
+   */
+  woodVariants: WoodVariant[];
   showPrice: boolean;
   allowsDirectPurchase: boolean;
   stock: number;
@@ -44,7 +55,9 @@ export type Product = ProductDoc & { id: string };
 
 const mapDoc = (doc: FirebaseFirestore.DocumentSnapshot): Product | null => {
   if (!doc.exists) return null;
-  return { id: doc.id, ...(doc.data() as ProductDoc) };
+  const data = doc.data() as ProductDoc;
+  // Los productos creados antes de las variantes no traen el campo.
+  return { id: doc.id, ...data, woodVariants: data.woodVariants ?? [] };
 };
 
 export interface ListFilters {
@@ -86,7 +99,10 @@ export const productsRepository = {
     }
 
     const snap = await query.limit(filters.pageSize + 1).get();
-    const docs = snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDoc) }));
+    const docs = snap.docs.map((d) => {
+      const data = d.data() as ProductDoc;
+      return { id: d.id, ...data, woodVariants: data.woodVariants ?? [] };
+    });
     const hasMore = docs.length > filters.pageSize;
     let items = hasMore ? docs.slice(0, filters.pageSize) : docs;
 
