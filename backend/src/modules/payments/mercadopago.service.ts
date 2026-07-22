@@ -35,6 +35,10 @@ const trimSlash = (url: string): string => url.replace(/\/$/, '');
 const landingUrl = (): string =>
   trimSlash(process.env.PUBLIC_LANDING_URL ?? 'http://localhost:4321');
 
+/** MercadoPago no acepta localhost/IPs privadas en back_urls con auto_return. */
+const isPublicUrl = (url: string): boolean =>
+  !/^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])/i.test(url);
+
 /** Base pública del API (para que MP nos notifique el webhook). */
 const apiUrl = (): string | undefined => {
   const url = process.env.PUBLIC_API_URL;
@@ -82,16 +86,21 @@ export const mercadopagoService = {
               },
             }
           : {}),
+        // NO forzamos payer.email en Checkout Pro: MercadoPago toma los datos
+        // de la cuenta con la que el comprador inicia sesión. Enviar un email
+        // que coincida con el comprador (o con el vendedor) deja el botón
+        // "Pagar" deshabilitado en sandbox. Solo pasamos el nombre.
         payer: {
           name: order.customer.name,
-          email: order.customer.email,
         },
         back_urls: {
           success: `${landingUrl()}/pago-exitoso?code=${order.code}`,
           pending: `${landingUrl()}/pago-pendiente?code=${order.code}`,
           failure: `${landingUrl()}/pago-fallido?code=${order.code}`,
         },
-        auto_return: 'approved',
+        // MercadoPago rechaza auto_return con back_urls en localhost
+        // (invalid_auto_return). Solo lo activamos con una URL pública real.
+        ...(isPublicUrl(landingUrl()) ? { auto_return: 'approved' as const } : {}),
         ...(notificationUrl ? { notification_url: notificationUrl } : {}),
         statement_descriptor: 'GRUPO PREVCA',
       },
