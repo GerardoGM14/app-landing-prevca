@@ -42,7 +42,31 @@ const resolveUnitPrice = (
   product: Product,
   woodType: WoodType | undefined,
   idx: number,
+  optionValue?: string,
 ): number | null => {
+  // Opciones libres (Copesa: medidas, presentaciones) tienen prioridad
+  const options = product.options ?? [];
+  if (options.length > 0) {
+    if (!optionValue) {
+      throw new ValidationError([
+        {
+          path: `items[${idx}].optionValue`,
+          message: `Elija una opción para "${product.title}"`,
+        },
+      ]);
+    }
+    const option = options.find((o) => o.value === optionValue);
+    if (!option) {
+      throw new ValidationError([
+        {
+          path: `items[${idx}].optionValue`,
+          message: `La opción elegida no está disponible para "${product.title}"`,
+        },
+      ]);
+    }
+    return option.price;
+  }
+
   const variants = product.woodVariants ?? [];
   if (variants.length === 0) return product.price;
 
@@ -67,7 +91,12 @@ const resolveUnitPrice = (
 };
 
 const buildItemsSnapshot = (
-  inputItems: { productId: string; quantity: number; woodType?: WoodType }[],
+  inputItems: {
+    productId: string;
+    quantity: number;
+    woodType?: WoodType;
+    optionValue?: string;
+  }[],
   products: (Product | null)[],
   requireDirectPurchase: boolean,
 ): { snapshots: OrderItem[]; subtotal: number } => {
@@ -91,7 +120,7 @@ const buildItemsSnapshot = (
     }
 
     // Precio unitario resuelto en servidor (variante de madera si aplica)
-    const unitPrice = resolveUnitPrice(product, item.woodType, idx);
+    const unitPrice = resolveUnitPrice(product, item.woodType, idx, item.optionValue);
 
     if (requireDirectPurchase) {
       if (!product.allowsDirectPurchase) {
@@ -133,6 +162,13 @@ const buildItemsSnapshot = (
       quantity: item.quantity,
       lineTotal,
       woodType: item.woodType ?? null,
+      optionValue: item.optionValue ?? null,
+      // Guardamos la etiqueta para que la orden sea legible aunque el
+      // producto cambie sus opciones después.
+      optionLabel:
+        (item.optionValue
+          ? product.options?.find((o) => o.value === item.optionValue)?.label
+          : null) ?? null,
     });
   });
 

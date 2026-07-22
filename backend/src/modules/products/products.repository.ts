@@ -18,6 +18,17 @@ export interface WoodVariant {
   price: number;
 }
 
+/**
+ * Opción libre con su precio (medida, presentación, tipo de madera Copesa).
+ * `imageUrl` opcional: si está, se muestra al elegir esa opción.
+ */
+export interface ProductOption {
+  value: string;
+  label: string;
+  price: number;
+  imageUrl: string | null;
+}
+
 export interface ProductDoc {
   slug: string;
   ref: string;
@@ -38,6 +49,12 @@ export interface ProductDoc {
    * elige uno y su precio manda sobre `price`.
    */
   woodVariants: WoodVariant[];
+  /** Opciones libres con precio (medidas, presentaciones) */
+  options: ProductOption[];
+  /** Título del selector de opciones, ej. "Medida" */
+  optionLabel: string | null;
+  /** Agrupación dentro de la categoría, para filtrar en la landing */
+  subcategory: string | null;
   showPrice: boolean;
   allowsDirectPurchase: boolean;
   stock: number;
@@ -56,8 +73,15 @@ export type Product = ProductDoc & { id: string };
 const mapDoc = (doc: FirebaseFirestore.DocumentSnapshot): Product | null => {
   if (!doc.exists) return null;
   const data = doc.data() as ProductDoc;
-  // Los productos creados antes de las variantes no traen el campo.
-  return { id: doc.id, ...data, woodVariants: data.woodVariants ?? [] };
+  // Los productos creados antes de variantes/opciones no traen estos campos.
+  return {
+    id: doc.id,
+    ...data,
+    woodVariants: data.woodVariants ?? [],
+    options: data.options ?? [],
+    optionLabel: data.optionLabel ?? null,
+    subcategory: data.subcategory ?? null,
+  };
 };
 
 export interface ListFilters {
@@ -101,7 +125,14 @@ export const productsRepository = {
     const snap = await query.limit(filters.pageSize + 1).get();
     const docs = snap.docs.map((d) => {
       const data = d.data() as ProductDoc;
-      return { id: d.id, ...data, woodVariants: data.woodVariants ?? [] };
+      return {
+        id: d.id,
+        ...data,
+        woodVariants: data.woodVariants ?? [],
+        options: data.options ?? [],
+        optionLabel: data.optionLabel ?? null,
+        subcategory: data.subcategory ?? null,
+      };
     });
     const hasMore = docs.length > filters.pageSize;
     let items = hasMore ? docs.slice(0, filters.pageSize) : docs;

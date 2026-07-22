@@ -35,6 +35,11 @@ const PUBLIC_FIELDS = (p: Awaited<ReturnType<typeof productsRepository.findById>
     price: p.showPrice ? p.price : null,
     /** Precios por tipo de madera; vacío si el producto no tiene variantes */
     woodVariants: p.showPrice ? p.woodVariants ?? [] : [],
+    /** Opciones libres con precio (medidas, presentaciones) */
+    options: p.showPrice ? p.options ?? [] : [],
+    optionLabel: p.optionLabel ?? null,
+    /** Agrupación para el filtro por división en la landing */
+    subcategory: p.subcategory ?? null,
     showPrice: p.showPrice,
     /** Indica si el carrito puede llevarlo a checkout con pago */
     allowsDirectPurchase: p.allowsDirectPurchase,

@@ -34,15 +34,17 @@ export const productsService = {
     if (slugConflict) throw new ConflictError(`Slug "${input.slug}" ya está en uso`);
     if (refConflict) throw new ConflictError(`Ref "${input.ref}" ya está en uso`);
 
-    // Si se marcó como pago directo, debe tener precio: uno simple o variantes
+    // Con pago directo debe haber precio: simple, por madera o por opción
     const hasVariants = (input.woodVariants ?? []).length > 0;
+    const hasOptions = (input.options ?? []).length > 0;
     if (
       input.allowsDirectPurchase &&
       !hasVariants &&
+      !hasOptions &&
       (input.price === null || input.price === undefined)
     ) {
       throw new ConflictError(
-        'Un producto con pago directo debe tener un precio definido (o variantes por tipo de madera)',
+        'Un producto con pago directo debe tener un precio definido (o variantes/opciones con precio)',
       );
     }
 
@@ -56,6 +58,9 @@ export const productsService = {
       description: input.description,
       specs: input.specs ?? null,
       woodVariants: input.woodVariants ?? [],
+      options: (input.options ?? []).map((o) => ({ ...o, imageUrl: o.imageUrl ?? null })),
+      optionLabel: input.optionLabel ?? null,
+      subcategory: input.subcategory ?? null,
       features: input.features,
       scientificName: input.scientificName ?? null,
       origin: input.origin ?? null,

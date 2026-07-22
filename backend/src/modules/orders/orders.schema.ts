@@ -41,6 +41,11 @@ const itemsSchema = z
        * El precio SIEMPRE se resuelve en servidor a partir de este valor.
        */
       woodType: z.enum(WOOD_TYPES).optional(),
+      /**
+       * `value` de la opción elegida, para productos con opciones libres.
+       * El precio se resuelve en servidor a partir de este valor.
+       */
+      optionValue: z.string().max(80).optional(),
     }),
   )
   .min(1)

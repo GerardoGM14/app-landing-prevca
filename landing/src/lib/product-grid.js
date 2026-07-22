@@ -29,10 +29,12 @@ const buildDetailUrl = (urlPrefix, divisionSlug, slug) => {
  * @param {string} containerId - id del div que contendrá las tarjetas
  * @param {"MADERA"|"HOSPITALIDAD"|"CAFE"|"TRANSPORTE"} division
  * @param {string} urlPrefix - ej. "/madera" para que los detalles vayan a /madera/<slug>
- * @param {{ categorySlug?: string, variant?: "ecommerce" | "library" }} [options]
+ * @param {{ categorySlug?: string, variant?: "ecommerce" | "library", filterContainerId?: string }} [options]
+ *   filterContainerId: si se pasa, se renderizan botones para filtrar por
+ *   `subcategory` (las divisiones internas de Copesa).
  */
 export async function renderProductGrid(containerId, division, urlPrefix, options = {}) {
-  const { categorySlug, variant = "ecommerce" } = options;
+  const { categorySlug, variant = "ecommerce", filterContainerId } = options;
   const divisionSlug = urlPrefix.replace(/^\//, "");
   const grid = document.getElementById(containerId);
   if (!grid) return;
@@ -53,7 +55,42 @@ export async function renderProductGrid(containerId, division, urlPrefix, option
       return;
     }
 
-    grid.innerHTML = products
+    // Filtro por subcategoría (divisiones internas, ej. las 3 de Copesa)
+    const subcats = [...new Set(products.map((p) => p.subcategory).filter(Boolean))];
+    if (filterContainerId && subcats.length > 1) {
+      const filterEl = document.getElementById(filterContainerId);
+      if (filterEl) {
+        const btnClass =
+          "filter-btn border-2 px-5 py-2 font-ui font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer";
+        filterEl.innerHTML = [
+          `<button type="button" data-sub="" class="${btnClass} border-[#1d4c74] bg-[#1d4c74] text-white">Todos</button>`,
+          ...subcats.map(
+            (s) =>
+              `<button type="button" data-sub="${escapeHtml(s)}" class="${btnClass} border-[#1d4c74] bg-white text-[#1d4c74] hover:bg-[#1d4c74]/5">${escapeHtml(s)}</button>`,
+          ),
+        ].join("");
+
+        filterEl.querySelectorAll("button").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const sub = btn.dataset.sub ?? "";
+            filterEl.querySelectorAll("button").forEach((b) => {
+              const active = b === btn;
+              b.classList.toggle("bg-[#1d4c74]", active);
+              b.classList.toggle("text-white", active);
+              b.classList.toggle("bg-white", !active);
+              b.classList.toggle("text-[#1d4c74]", !active);
+            });
+            paint(sub ? products.filter((p) => p.subcategory === sub) : products);
+          });
+        });
+      }
+    }
+
+    paint(products);
+
+    /** Pinta el grid con la lista de productos indicada */
+    function paint(list) {
+      grid.innerHTML = list
       .map((p) => {
         const img = p.images?.find((i) => i.isPrimary)?.url ?? p.images?.[0]?.url ?? "";
         const detailUrl = buildDetailUrl(urlPrefix, divisionSlug, p.slug);
@@ -108,6 +145,7 @@ export async function renderProductGrid(containerId, division, urlPrefix, option
         `;
       })
       .join("");
+    }
   } catch (err) {
     console.error(`Error al cargar productos (${division}):`, err);
     grid.innerHTML = `

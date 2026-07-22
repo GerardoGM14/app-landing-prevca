@@ -197,8 +197,8 @@ import logoPrevca from "../assets/logo-prevca.png";
 
 					<!-- Selector de tipo de madera (solo productos con variantes) -->
 					<div id="wood-section" class="hidden bg-gray-50 p-6 border border-gray-200">
-						<h3 class="text-[#2a3035] font-bold font-display text-lg mb-1">Tipo de madera</h3>
-						<p class="text-sm text-gray-500 font-body mb-4">El precio varía según la madera que elija.</p>
+						<h3 id="wood-title" class="text-[#2a3035] font-bold font-display text-lg mb-1">Tipo de madera</h3>
+						<p class="text-sm text-gray-500 font-body mb-4">El precio varía según la opción que elija.</p>
 						<div id="wood-options" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
 					</div>
 
@@ -319,6 +319,14 @@ import logoPrevca from "../assets/logo-prevca.png";
 				price: number;
 			}
 
+			/** Opción libre con precio (medidas, presentaciones de Copesa) */
+			interface ProductOption {
+				value: string;
+				label: string;
+				price: number;
+				imageUrl?: string | null;
+			}
+
 			interface Product {
 				id: string;
 				slug: string;
@@ -332,6 +340,8 @@ import logoPrevca from "../assets/logo-prevca.png";
 				images: ProductImage[];
 				price?: number | null;
 				woodVariants?: WoodVariant[];
+				options?: ProductOption[];
+				optionLabel?: string | null;
 			}
 
 			interface CartItem {
@@ -339,6 +349,8 @@ import logoPrevca from "../assets/logo-prevca.png";
 				quantity: number;
 				/** Tipo de madera elegido; ausente en productos sin variantes */
 				woodType?: WoodType;
+				/** `value` de la opción libre elegida (Copesa) */
+				optionValue?: string;
 			}
 
 			const WOOD_LABELS: Record<WoodType, string> = {
@@ -351,6 +363,8 @@ import logoPrevca from "../assets/logo-prevca.png";
 
 			/** Madera elegida por el usuario en esta ficha (null si el producto no tiene variantes) */
 			let selectedWood: WoodType | null = null;
+			/** Opción libre elegida (Copesa); excluyente con selectedWood */
+			let selectedOption: string | null = null;
 
 			const DIVISION_MAP: Record<DivisionSlug, { code: DivisionCode; label: string }> = {
 				madera: { code: "MADERA", label: "División Madera" },
@@ -403,22 +417,31 @@ import logoPrevca from "../assets/logo-prevca.png";
 				const priceSection = $("price-section");
 				const priceEl = $("product-price");
 
-				if (variants.length > 0) {
-					// Producto con variantes: precio "desde" hasta que elija madera
-					const cheapest = Math.min(...variants.map((v) => v.price));
+				// Se unifican los dos modelos de variante en una sola lista de
+				// botones: maderas fijas (Aserradero) u opciones libres (Copesa).
+				const freeOptions = product.options ?? [];
+				type Choice = { key: string; label: string; price: number; imageUrl?: string | null; isWood: boolean };
+				const choices: Choice[] = freeOptions.length > 0
+					? freeOptions.map((o) => ({ key: o.value, label: o.label, price: o.price, imageUrl: o.imageUrl, isWood: false }))
+					: variants.map((v) => ({ key: v.woodType, label: WOOD_LABELS[v.woodType], price: v.price, isWood: true }));
+
+				if (choices.length > 0) {
+					// Precio "desde" hasta que elija una opción
+					const cheapest = Math.min(...choices.map((c) => c.price));
 					priceEl.textContent = `Desde ${formatMoney(cheapest)}`;
 					priceSection.classList.remove("hidden");
 
 					const woodSection = $("wood-section");
 					const optionsEl = $("wood-options");
+					if (product.optionLabel) $("wood-title").textContent = product.optionLabel;
 					woodSection.classList.remove("hidden");
-					optionsEl.innerHTML = variants
+					optionsEl.innerHTML = choices
 						.map(
-							(v) => `
-						<button type="button" data-wood="${v.woodType}" data-price="${v.price}"
+							(c) => `
+						<button type="button" data-key="${escapeHtml(c.key)}" data-price="${c.price}" data-wood="${c.isWood ? "1" : "0"}" ${c.imageUrl ? `data-img="${escapeHtml(c.imageUrl)}"` : ""}
 							class="wood-opt border border-gray-300 bg-white p-3 text-left transition-colors hover:border-[#1d4c74] cursor-pointer">
-							<span class="block font-ui font-bold text-sm text-[#2a3035]">${WOOD_LABELS[v.woodType]}</span>
-							<span class="block text-xs text-gray-500 mt-0.5">${formatMoney(v.price)}</span>
+							<span class="block font-ui font-bold text-sm text-[#2a3035]">${escapeHtml(c.label)}</span>
+							<span class="block text-xs text-gray-500 mt-0.5">${formatMoney(c.price)}</span>
 						</button>
 					`,
 						)
@@ -426,7 +449,14 @@ import logoPrevca from "../assets/logo-prevca.png";
 
 					optionsEl.querySelectorAll<HTMLButtonElement>(".wood-opt").forEach((btn) => {
 						btn.addEventListener("click", () => {
-							selectedWood = btn.dataset.wood as WoodType;
+							const key = btn.dataset.key ?? "";
+							if (btn.dataset.wood === "1") {
+								selectedWood = key as WoodType;
+								selectedOption = null;
+							} else {
+								selectedOption = key;
+								selectedWood = null;
+							}
 							// Resaltar la opción elegida
 							optionsEl.querySelectorAll<HTMLButtonElement>(".wood-opt").forEach((b) => {
 								const active = b === btn;
@@ -435,6 +465,10 @@ import logoPrevca from "../assets/logo-prevca.png";
 								b.classList.toggle("border-gray-300", !active);
 							});
 							priceEl.textContent = formatMoney(Number(btn.dataset.price));
+							// Si la opción trae su propia foto, mostrarla
+							if (btn.dataset.img) {
+								$<HTMLImageElement>("product-image").src = btn.dataset.img;
+							}
 						});
 					});
 				} else if (typeof product.price === "number") {
@@ -581,9 +615,9 @@ import logoPrevca from "../assets/logo-prevca.png";
 					const productId = addBtn.dataset.product;
 					if (!productId) return;
 
-					// Si el producto tiene variantes, exigir que elija la madera
+					// Si el producto tiene variantes/opciones, exigir que elija una
 					const needsWood = !$("wood-section").classList.contains("hidden");
-					if (needsWood && !selectedWood) {
+					if (needsWood && !selectedWood && !selectedOption) {
 						const woodSection = $("wood-section");
 						woodSection.classList.add("ring-2", "ring-red-500");
 						woodSection.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -592,18 +626,22 @@ import logoPrevca from "../assets/logo-prevca.png";
 					}
 
 					const cart = JSON.parse(localStorage.getItem("prevca_cart") ?? "[]") as CartItem[];
-					// Cada tipo de madera es una línea distinta del carrito
+					// Cada madera / opción es una línea distinta del carrito
 					const existing = cart.find(
-						(item) => item.id === productId && (item.woodType ?? null) === (selectedWood ?? null),
+						(item) =>
+							item.id === productId &&
+							(item.woodType ?? null) === (selectedWood ?? null) &&
+							(item.optionValue ?? null) === (selectedOption ?? null),
 					);
 					if (existing) {
 						existing.quantity += qty;
 					} else {
-						cart.push(
-							selectedWood
-								? { id: productId, quantity: qty, woodType: selectedWood }
-								: { id: productId, quantity: qty },
-						);
+						cart.push({
+							id: productId,
+							quantity: qty,
+							...(selectedWood ? { woodType: selectedWood } : {}),
+							...(selectedOption ? { optionValue: selectedOption } : {}),
+						});
 					}
 					localStorage.setItem("prevca_cart", JSON.stringify(cart));
 					cartCount();

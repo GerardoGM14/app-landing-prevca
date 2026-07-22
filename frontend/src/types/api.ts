@@ -23,6 +23,14 @@ export interface WoodVariant {
   price: number;
 }
 
+/** Opción libre con su precio (medidas, presentaciones de Copesa) */
+export interface ProductOption {
+  value: string;
+  label: string;
+  price: number;
+  imageUrl?: string | null;
+}
+
 export type PaymentStatus =
   | 'NONE'
   | 'PENDING_PROOF'
@@ -92,6 +100,12 @@ export interface Product {
   price: number | null;
   /** Precios por tipo de madera; si tiene elementos, manda sobre `price` */
   woodVariants: WoodVariant[];
+  /** Opciones libres con precio (medidas, presentaciones) */
+  options: ProductOption[];
+  /** Título del selector de opciones, ej. "Medida" */
+  optionLabel: string | null;
+  /** Agrupación dentro de la categoría, para filtrar en la landing */
+  subcategory: string | null;
   showPrice: boolean;
   allowsDirectPurchase: boolean;
   stock: number;
@@ -124,6 +138,9 @@ export interface OrderItem {
   lineTotal: number | null;
   /** Tipo de madera elegido por el cliente; null si el producto no tiene variantes */
   woodType: WoodType | null;
+  /** Opción libre elegida y su etiqueta al momento de comprar */
+  optionValue: string | null;
+  optionLabel: string | null;
 }
 
 export interface OrderShipping {

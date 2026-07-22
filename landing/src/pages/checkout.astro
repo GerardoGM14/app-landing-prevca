@@ -322,19 +322,32 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 			import { UBIGEO_PERU, DEPARTMENT_LABELS, getProvinces, getDistricts } from "../data/ubigeo-peru.js";
 
 			type WoodType = 'TORNILLO' | 'PINO' | 'COPAIBA' | 'CEDRO' | 'ROBLE';
-			type CartItem = { id: string; quantity: number; woodType?: WoodType };
+			type CartItem = { id: string; quantity: number; woodType?: WoodType; optionValue?: string };
 
 			const WOOD_LABELS: Record<WoodType, string> = {
 				TORNILLO: 'Tornillo', PINO: 'Pino', COPAIBA: 'Copaiba', CEDRO: 'Cedro', ROBLE: 'Roble',
 			};
 
-			/** Precio unitario segun la madera elegida (o el precio simple del producto) */
-			const unitPrice = (product: any, woodType?: WoodType): number => {
+			/** Precio unitario segun la madera/opcion elegida (o el precio simple) */
+			const unitPrice = (product: any, item?: CartItem): number => {
+				const options = product?.options ?? [];
+				if (options.length > 0 && item?.optionValue) {
+					return options.find((o: any) => o.value === item.optionValue)?.price ?? 0;
+				}
 				const variants = product?.woodVariants ?? [];
-				if (variants.length > 0 && woodType) {
-					return variants.find((v: any) => v.woodType === woodType)?.price ?? 0;
+				if (variants.length > 0 && item?.woodType) {
+					return variants.find((v: any) => v.woodType === item.woodType)?.price ?? 0;
 				}
 				return product?.price ?? 0;
+			};
+
+			/** Etiqueta legible de la variante elegida */
+			const variantLabel = (product: any, item: CartItem): string => {
+				if (item.optionValue) {
+					const o = (product?.options ?? []).find((x: any) => x.value === item.optionValue);
+					return o?.label ?? item.optionValue;
+				}
+				return item.woodType ? WOOD_LABELS[item.woodType] : "";
 			};
 			type EnabledMethod = { key: 'YAPE' | 'TRANSFERENCIA' | 'PAYPAL' | 'CULQI' | 'MERCADOPAGO'; label: string; description: string; available: boolean };
 
@@ -403,8 +416,9 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 				itemsEl.innerHTML = validCart
 					.map((c) => {
 						const p = catalog[c.id];
-						const lineTotal = unitPrice(p, c.woodType) * c.quantity;
-						const woodLabel = c.woodType ? ` · ${WOOD_LABELS[c.woodType]}` : "";
+						const lineTotal = unitPrice(p, c) * c.quantity;
+						const vl = variantLabel(p, c);
+						const woodLabel = vl ? ` · ${vl}` : "";
 						return `
 							<li class="flex justify-between gap-2">
 								<div class="flex-1">
@@ -418,7 +432,7 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 					.join("");
 
 				const subtotal = validCart.reduce(
-					(sum, c) => sum + unitPrice(catalog[c.id], c.woodType) * c.quantity,
+					(sum, c) => sum + unitPrice(catalog[c.id], c) * c.quantity,
 					0,
 				);
 				const shippingDept = formData.shipping.department;
@@ -623,6 +637,7 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 						productId: catalog[c.id].id,
 						quantity: c.quantity,
 						...(c.woodType ? { woodType: c.woodType } : {}),
+						...(c.optionValue ? { optionValue: c.optionValue } : {}),
 					}));
 
 				if (items.length === 0) {
@@ -907,6 +922,10 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 						const p = catalog[c.id];
 						if (!p || !p.allowsDirectPurchase) return true;
 						// Con variantes: vale si la madera elegida existe; sin variantes: exige price
+						const options = p.options ?? [];
+						if (options.length > 0) {
+							return !c.optionValue || !options.some((o: any) => o.value === c.optionValue);
+						}
 						const variants = p.woodVariants ?? [];
 						if (variants.length > 0) {
 							return !c.woodType || !variants.some((v: any) => v.woodType === c.woodType);

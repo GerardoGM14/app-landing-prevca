@@ -13,6 +13,21 @@ const woodVariantSchema = z.object({
   price: z.number().nonnegative(),
 });
 
+/**
+ * Opción libre de un producto (medida, dimensión, tipo de madera de Copesa…).
+ * A diferencia de `woodVariants` —que usa los 5 tipos fijos de Aserradero—,
+ * aquí cada producto define sus propias opciones. `imageUrl` es opcional: si
+ * está, al elegir la opción se muestra esa foto en vez de la principal.
+ */
+const productOptionSchema = z.object({
+  /** Identificador estable de la opción, ej. "pino-2x2-3m" */
+  value: z.string().min(1).max(80),
+  /** Texto que ve el cliente, ej. "Pino 2x2 - 3m" */
+  label: z.string().min(1).max(120),
+  price: z.number().nonnegative(),
+  imageUrl: z.string().url().max(500).optional().nullable(),
+});
+
 export const createProductSchema = z.object({
   slug: z
     .string()
@@ -45,6 +60,21 @@ export const createProductSchema = z.object({
       (variants) => new Set(variants.map((v) => v.woodType)).size === variants.length,
       { message: 'No se puede repetir el mismo tipo de madera' },
     ),
+  /**
+   * Opciones libres con su precio (medidas, presentaciones). Si tiene
+   * elementos, el cliente elige una y ese precio manda sobre `price`.
+   */
+  options: z
+    .array(productOptionSchema)
+    .max(30)
+    .default([])
+    .refine((opts) => new Set(opts.map((o) => o.value)).size === opts.length, {
+      message: 'No se puede repetir el mismo value de opción',
+    }),
+  /** Título del selector en la ficha, ej. "Medida" o "Tipo de madera" */
+  optionLabel: z.string().max(60).optional().nullable(),
+  /** Agrupación dentro de la categoría, para filtrar en la landing */
+  subcategory: z.string().max(80).optional().nullable(),
   showPrice: z.boolean().default(false),
   /**
    * Si true, el producto puede comprarse directo (checkout con pago).

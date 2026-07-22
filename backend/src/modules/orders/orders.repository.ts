@@ -23,6 +23,10 @@ export interface OrderItem {
   lineTotal: number | null;
   /** Tipo de madera elegido; null en productos sin variantes */
   woodType: WoodType | null;
+  /** `value` de la opción elegida; null si el producto no tiene opciones */
+  optionValue: string | null;
+  /** Etiqueta legible de esa opción al momento de la compra */
+  optionLabel: string | null;
 }
 
 export interface OrderCustomer {

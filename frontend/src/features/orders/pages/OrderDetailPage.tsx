@@ -233,7 +233,7 @@ export const OrderDetailPage = () => {
               <ul className="divide-y divide-gray-200">
                 {order.items.map((item, idx) => (
                   <li
-                    key={`${item.productId}-${item.woodType ?? 'base'}-${idx}`}
+                    key={`${item.productId}-${item.woodType ?? item.optionValue ?? 'base'}-${idx}`}
                     className="py-3 flex justify-between items-start gap-4"
                   >
                     <div>
@@ -241,6 +241,11 @@ export const OrderDetailPage = () => {
                       {item.woodType && (
                         <p className="text-sm font-ui font-bold text-prevca-blue mt-1">
                           Madera: {WOOD_TYPE_LABELS[item.woodType]}
+                        </p>
+                      )}
+                      {item.optionLabel && (
+                        <p className="text-sm font-ui font-bold text-prevca-blue mt-1">
+                          Opción: {item.optionLabel}
                         </p>
                       )}
                       <p className="text-xs text-gray-400 font-mono mt-1">{item.productId}</p>

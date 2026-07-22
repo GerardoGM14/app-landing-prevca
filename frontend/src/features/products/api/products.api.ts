@@ -5,6 +5,7 @@ import type {
   Product,
   ProductImage,
   WoodVariant,
+  ProductOption,
 } from '@/types/api';
 
 export interface ProductListParams {
@@ -33,6 +34,10 @@ export interface ProductInput {
   price?: number | null;
   /** Precios por tipo de madera; si tiene elementos, manda sobre `price` */
   woodVariants: WoodVariant[];
+  /** Opciones libres con precio (medidas, presentaciones) */
+  options: ProductOption[];
+  optionLabel?: string | null;
+  subcategory?: string | null;
   showPrice: boolean;
   allowsDirectPurchase: boolean;
   stock: number;

@@ -175,6 +175,8 @@ import BankBanner from "../../components/BankBanner.astro";
 		<!-- Catálogo (estilo librería) -->
 		<section class="pb-24 px-6 md:px-8 bg-white">
 			<div class="max-w-7xl mx-auto">
+				<!-- Filtro por división interna (primarios / procesados / melamine) -->
+				<div id="copesa-filters" class="flex flex-wrap gap-3 mb-10 justify-center"></div>
 				<div id="copesa-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 reveal-item active min-h-[400px]">
 					<!-- Especies cargadas via /public/products?division=MADERA&categorySlug=corporacion-maderera-copesa -->
 				</div>
@@ -299,6 +301,7 @@ import BankBanner from "../../components/BankBanner.astro";
 			renderProductGrid("copesa-products-grid", "MADERA", "/madera", {
 				categorySlug: "corporacion-maderera-copesa",
 				variant: "library",
+				filterContainerId: "copesa-filters",
 			});
 		</script>
 	</body>
