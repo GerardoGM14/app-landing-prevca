@@ -1,4 +1,4 @@
-name: Deploy Functions, Firestore y Storage rules
+name: Deploy Functions y Firestore rules
 on:
   push:
     branches:
@@ -34,12 +34,18 @@ jobs:
       - name: Escribir Service Account a archivo temporal
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_APP_PREVCA }}' > "$RUNNER_TEMP/sa-key.json"
 
-      - name: Deploy a Firebase (Functions + Firestore + Storage)
+      # Nota: 'storage' (las reglas de backend/storage.rules) queda fuera del CI
+      # porque la service account del workflow no puede leer la config del
+      # default bucket (firebasestorage.defaultBucket.get) y el deploy falla.
+      # No afecta a la app: subir/leer archivos lo hace el runtime de Functions,
+      # no el deploy. Si cambian las reglas, publicarlas manualmente con:
+      #   firebase deploy --only storage --project app-prevca
+      - name: Deploy a Firebase (Functions + Firestore)
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa-key.json
         run: |
           firebase deploy \
-            --only functions,firestore:rules,firestore:indexes,storage \
+            --only functions,firestore:rules,firestore:indexes \
             --project app-prevca \
             --non-interactive \
             --force
