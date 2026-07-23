@@ -31,3 +31,6 @@ publicRouter.post('/orders/:code/proof', proofUpload, publicController.uploadPro
 
 // Webhook de MercadoPago (Checkout Pro) — confirma pagos vía IPN
 publicRouter.post('/webhooks/mercadopago', publicController.mercadopagoWebhook);
+
+// Cargo de Culqi — crea el cargo con el token del popup (pago síncrono)
+publicRouter.post('/orders/:code/culqi-charge', publicController.culqiCharge);

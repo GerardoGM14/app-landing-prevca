@@ -15,12 +15,19 @@ setGlobalOptions({
  */
 const mercadopagoAccessToken = defineSecret('MERCADOPAGO_ACCESS_TOKEN');
 
+/**
+ * Secret Key de Culqi (sk_live_... / sk_test_...). Se registra con:
+ *   firebase functions:secrets:set CULQI_SECRET_KEY
+ * En el emulador se lee de backend/.secret.local o del entorno.
+ */
+const culqiSecretKey = defineSecret('CULQI_SECRET_KEY');
+
 export const api = onRequest(
   {
     cors: true,
     memory: '512MiB',
     timeoutSeconds: 60,
-    secrets: [mercadopagoAccessToken],
+    secrets: [mercadopagoAccessToken, culqiSecretKey],
   },
   app,
 );

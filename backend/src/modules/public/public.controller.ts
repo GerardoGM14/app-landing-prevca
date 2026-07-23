@@ -241,4 +241,29 @@ export const publicController = {
 
     res.status(200).json({ received: true });
   }),
+
+  /**
+   * Crea el cargo de Culqi con el token que generó el popup en la landing.
+   * Es síncrono: responde de inmediato si el pago fue aprobado o rechazado.
+   */
+  culqiCharge: asyncHandler(async (req: Request<CodeParams>, res: Response) => {
+    const token = String((req.body as { token?: string })?.token ?? '').trim();
+    if (!token) {
+      throw new ValidationError([{ path: 'token', message: 'Falta el token de Culqi' }]);
+    }
+
+    const { order, approved, declineMessage } = await ordersService.processCulqiCharge(
+      req.params.code,
+      token,
+    );
+
+    res.status(approved ? 200 : 402).json({
+      code: order.code,
+      approved,
+      paymentStatus: order.paymentStatus,
+      message: approved
+        ? 'Pago aprobado. ¡Gracias por tu compra!'
+        : declineMessage ?? 'El pago fue rechazado.',
+    });
+  }),
 };

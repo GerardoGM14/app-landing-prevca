@@ -8,6 +8,7 @@ import {
 import { ConflictError, NotFoundError, ValidationError } from '../../shared/errors/app-error';
 import { productsRepository, Product } from '../products/products.repository';
 import { settingsService } from '../settings/settings.service';
+import { culqiService } from '../payments/culqi.service';
 import {
   generateOrderCode,
   ordersRepository,
@@ -28,8 +29,9 @@ import {
  */
 const initialPaymentStatus = (method: PaymentMethod): PaymentStatus => {
   if (method === 'QUOTE') return 'NONE';
-  // MercadoPago no sube captura: el webhook de la pasarela confirma el pago.
-  if (method === 'MERCADOPAGO') return 'PENDING_VERIFICATION';
+  // MercadoPago (webhook) y Culqi (cargo síncrono) no suben captura: el estado
+  // lo confirma la pasarela, no el cliente.
+  if (method === 'MERCADOPAGO' || method === 'CULQI') return 'PENDING_VERIFICATION';
   return 'PENDING_PROOF';
 };
 
@@ -371,6 +373,35 @@ export const ordersService = {
     }
 
     return ordersService.findById(order.id);
+  },
+
+  /**
+   * Procesa el pago con Culqi: crea el cargo con el token del popup y marca la
+   * orden PAID o REJECTED según la respuesta (síncrono, sin webhook).
+   * Idempotente: si ya está PAID devuelve la orden sin recobrar.
+   */
+  async processCulqiCharge(code: string, token: string) {
+    const order = await ordersService.findByCode(code);
+
+    if (order.paymentMethod !== 'CULQI') {
+      throw new ConflictError('Esta orden no se paga con Culqi');
+    }
+    if (order.paymentStatus === 'PAID') return { order, approved: true, declineMessage: null };
+
+    const result = await culqiService.createCharge(order, token, order.customer.email);
+
+    await ordersRepository.updatePayment(
+      order.id,
+      {
+        transactionId: result.chargeId || null,
+        rawPayload: result.raw,
+        ...(result.approved ? { paidAt: Timestamp.now() } : {}),
+      },
+      result.approved ? 'PAID' : 'REJECTED',
+    );
+
+    const updated = await ordersService.findById(order.id);
+    return { order: updated, approved: result.approved, declineMessage: result.declineMessage };
   },
 
   async update(id: string, input: UpdateOrderInput) {
