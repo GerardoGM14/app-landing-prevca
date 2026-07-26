@@ -92,6 +92,29 @@ export async function uploadPaymentProof(code, file) {
   });
 }
 
+/**
+ * Crea el cargo de Culqi con el token del popup. El backend cobra y responde
+ * de inmediato si el pago fue aprobado o rechazado (síncrono).
+ * @param {string} code - código de la orden
+ * @param {string} token - token generado por Culqi.js (tkn_...)
+ * @returns {Promise<{ code, approved, paymentStatus, message }>}
+ */
+export async function chargeCulqi(code, token) {
+  // No usamos request() porque un pago rechazado responde 402 (no-ok) pero
+  // trae un cuerpo válido con approved:false que sí queremos leer.
+  const res = await fetch(`${API_BASE}/public/orders/${encodeURIComponent(code)}/culqi-charge`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  });
+  const data = await res.json().catch(() => ({}));
+  // 200 = aprobado, 402 = rechazado (ambos con {approved, message}).
+  if (res.status === 200 || res.status === 402) {
+    return data;
+  }
+  throw new Error(data?.error?.message ?? `Error ${res.status} al procesar el pago`);
+}
+
 /* ------------------------------------------------------------------ *
  * Configuración pública (envío y métodos de pago habilitados)
  * ------------------------------------------------------------------ */
