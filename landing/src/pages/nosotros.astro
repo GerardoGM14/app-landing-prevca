@@ -15,6 +15,8 @@ import {
 	FaEye,
 	FaPhoneSquareAlt,
 	FaCheckCircle,
+	FaTree,
+	FaRecycle,
 } from "react-icons/fa";
 import { MdMarkEmailRead } from "react-icons/md";
 import { AiOutlineSafetyCertificate } from "react-icons/ai";
@@ -32,6 +34,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 import logoProinnovate from "../assets/logo-proinnovate.png";
 import isoImg from "../assets/iso-9001.webp";
 import logoPrevca from "../assets/logo-prevca.png";
+import sostenibilidadImg from "../assets/madera/madera-image-01.png";
 
 // Importación de imágenes de liderazgo
 import leaderKevin from "../assets/nosotros/leader-kevin.jpeg";
@@ -684,65 +687,149 @@ const leaders = [
 					Valores Fundamentales
 				</h2>
 
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 					<!-- Integridad -->
-					<div class="flex flex-col items-center group">
+					<div
+						class="bg-white border border-gray-200 p-8 md:p-10 flex flex-col items-center text-center group hover:border-[#1d4c74] hover:shadow-xl transition-all duration-300"
+					>
 						<div
-							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
+							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300"
 						>
 							<HiOutlineHeart />
 						</div>
 						<h3
-							class="font-extrabold text-xl font-display mb-4 text-[#2a3035]"
+							class="font-extrabold text-xl font-display mb-4 text-[#2a3035] uppercase tracking-wide"
 						>
 							Integridad
 						</h3>
-						<p
-							class="text-base font-body text-gray-600 leading-relaxed max-w-sm"
-						>
+						<div class="w-10 h-1 bg-[#1d4c74] mb-5"></div>
+						<p class="text-base font-body text-gray-600 leading-relaxed">
 							Sostenibilidad ambiental y respeto corporativo como
 							ejes transversales de nuestra cultura y ecosistema.
 						</p>
 					</div>
 					<!-- Innovación -->
-					<div class="flex flex-col items-center group">
+					<div
+						class="bg-white border border-gray-200 p-8 md:p-10 flex flex-col items-center text-center group hover:border-[#1d4c74] hover:shadow-xl transition-all duration-300"
+					>
 						<div
-							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
+							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300"
 						>
 							<HiOutlineLightBulb />
 						</div>
 						<h3
-							class="font-extrabold text-xl font-display mb-4 text-[#2a3035]"
+							class="font-extrabold text-xl font-display mb-4 text-[#2a3035] uppercase tracking-wide"
 						>
 							Innovación
 						</h3>
-						<p
-							class="text-base font-body text-gray-600 leading-relaxed max-w-sm"
-						>
+						<div class="w-10 h-1 bg-[#1d4c74] mb-5"></div>
+						<p class="text-base font-body text-gray-600 leading-relaxed">
 							Gestión de primer nivel y actualización tecnológica
 							para optimizar cada proceso en nuestras tres
 							divisiones maestras.
 						</p>
 					</div>
 					<!-- Excelencia -->
-					<div class="flex flex-col items-center group">
+					<div
+						class="bg-white border border-gray-200 p-8 md:p-10 flex flex-col items-center text-center group hover:border-[#1d4c74] hover:shadow-xl transition-all duration-300"
+					>
 						<div
-							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300 drop-shadow-sm"
+							class="text-[#1d4c74] text-5xl mb-6 group-hover:scale-110 transition-transform duration-300"
 						>
 							<HiOutlineStar />
 						</div>
 						<h3
-							class="font-extrabold text-xl font-display mb-4 text-[#2a3035]"
+							class="font-extrabold text-xl font-display mb-4 text-[#2a3035] uppercase tracking-wide"
 						>
 							Excelencia
 						</h3>
-						<p
-							class="text-base font-body text-gray-600 leading-relaxed max-w-sm"
-						>
+						<div class="w-10 h-1 bg-[#1d4c74] mb-5"></div>
+						<p class="text-base font-body text-gray-600 leading-relaxed">
 							Foco obsesivo en proporcionar productos y servicios
 							de clase mundial que eleven el estándar corporativo.
 						</p>
 					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Sostenibilidad y Transparencia Ambiental -->
+		<section
+			class="py-24 px-6 md:px-8 bg-[#2a3035] text-white reveal-item border-t border-gray-800"
+		>
+			<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+				<!-- Columna izquierda: texto + tarjetas -->
+				<div class="space-y-8">
+					<div>
+						<span
+							class="font-ui tracking-[0.3em] text-xs font-bold uppercase text-white/50 block mb-4"
+							>Medio Ambiente</span
+						>
+						<h2
+							class="text-3xl md:text-4xl font-extrabold font-display tracking-tight uppercase leading-tight"
+						>
+							Compromiso con la Sostenibilidad y la Transparencia Ambiental
+						</h2>
+						<div class="w-16 h-1.5 bg-[#1d4c74] mt-6"></div>
+						<p
+							class="text-lg font-body text-gray-300 leading-relaxed mt-8 opacity-90"
+						>
+							Trabajamos para garantizar el origen responsable de
+							nuestra madera y optimizar el aprovechamiento de los
+							recursos forestales. Promovemos procesos eficientes y
+							una gestión responsable de los subproductos generados
+							durante nuestra actividad.
+						</p>
+					</div>
+
+					<div class="space-y-5">
+						<div
+							class="p-6 bg-white/5 border-l-2 border-[#1d4c74] backdrop-blur-sm hover:bg-white/10 transition-colors"
+						>
+							<div class="flex items-center gap-4 mb-3">
+								<div class="text-[#1d4c74] text-3xl"><FaTree /></div>
+								<h3
+									class="font-display font-bold uppercase text-sm tracking-widest"
+								>
+									Origen Responsable
+								</h3>
+							</div>
+							<p class="text-gray-300 font-body leading-relaxed">
+								Conocemos y controlamos el origen de nuestra
+								materia prima, promoviendo una gestión responsable
+								de los recursos forestales.
+							</p>
+						</div>
+
+						<div
+							class="p-6 bg-white/5 border-l-2 border-[#1d4c74] backdrop-blur-sm hover:bg-white/10 transition-colors"
+						>
+							<div class="flex items-center gap-4 mb-3">
+								<div class="text-[#1d4c74] text-3xl"><FaRecycle /></div>
+								<h3
+									class="font-display font-bold uppercase text-sm tracking-widest"
+								>
+									Aprovechamiento Eficiente
+								</h3>
+							</div>
+							<p class="text-gray-300 font-body leading-relaxed">
+								Optimizamos el uso de la madera y valorizamos los
+								subproductos derivados de nuestro proceso de
+								transformación.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Columna derecha: imagen -->
+				<div class="relative">
+					<div class="absolute -inset-2 border border-[#1d4c74]/40 hidden lg:block"></div>
+					<img
+						src={sostenibilidadImg.src}
+						alt="Gestión forestal responsable en Grupo Prevca"
+						loading="lazy"
+						class="relative w-full h-full max-h-[560px] object-cover shadow-2xl"
+					/>
 				</div>
 			</div>
 		</section>
@@ -787,7 +874,7 @@ const leaders = [
 							>
 							<span
 								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
-								>info@grupoprevca.com</span
+								>grupoprevca@gmail.com</span
 							>
 						</p>
 					</div>
@@ -919,7 +1006,13 @@ const leaders = [
 				class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui"
 			>
 				&copy; 2026 Grupo Prevca. Todos los derechos reservados. |
-				Diseñado por Triga S.A.C.
+				Diseñado por <a
+					href="https://trigra.com.pe"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="hover:text-white transition-colors border-b border-white/20 hover:border-white/50"
+					>TRIGRA S.A.C.</a
+				>
 			</div>
 		</footer>
 
