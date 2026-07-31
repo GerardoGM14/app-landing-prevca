@@ -23,6 +23,7 @@ import { LuCookie } from "react-icons/lu";
 import libroImg from "../assets/libro-reclamaciones.png";
 import logoPrevca from "../assets/logo-prevca.png";
 import logoProinnovate from "../assets/logo-proinnovate.png";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
 ---
 
 <html lang="es">
@@ -848,7 +849,7 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 										Contacto Directo
 									</p>
 									<p class="font-semibold text-gray-700">
-										gerenciagenerael@grupoprevca.com
+										grupoprevca@gmail.com
 									</p>
 								</div>
 							</div>
@@ -1041,7 +1042,7 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 							>
 							<span
 								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
-								>info@grupoprevca.com</span
+								>grupoprevca@gmail.com</span
 							>
 						</p>
 					</div>
@@ -1173,7 +1174,13 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 				class="max-w-7xl mx-auto text-center border-t border-white/5 pt-8 text-xs text-gray-400 font-ui"
 			>
 				&copy; 2026 Grupo Prevca. Todos los derechos reservados. |
-				Diseñado por Triga S.A.C.
+				Diseñado por <a
+					href="https://trigra.com.pe"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="hover:text-white transition-colors border-b border-white/20 hover:border-white/50"
+					>TRIGRA S.A.C.</a
+				>
 			</div>
 		</footer>
 
@@ -1261,7 +1268,7 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 							Usted puede ejercer sus derechos de Acceso,
 							Rectificación, Cancelación y Oposición en cualquier
 							momento enviando una solicitud formal a:
-							info@grupoprevca.com.
+							grupoprevca@gmail.com.
 						</p>
 					</section>
 				</div>
@@ -1639,5 +1646,6 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 				});
 			});
 		</script>
+			<WhatsAppButton />
 	</body>
 </html>

@@ -23,6 +23,7 @@ import logoTransporte from "../assets/logo-transporte.png";
 // Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import transporteImg01 from "../assets/transporte/transporte-image-01.png";
 import transporteImg02 from "../assets/transporte/transporte-image-02.png";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
 ---
 
 <html lang="es">
@@ -587,7 +588,7 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 							>
 							<span
 								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
-								>info@grupoprevca.com</span
+								>grupoprevca@gmail.com</span
 							>
 						</p>
 					</div>
@@ -954,9 +955,13 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 			>
 				<p>© 2026 GRUPO PREVCA. TODOS LOS DERECHOS RESERVADOS.</p>
 				<p>
-					DISCUSIÓN Y DISEÑO POR <span class="text-white"
-						>TRIGA S.A.C.</span
-					>
+					DISCUSIÓN Y DISEÑO POR <a
+							href="https://trigra.com.pe"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-white hover:text-gray-300 transition-colors border-b border-white/20 hover:border-white/50"
+							>TRIGRA S.A.C.</a
+						>
 				</p>
 			</div>
 		</footer>
@@ -1046,5 +1051,6 @@ import transporteImg02 from "../assets/transporte/transporte-image-02.png";
 				"/transporte",
 			);
 		</script>
+			<WhatsAppButton />
 	</body>
 </html>

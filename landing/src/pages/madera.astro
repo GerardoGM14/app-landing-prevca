@@ -31,6 +31,7 @@ import maderaImg03 from "../assets/madera/madera-image-03.png";
 import maderaImg04 from "../assets/madera/madera-image-04.png";
 import maderaImg05 from "../assets/madera/madera-image-05.png";
 import maderaImg06 from "../assets/madera/madera-image-06.png";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
 ---
 
 <html lang="es">
@@ -738,7 +739,7 @@ import maderaImg06 from "../assets/madera/madera-image-06.png";
 							>
 							<span
 								class="text-gray-400 hover:text-white transition-colors cursor-pointer"
-								>info@grupoprevca.com</span
+								>grupoprevca@gmail.com</span
 							>
 						</p>
 					</div>
@@ -1105,9 +1106,13 @@ import maderaImg06 from "../assets/madera/madera-image-06.png";
 			>
 				<p>© 2026 GRUPO PREVCA. TODOS LOS DERECHOS RESERVADOS.</p>
 				<p>
-					DISCUSIÓN Y DISEÑO POR <span class="text-white"
-						>TRIGA S.A.C.</span
-					>
+					DISCUSIÓN Y DISEÑO POR <a
+							href="https://trigra.com.pe"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-white hover:text-gray-300 transition-colors border-b border-white/20 hover:border-white/50"
+							>TRIGRA S.A.C.</a
+						>
 				</p>
 			</div>
 		</footer>
@@ -1226,5 +1231,6 @@ import maderaImg06 from "../assets/madera/madera-image-06.png";
 			Esta página es un HUB — no hace fetch a la API.
 			Los catálogos viven en /madera/aserradero-prevca y /madera/corporacion-maderera-copesa.
 		-->
+			<WhatsAppButton />
 	</body>
 </html>

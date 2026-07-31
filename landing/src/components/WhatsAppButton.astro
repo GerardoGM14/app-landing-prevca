@@ -1,0 +1,69 @@
+---
+/**
+ * Ícono flotante de WhatsApp, fijo abajo a la derecha en todas las páginas.
+ * Sin container: solo el ícono en azul Prevca, que tiembla de vez en cuando.
+ * Redirige a wa.me con un mensaje inicial opcional.
+ *
+ * Uso: <WhatsAppButton /> justo antes de cerrar </body>.
+ */
+import { FaWhatsapp } from "react-icons/fa";
+
+interface Props {
+  /** Número en formato internacional sin '+' ni espacios */
+  phone?: string;
+  /** Mensaje pre-cargado en el chat */
+  message?: string;
+}
+
+const {
+  phone = "51990024933",
+  message = "Hola, vengo de la web de Grupo Prevca y quisiera más información.",
+} = Astro.props;
+
+const href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Escríbenos por WhatsApp"
+  class="wa-float fixed bottom-6 right-6 z-[60] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#1d4c74] hover:bg-[#153a5b] text-white shadow-lg transition-colors group"
+>
+  <span class="wa-icon block text-3xl md:text-4xl"><FaWhatsapp /></span>
+  <!-- Tooltip en desktop -->
+  <span
+    class="hidden md:block absolute right-full top-1/2 -translate-y-1/2 mr-2 whitespace-nowrap bg-[#2a3035] text-white text-xs font-ui font-bold uppercase tracking-widest px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+  >
+    Escríbenos
+  </span>
+</a>
+
+<style>
+  /* Temblor corto que se dispara cada cierto tiempo (no constante). */
+  @keyframes wa-shake {
+    /* El grueso del ciclo está quieto; solo tiembla en el último tramo */
+    0%, 82%, 100% { transform: rotate(0deg); }
+    84% { transform: rotate(-14deg); }
+    86% { transform: rotate(12deg); }
+    88% { transform: rotate(-10deg); }
+    90% { transform: rotate(8deg); }
+    92% { transform: rotate(-5deg); }
+    94% { transform: rotate(3deg); }
+    96% { transform: rotate(0deg); }
+  }
+  .wa-icon {
+    transform-origin: center;
+    animation: wa-shake 4.5s ease-in-out infinite;
+  }
+  /* Al pasar el mouse, se detiene el temblor y solo crece un poco */
+  .wa-float:hover .wa-icon {
+    animation: none;
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+  /* Respeta a quienes prefieren menos movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    .wa-icon { animation: none; }
+  }
+</style>

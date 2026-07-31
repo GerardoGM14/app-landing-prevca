@@ -5,6 +5,7 @@ import logoPrevca from "../assets/logo-prevca.png";
 
 // El catálogo se carga dinámicamente desde Firestore vía `/public/products` en el script de cliente.
 // Ver landing/src/lib/api.js
+import WhatsAppButton from "../components/WhatsAppButton.astro";
 ---
 
 <html lang="es">
@@ -606,5 +607,6 @@ import logoPrevca from "../assets/logo-prevca.png";
 				});
 			});
 		</script>
+			<WhatsAppButton />
 	</body>
 </html>
