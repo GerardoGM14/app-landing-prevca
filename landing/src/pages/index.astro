@@ -378,11 +378,12 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 				>
 					<!-- Text will be typed here -->
 				</p>
-				<button
-					class="bg-[#1d4c74] text-white font-display font-extrabold tracking-widest uppercase py-4 px-10 hover:bg-[#153a5b] transition-colors text-sm border-2 border-[#1d4c74] cursor-pointer reveal-item"
+				<a
+					href="#divisiones"
+					class="inline-block bg-[#1d4c74] text-white font-display font-extrabold tracking-widest uppercase py-4 px-10 hover:bg-[#153a5b] transition-colors text-sm border-2 border-[#1d4c74] cursor-pointer reveal-item"
 				>
 					Explorar Divisiones
-				</button>
+				</a>
 			</div>
 		</header>
 
@@ -634,7 +635,7 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 		</section>
 
 		<!-- Divisions Cards (Responsive Grid) -->
-		<section class="py-16 md:py-24 px-6 md:px-8 bg-gray-50 reveal-item">
+		<section id="divisiones" class="py-16 md:py-24 px-6 md:px-8 bg-gray-50 reveal-item scroll-mt-24">
 			<div
 				class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-0 md:border border-gray-200"
 			>
