@@ -826,12 +826,14 @@ import logoProinnovate from "../assets/logo-proinnovate.png";
 						await loadCulqiScript();
 						const Culqi = (window as any).Culqi;
 						Culqi.publicKey = publicKey;
-						// Culqi trabaja en céntimos: S/ 10.50 → 1050
+						// Culqi trabaja en céntimos: S/ 10.50 → 1050.
+						// No pasamos `order`: Culqi.js v4 espera un order id propio
+						// (ord_...), no el codigo de pedido; con texto libre lanza
+						// "order does not match any of the allowed types".
 						Culqi.settings({
 							title: "Grupo Prevca",
 							currency: "PEN",
 							amount: Math.round(totalAmount * 100),
-							order: code,
 						});
 						Culqi.options({
 							style: { buttonBackground: "#1d4c74", buttonText: "Pagar" },
