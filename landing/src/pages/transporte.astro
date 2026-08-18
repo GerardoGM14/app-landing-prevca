@@ -78,6 +78,71 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 			.nav-link:hover::after {
 				width: 100%;
 			}
+		
+			/* Legal Modals Styles */
+			.modal-overlay {
+				position: fixed;
+				inset: 0;
+				background: rgba(0, 0, 0, 0.5);
+				backdrop-filter: blur(4px);
+				z-index: 100;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 20px;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 0.3s ease;
+			}
+			.modal-overlay.active {
+				opacity: 1;
+				pointer-events: auto;
+			}
+			.modal-content {
+				background: white;
+				width: 100%;
+				max-width: 800px;
+				max-height: 80vh;
+				overflow-y: auto;
+				padding: 40px;
+				border-radius: 2px;
+				box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+				position: relative;
+				border-top: 6px solid #1d4c74;
+			}
+			.modal-close {
+				position: absolute;
+				top: 20px;
+				right: 20px;
+				font-size: 24px;
+				cursor: pointer;
+				color: #2a3035;
+				opacity: 0.5;
+				transition: opacity 0.2s;
+			}
+			.modal-close:hover {
+				opacity: 1;
+			}
+			.modal-body h3 {
+				color: #1d4c74;
+				font-weight: 700;
+				font-family: "Outfit Variable", sans-serif;
+				margin-bottom: 20px;
+				letter-spacing: -0.01em;
+			}
+			.modal-body section {
+				margin-bottom: 24px;
+			}
+			.modal-body h4 {
+				font-weight: 700;
+				margin-bottom: 8px;
+				color: #2a3035;
+			}
+			.modal-body p {
+				color: #4b5563;
+				line-height: 1.6;
+				margin-bottom: 12px;
+			}
 		</style>
 	</head>
 	<body
@@ -603,7 +668,7 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 						<div class="flex flex-row gap-3 items-stretch">
 							<a
 								href="#"
-								class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg rounded-none"
+								class="hidden bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg rounded-none"
 							>
 								<img
 									src={libroImg.src}
@@ -1052,5 +1117,122 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 			);
 		</script>
 			<WhatsAppButton />
+	
+		<div id="modal-privacy" class="modal-overlay">
+			<div class="modal-content relative">
+				<span class="modal-close">&times;</span>
+				<div class="modal-body font-body">
+					<h3>Política de Privacidad</h3>
+					<section>
+						<h4>1. Protección de Datos</h4>
+						<p>
+							De conformidad con la Ley N° 29733 (Ley de
+							Protección de Datos Personales en Perú), Grupo
+							Prevca garantiza el tratamiento responsable de toda
+							información recolectada mediante este portal
+							corporativo.
+						</p>
+					</section>
+					<section>
+						<h4>2. Finalidades del Tratamiento</h4>
+						<p>
+							La información recolectada en nuestros formularios
+							de contacto y cotización se utiliza exclusivamente
+							para: proveer información de servicios, gestionar
+							relaciones comerciales de nuestras divisiones
+							(Madera, Café, Alojamiento) y mejorar su
+							experiencia de usuario.
+						</p>
+					</section>
+					<section>
+						<h4>3. Seguridad</h4>
+						<p>
+							Implementamos protocolos de seguridad técnica y
+							organizativa para evitar el acceso no autorizado,
+							pérdida o alteración de sus datos personales. No
+							compartimos información con terceros sin su
+							consentimiento explícito.
+						</p>
+					</section>
+					<section>
+						<h4>4. Derechos ARCO</h4>
+						<p>
+							Usted puede ejercer sus derechos de Acceso,
+							Rectificación, Cancelación y Oposición en cualquier
+							momento enviando una solicitud formal a:
+							grupoprevca@gmail.com.
+						</p>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<!-- MODAL: TERMINOS -->
+		<div id="modal-terms" class="modal-overlay">
+			<div class="modal-content relative">
+				<span class="modal-close">&times;</span>
+				<div class="modal-body font-body">
+					<h3>Términos y Condiciones Legales</h3>
+					<section>
+						<h4>1. Propiedad Intelectual</h4>
+						<p>
+							Todo el contenido editorial, gráfico y logotipos son
+							propiedad exclusiva de Grupo Prevca. Queda prohibida
+							la reproducción total o parcial sin autorización por
+							escrito.
+						</p>
+					</section>
+					<section>
+						<h4>2. Limitación de Responsabilidad</h4>
+						<p>
+							Grupo Prevca se reserva el derecho de modificar
+							catálogos, especificaciones de productos y tarifas
+							de alojamiento sin previo aviso, buscando siempre
+							la precisión comercial constante.
+						</p>
+					</section>
+					<section>
+						<h4>3. Uso del Sitio</h4>
+						<p>
+							El uso de este portal es estrictamente informativo y
+							de prospección comercial internacional. Cualquier
+							uso malintencionado que vulnere la integridad del
+							servidor será procesado legalmente.
+						</p>
+					</section>
+					<section>
+						<h4>4. Jurisdicción</h4>
+						<p>
+							Cualquier controversia derivada del uso de este
+							portal se regirá bajo las leyes de la República del
+							Perú, sometiéndose a la competencia de los
+							tribunales de Lima.
+						</p>
+					</section>
+				</div>
+			</div>
+		</div>
+
+		<script is:inline>
+			(function () {
+				const btnPrivacy = document.getElementById("btn-privacy");
+				const btnTerms = document.getElementById("btn-terms");
+				const modalPrivacy = document.getElementById("modal-privacy");
+				const modalTerms = document.getElementById("modal-terms");
+				const closeBtns = document.querySelectorAll(".modal-close");
+				const toggle = (modal, show) => {
+					if (!modal) return;
+					modal.classList.toggle("active", show);
+					document.body.style.overflow = show ? "hidden" : "auto";
+				};
+				btnPrivacy && btnPrivacy.addEventListener("click", () => toggle(modalPrivacy, true));
+				btnTerms && btnTerms.addEventListener("click", () => toggle(modalTerms, true));
+				closeBtns.forEach((b) => b.addEventListener("click", () => { toggle(modalPrivacy, false); toggle(modalTerms, false); }));
+				[modalPrivacy, modalTerms].forEach((m) => {
+					m && m.addEventListener("click", (e) => { if (e.target === m) toggle(m, false); });
+				});
+			})();
+		</script>
+
 	</body>
 </html>
