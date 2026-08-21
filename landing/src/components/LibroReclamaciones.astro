@@ -1,0 +1,385 @@
+---
+/**
+ * Libro de Reclamaciones Virtual — formato oficial INDECOPI (D.S. 011-2011-PCM).
+ *
+ * Renderiza SOLO el modal + su formulario + el JS que lo controla. El botón que
+ * lo abre es el propio ícono del Libro de Reclamaciones ya presente en cada
+ * página (se le agrega id="btn-libro"). El envío va a POST /public/claims.
+ *
+ * Uso: incluir <LibroReclamaciones /> una vez por página, cerca del </body>.
+ */
+---
+
+<div id="modal-libro" class="lr-overlay" aria-hidden="true">
+  <div class="lr-modal">
+    <button type="button" class="lr-close" aria-label="Cerrar">&times;</button>
+
+    <div class="lr-head">
+      <h3>Libro de Reclamaciones</h3>
+      <p>
+        Conforme al Código de Protección y Defensa del Consumidor (Ley N° 29571).
+        Complete el formulario; su reclamo será atendido en un plazo máximo de
+        15 días hábiles.
+      </p>
+    </div>
+
+    <form id="form-libro" class="lr-body">
+      <!-- 1. Identificación del consumidor -->
+      <fieldset>
+        <legend>1. Identificación del consumidor reclamante</legend>
+        <div class="lr-grid">
+          <label class="lr-col-2">
+            <span>Nombres y apellidos *</span>
+            <input type="text" name="fullName" required maxlength="200" />
+          </label>
+          <label>
+            <span>Tipo de documento *</span>
+            <select name="documentType" required>
+              <option value="DNI">DNI</option>
+              <option value="CE">Carné de Extranjería</option>
+              <option value="PASAPORTE">Pasaporte</option>
+              <option value="RUC">RUC</option>
+            </select>
+          </label>
+          <label>
+            <span>N° de documento *</span>
+            <input type="text" name="documentNumber" required minlength="6" maxlength="20" />
+          </label>
+          <label class="lr-col-2">
+            <span>Domicilio *</span>
+            <input type="text" name="address" required maxlength="300" />
+          </label>
+          <label>
+            <span>Teléfono *</span>
+            <input type="tel" name="phone" required minlength="6" maxlength="40" />
+          </label>
+          <label>
+            <span>Correo electrónico *</span>
+            <input type="email" name="email" required maxlength="200" />
+          </label>
+        </div>
+        <label class="lr-check">
+          <input type="checkbox" name="isMinor" />
+          <span>El consumidor es menor de edad (indicar apoderado)</span>
+        </label>
+        <label id="lr-guardian-wrap" class="lr-hidden">
+          <span>Nombre del padre / apoderado *</span>
+          <input type="text" name="guardianName" maxlength="200" />
+        </label>
+      </fieldset>
+
+      <!-- 2. Identificación del bien contratado -->
+      <fieldset>
+        <legend>2. Identificación del bien contratado</legend>
+        <div class="lr-grid">
+          <label>
+            <span>Tipo *</span>
+            <select name="itemType" required>
+              <option value="PRODUCTO">Producto</option>
+              <option value="SERVICIO">Servicio</option>
+            </select>
+          </label>
+          <label>
+            <span>Monto reclamado (S/)</span>
+            <input type="number" name="amount" min="0" step="0.01" placeholder="Opcional" />
+          </label>
+          <label class="lr-col-2">
+            <span>Descripción del producto o servicio *</span>
+            <input type="text" name="itemDescription" required maxlength="1000" />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 3. Detalle de la reclamación -->
+      <fieldset>
+        <legend>3. Detalle de la reclamación y pedido</legend>
+        <div class="lr-radios">
+          <label class="lr-radio">
+            <input type="radio" name="claimType" value="RECLAMO" checked />
+            <span><strong>Reclamo</strong> — disconformidad con el producto o servicio</span>
+          </label>
+          <label class="lr-radio">
+            <input type="radio" name="claimType" value="QUEJA" />
+            <span><strong>Queja</strong> — malestar respecto a la atención</span>
+          </label>
+        </div>
+        <label class="lr-full">
+          <span>Detalle *</span>
+          <textarea name="detailDescription" required rows="4" maxlength="3000"></textarea>
+        </label>
+        <label class="lr-full">
+          <span>Pedido del consumidor *</span>
+          <textarea name="request" required rows="3" maxlength="2000"></textarea>
+        </label>
+      </fieldset>
+
+      <div id="lr-feedback" class="lr-feedback lr-hidden"></div>
+
+      <div class="lr-actions">
+        <button type="submit" id="lr-submit" class="lr-btn-primary">
+          Enviar reclamo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .lr-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .lr-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lr-modal {
+    background: #fff;
+    width: 100%;
+    max-width: 760px;
+    max-height: 88vh;
+    overflow-y: auto;
+    position: relative;
+    border-top: 6px solid #1d4c74;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+  }
+  .lr-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-size: 26px;
+    line-height: 1;
+    color: #2a3035;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+  .lr-close:hover { opacity: 1; }
+  .lr-head {
+    padding: 32px 32px 20px;
+    border-bottom: 1px solid #eef0f2;
+  }
+  .lr-head h3 {
+    color: #1d4c74;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+  }
+  .lr-head p {
+    color: #6b7280;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .lr-body { padding: 24px 32px 32px; }
+  .lr-body fieldset {
+    border: 1px solid #e5e7eb;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+  .lr-body legend {
+    font-family: "Outfit", sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #1d4c74;
+    padding: 0 8px;
+  }
+  .lr-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .lr-col-2 { grid-column: 1 / -1; }
+  .lr-full { display: block; margin-top: 14px; }
+  .lr-body label { display: block; }
+  .lr-body label > span {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+  .lr-body input,
+  .lr-body select,
+  .lr-body textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    padding: 10px 12px;
+    font-family: "Inter", sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .lr-body input:focus,
+  .lr-body select:focus,
+  .lr-body textarea:focus {
+    border-color: #1d4c74;
+    background: #fff;
+  }
+  .lr-body textarea { resize: vertical; }
+  .lr-check {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    cursor: pointer;
+  }
+  .lr-check input { width: auto; }
+  .lr-check span, .lr-radio span {
+    font-size: 0.85rem;
+    color: #374151;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+    margin: 0;
+  }
+  .lr-radios { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .lr-radio { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
+  .lr-radio input { width: auto; margin-top: 3px; }
+  .lr-hidden { display: none !important; }
+  .lr-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
+  .lr-btn-primary {
+    background: #1d4c74;
+    color: #fff;
+    font-family: "Outfit", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    padding: 12px 32px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .lr-btn-primary:hover { background: #153a5b; }
+  .lr-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+  .lr-feedback {
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    border-left: 4px solid;
+  }
+  .lr-feedback.ok { background: #f0fdf4; border-color: #16a34a; color: #15803d; }
+  .lr-feedback.error { background: #fef2f2; border-color: #dc2626; color: #b91c1c; }
+  @media (max-width: 640px) {
+    .lr-grid { grid-template-columns: 1fr; }
+    .lr-head, .lr-body { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+
+<script>
+  import { submitClaim } from "../lib/api.js";
+
+  const overlay = document.getElementById("modal-libro");
+  const form = document.getElementById("form-libro") as HTMLFormElement | null;
+  const feedback = document.getElementById("lr-feedback");
+  const submitBtn = document.getElementById("lr-submit") as HTMLButtonElement | null;
+  const guardianWrap = document.getElementById("lr-guardian-wrap");
+  const guardianInput = guardianWrap?.querySelector("input") as HTMLInputElement | null;
+
+  const openModal = () => {
+    overlay?.classList.add("active");
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    overlay?.classList.remove("active");
+    document.body.style.overflow = "auto";
+  };
+
+  // Todos los íconos del Libro de Reclamaciones abren el modal
+  document.querySelectorAll("#btn-libro, [data-libro]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  overlay?.querySelector(".lr-close")?.addEventListener("click", closeModal);
+  overlay?.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  // Mostrar campo de apoderado solo si es menor de edad
+  const minorCheck = form?.querySelector('input[name="isMinor"]') as HTMLInputElement | null;
+  minorCheck?.addEventListener("change", () => {
+    if (!guardianWrap || !guardianInput) return;
+    const on = minorCheck.checked;
+    guardianWrap.classList.toggle("lr-hidden", !on);
+    guardianInput.required = on;
+  });
+
+  const showFeedback = (kind: "ok" | "error", msg: string) => {
+    if (!feedback) return;
+    feedback.className = `lr-feedback ${kind}`;
+    feedback.innerHTML = msg;
+  };
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!submitBtn) return;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando...";
+
+    const fd = new FormData(form);
+    const amountRaw = String(fd.get("amount") ?? "").trim();
+    const payload = {
+      consumer: {
+        fullName: String(fd.get("fullName") ?? "").trim(),
+        documentType: String(fd.get("documentType")),
+        documentNumber: String(fd.get("documentNumber") ?? "").trim(),
+        address: String(fd.get("address") ?? "").trim(),
+        phone: String(fd.get("phone") ?? "").trim(),
+        email: String(fd.get("email") ?? "").trim(),
+        isMinor: fd.get("isMinor") === "on",
+        guardianName: String(fd.get("guardianName") ?? "").trim() || null,
+      },
+      item: {
+        type: String(fd.get("itemType")),
+        amount: amountRaw ? Number(amountRaw) : null,
+        description: String(fd.get("itemDescription") ?? "").trim(),
+      },
+      detail: {
+        type: String(fd.get("claimType")),
+        description: String(fd.get("detailDescription") ?? "").trim(),
+        request: String(fd.get("request") ?? "").trim(),
+      },
+    };
+
+    try {
+      const res = await submitClaim(payload);
+      showFeedback(
+        "ok",
+        `<strong>✓ Reclamo registrado.</strong> Su código es <strong>${res.code}</strong>. ` +
+          `Será atendido en un plazo máximo de 15 días hábiles. Guarde este código.`,
+      );
+      feedback?.classList.remove("lr-hidden");
+      form.reset();
+      guardianWrap?.classList.add("lr-hidden");
+      submitBtn.textContent = "Enviado";
+      submitBtn.disabled = true;
+    } catch (err) {
+      showFeedback("error", (err as Error).message || "No se pudo registrar el reclamo.");
+      feedback?.classList.remove("lr-hidden");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Reintentar";
+    }
+  });
+</script>

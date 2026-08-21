@@ -7,11 +7,13 @@ import { NotFoundError, ValidationError } from '../../shared/errors/app-error';
 import { productsRepository } from '../products/products.repository';
 import { categoriesRepository } from '../categories/categories.repository';
 import { ordersService } from '../orders/orders.service';
+import { claimsService } from '../claims/claims.service';
 import { settingsService } from '../settings/settings.service';
 import { mercadopagoService } from '../payments/mercadopago.service';
 import { ProductQuery } from '../products/products.schema';
 import { CategoryQuery } from '../categories/categories.schema';
 import { CheckoutInput, CreateOrderInput } from '../orders/orders.schema';
+import { CreateClaimInput } from '../claims/claims.schema';
 
 type SlugParams = { slug: string };
 type CodeParams = { code: string };
@@ -98,6 +100,17 @@ export const publicController = {
     const query = req.query as unknown as CategoryQuery;
     const items = await categoriesRepository.list({ ...query, isActive: true });
     res.json({ items });
+  }),
+
+  /** Libro de Reclamaciones: registra un reclamo/queja y devuelve el código. */
+  createClaim: asyncHandler(async (req: Request, res: Response) => {
+    const claim = await claimsService.create(req.body as CreateClaimInput);
+    res.status(201).json({
+      code: claim.code,
+      createdAt: claim.createdAt,
+      message:
+        'Su reclamo fue registrado. Será atendido en un plazo máximo de 15 días hábiles.',
+    });
   }),
 
   createOrder: asyncHandler(async (req: Request, res: Response) => {

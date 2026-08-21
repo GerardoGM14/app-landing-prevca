@@ -6,6 +6,7 @@ import { publicController } from './public.controller';
 import { productQuerySchema } from '../products/products.schema';
 import { categoryQuerySchema } from '../categories/categories.schema';
 import { checkoutSchema, createOrderSchema } from '../orders/orders.schema';
+import { createClaimSchema } from '../claims/claims.schema';
 
 export const publicRouter = Router();
 
@@ -17,6 +18,9 @@ publicRouter.get('/payment-methods', publicController.getPaymentMethods);
 
 // Cotización tradicional (sin pago)
 publicRouter.post('/orders', validate(createOrderSchema), publicController.createOrder);
+
+// Libro de Reclamaciones (público, sin auth)
+publicRouter.post('/claims', validate(createClaimSchema), publicController.createClaim);
 
 // Checkout con pago
 publicRouter.post('/checkout', validate(checkoutSchema), publicController.checkout);

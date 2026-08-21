@@ -8,6 +8,7 @@ import { categoriesRouter } from './modules/categories/categories.routes';
 import { ordersRouter } from './modules/orders/orders.routes';
 import { imagesRouter } from './modules/images/images.routes';
 import { settingsRouter } from './modules/settings/settings.routes';
+import { claimsRouter } from './modules/claims/claims.routes';
 import { publicRouter } from './modules/public/public.routes';
 
 const app = express();
@@ -30,6 +31,7 @@ app.use('/admin/categories', categoriesRouter);
 app.use('/admin/orders', ordersRouter);
 app.use('/admin/images', imagesRouter);
 app.use('/admin/settings', settingsRouter);
+app.use('/admin/claims', claimsRouter);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: { code: 'NOT_FOUND', message: 'Endpoint no encontrado' } });

@@ -61,6 +61,17 @@ export async function submitOrder(payload) {
 }
 
 /**
+ * Libro de Reclamaciones: registra un reclamo/queja (formato INDECOPI).
+ * @returns {Promise<{ code, createdAt, message }>}
+ */
+export async function submitClaim(payload) {
+  return request('/public/claims', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+/**
  * Checkout con pago real. Backend recalcula totales y crea la orden.
  * @param {{
  *   customer: { name, email, phone?, company? },

@@ -65,6 +65,7 @@ const leaders = [
 		image: leaderMileydi,
 	},
 ];
+import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 ---
 
 <html lang="es">
@@ -956,8 +957,8 @@ const leaders = [
 					<div class="flex flex-col gap-3 mt-2">
 						<div class="flex flex-row gap-3 items-stretch">
 							<a
-								href="#"
-								class="hidden bg-white p-1 rounded-sm hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg"
+								href="#" data-libro
+								class="bg-white p-1 rounded-sm hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg"
 							>
 								<img
 									src={libroImg.src}
@@ -1157,6 +1158,33 @@ const leaders = [
 							Implementamos protocolos de seguridad técnica y
 							organizativa. No compartimos información con
 							terceros sin su consentimiento explícito.
+						</p>
+					</section>
+					<section>
+						<h4>4. Política de Cambios y Devoluciones</h4>
+						<p>
+							<strong>Cambios de Productos:</strong> Los cambios
+							serán aceptados únicamente por productos defectuosos o
+							por errores atribuibles a nuestra empresa.
+						</p>
+						<p>
+							<strong>Productos a Medida:</strong> Los productos
+							cortados, dimensionados o preparados según las
+							especificaciones del cliente no podrán ser cambiados ni
+							devueltos.
+						</p>
+						<p>
+							<strong>Plazo para Reclamos:</strong> Los reclamos
+							serán atendidos y respondidos en un plazo máximo de
+							quince (15) días hábiles, conforme a la normativa
+							vigente de protección al consumidor.
+						</p>
+						<p>
+							<strong>Características de la Madera:</strong> Al ser un
+							producto natural, la madera puede presentar variaciones
+							de tonalidad, vetas, nudos y textura, las cuales son
+							propias de cada pieza y no constituyen motivo de
+							devolución.
 						</p>
 					</section>
 				</div>
@@ -1412,5 +1440,6 @@ const leaders = [
 				}
 			});
 		</script>
+			<LibroReclamaciones />
 	</body>
 </html>

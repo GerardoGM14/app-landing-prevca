@@ -134,13 +134,30 @@ export const COLLECTIONS = {
   CATEGORIES: 'categories',
   ORDERS: 'orders',
   SETTINGS: 'settings',
+  CLAIMS: 'claims',
 } as const;
 
 export const SETTINGS_DOCS = {
   SHIPPING_RATES: 'shipping-rates',
   PAYMENT_CONFIG: 'payment-config',
   ORDER_COUNTER: 'order-counter',
+  CLAIM_COUNTER: 'claim-counter',
 } as const;
+
+/**
+ * Libro de Reclamaciones (D.S. 011-2011-PCM).
+ * RECLAMO: disconformidad con el producto/servicio.
+ * QUEJA: malestar sobre la atención, no relacionado al producto.
+ */
+export const CLAIM_TYPES = ['RECLAMO', 'QUEJA'] as const;
+export type ClaimType = (typeof CLAIM_TYPES)[number];
+
+/** Si el reclamo es por un bien (producto) o un servicio */
+export const CLAIM_ITEM_TYPES = ['PRODUCTO', 'SERVICIO'] as const;
+export type ClaimItemType = (typeof CLAIM_ITEM_TYPES)[number];
+
+export const CLAIM_STATUS = ['PENDIENTE', 'ATENDIDO'] as const;
+export type ClaimStatus = (typeof CLAIM_STATUS)[number];
 
 export const STORAGE_PATHS = {
   PRODUCT_IMAGES: 'products',

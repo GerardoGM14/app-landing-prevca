@@ -25,6 +25,7 @@ import libroImg from "../assets/libro-reclamaciones.png";
 import logoProinnovate from "../assets/logo-proinnovate.png";
 import logoPrevca from "../assets/logo-prevca.png";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
+import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 ---
 
 <html lang="es">
@@ -270,7 +271,7 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 				<div>
 					<h4 class="mb-6 text-sm opacity-70 text-white">Atención al Cliente</h4>
 					<div class="flex flex-row gap-3 items-stretch">
-						<a href="#" class="hidden bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg">
+						<a href="#" data-libro class="bg-white p-1 hover:-translate-y-1 transition-transform cursor-pointer border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg">
 							<img src={libroImg.src} alt="Libro de Reclamaciones" class="w-full h-auto max-h-24 object-contain" />
 						</a>
 						<div class="bg-white p-2 border-b-4 border-[#1d4c74] max-w-[140px] w-full flex justify-center items-center shadow-lg">
@@ -716,5 +717,6 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 			})();
 		</script>
 			<WhatsAppButton />
+			<LibroReclamaciones />
 	</body>
 </html>
