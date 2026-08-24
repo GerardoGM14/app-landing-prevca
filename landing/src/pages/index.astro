@@ -1121,6 +1121,14 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 								>Términos Legales</a
 							>
 						</li>
+							<li>
+								<a
+									id="btn-devoluciones"
+									href="javascript:void(0)"
+									class="hover:text-white transition-all underline-offset-4 hover:underline cursor-pointer"
+									>Política de Cambios y Devoluciones</a
+								>
+							</li>
 					</ul>
 				</div>
 
@@ -1273,31 +1281,46 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 							grupoprevca@gmail.com.
 						</p>
 					</section>
+				</div>
+			</div>
+		</div>
+
+		<!-- MODAL: CAMBIOS Y DEVOLUCIONES -->
+		<div id="modal-devoluciones" class="modal-overlay">
+			<div class="modal-content relative">
+				<span class="modal-close">&times;</span>
+				<div class="modal-body font-body">
+					<h3>Política de Cambios y Devoluciones</h3>
 					<section>
-						<h4>5. Política de Cambios y Devoluciones</h4>
+						<h4>Cambios de Productos</h4>
 						<p>
-							<strong>Cambios de Productos:</strong> Los cambios
-							serán aceptados únicamente por productos defectuosos o
-							por errores atribuibles a nuestra empresa.
+							Los cambios serán aceptados únicamente por productos
+							defectuosos o por errores atribuibles a nuestra empresa.
 						</p>
+					</section>
+					<section>
+						<h4>Productos a Medida</h4>
 						<p>
-							<strong>Productos a Medida:</strong> Los productos
-							cortados, dimensionados o preparados según las
-							especificaciones del cliente no podrán ser cambiados ni
-							devueltos.
+							Los productos cortados, dimensionados o preparados según
+							las especificaciones del cliente no podrán ser cambiados
+							ni devueltos.
 						</p>
+					</section>
+					<section>
+						<h4>Plazo para Reclamos</h4>
 						<p>
-							<strong>Plazo para Reclamos:</strong> Los reclamos
-							serán atendidos y respondidos en un plazo máximo de
-							quince (15) días hábiles, conforme a la normativa
-							vigente de protección al consumidor.
+							Los reclamos serán atendidos y respondidos en un plazo
+							máximo de quince (15) días hábiles, conforme a la
+							normativa vigente de protección al consumidor.
 						</p>
+					</section>
+					<section>
+						<h4>Características de la Madera</h4>
 						<p>
-							<strong>Características de la Madera:</strong> Al ser un
-							producto natural, la madera puede presentar variaciones
-							de tonalidad, vetas, nudos y textura, las cuales son
-							propias de cada pieza y no constituyen motivo de
-							devolución.
+							Al ser un producto natural, la madera puede presentar
+							variaciones de tonalidad, vetas, nudos y textura, las
+							cuales son propias de cada pieza y no constituyen motivo
+							de devolución.
 						</p>
 					</section>
 				</div>
@@ -1508,6 +1531,8 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				const btnTerms = document.getElementById("btn-terms");
 				const modalPrivacy = document.getElementById("modal-privacy");
 				const modalTerms = document.getElementById("modal-terms");
+				const btnDevoluciones = document.getElementById("btn-devoluciones");
+				const modalDevoluciones = document.getElementById("modal-devoluciones");
 				const closeBtns = document.querySelectorAll(".modal-close");
 
 				const toggleModal = (modal, show) => {
@@ -1526,11 +1551,13 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				btnTerms?.addEventListener("click", () =>
 					toggleModal(modalTerms, true),
 				);
+					if (btnDevoluciones) btnDevoluciones.addEventListener("click", () => (typeof toggleModal === "function" ? toggleModal : toggle)(modalDevoluciones, true));
 
 				closeBtns.forEach((btn) => {
 					btn.addEventListener("click", () => {
 						toggleModal(modalPrivacy, false);
 						toggleModal(modalTerms, false);
+						toggleModal(modalDevoluciones, false);
 					});
 				});
 
