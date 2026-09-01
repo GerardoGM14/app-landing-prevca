@@ -56,6 +56,7 @@ const TO_HIDE = [
   'madera-materia-prima',
   'box-cama-tarimas',
   'ropero-melamine',
+  'repostero-melamine',
   'producto-prueba-copesa',
   'listones-madera-pino',
   'tablas-madera-pino',
@@ -143,6 +144,21 @@ const NEW_IN_ASERRADERO: NewProduct[] = [
       { value: 'tabla-20cm', label: 'Tabla de Pino 20 cm', price: 33.04 },
       { value: 'tabla-25cm', label: 'Tabla de Pino 25 cm', price: 35.4 },
       { value: 'tabla-30cm', label: 'Tabla de Pino 30 cm', price: 37.76 },
+    ],
+  },
+  {
+    slug: 'repostero-melamine-aserradero',
+    ref: 'PRV-REP-02',
+    title: 'Reposteros de Melamine',
+    shortDesc: 'Reposteros de melamine para cocina, en tres medidas.',
+    description:
+      'Reposteros de melamine diseñados para combinar estética, funcionalidad y durabilidad. Ofrecen soluciones prácticas de almacenamiento, optimizando cada espacio de la cocina con diseños modernos y acabados de excelente calidad.',
+    imageFile: 'repostero-melamine.png',
+    optionLabel: 'Medida',
+    options: [
+      { value: 'repostero-60', label: 'Repostero de 60 cm x 1.74 m', price: 260 },
+      { value: 'repostero-90', label: 'Repostero de 90 cm x 1.74 m', price: 260 },
+      { value: 'repostero-110', label: 'Repostero de 1.10 m x 1.84 m', price: 370 },
     ],
   },
 ];
