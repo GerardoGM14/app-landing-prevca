@@ -101,7 +101,7 @@ import LibroReclamaciones from "../../components/LibroReclamaciones.astro";
 				</div>
 
 				<a href="/alojamiento" class="nav-link hover:text-gray-300 transition-colors">Alojamiento</a>
-				<a href="/cafe" class="nav-link hover:text-gray-300 transition-colors">Café</a>
+				<a href="/cafe" class="hidden nav-link hover:text-gray-300 transition-colors">Café</a>
 				<a href="/transporte" class="nav-link hover:text-gray-300 transition-colors">Transporte</a>
 				<a href="/#contact-section" class="nav-link hover:text-gray-300 transition-colors">Contacto</a>
 			</div>
@@ -130,7 +130,7 @@ import LibroReclamaciones from "../../components/LibroReclamaciones.astro";
 				</details>
 
 				<a href="/alojamiento" class="border-b border-white/10 pb-4">Alojamiento</a>
-				<a href="/cafe" class="border-b border-white/10 pb-4">Café</a>
+				<a href="/cafe" class="hidden border-b border-white/10 pb-4">Café</a>
 				<a href="/transporte" class="border-b border-white/10 pb-4">Transporte</a>
 				<a href="/#contact-section" class="border-b border-white/10 pb-4">Contacto</a>
 				<a href="/ecommerce" class="bg-[#1d4c74] text-center py-4 mt-2 text-sm">Tienda Virtual</a>
@@ -244,15 +244,16 @@ import LibroReclamaciones from "../../components/LibroReclamaciones.astro";
 				</div>
 			</div>
 			<BankBanner
-				companyName="Corporación Maderera COPESA"
+				companyName="Corporación Maderera COPESA EIRL"
 				ruc="20607294543"
 				accounts={{
 					bcp: {
 						soles: "305-7326490-0-56",
+						cci: "00230500732649005611",
 					},
-					scotia: {
-						soles: "401-0329813",
-						cci: "00917420401032981343",
+					cajatrujillo: {
+						soles: "001375106-001",
+						cci: "80201500137510600186",
 					},
 				}}
 			/>
