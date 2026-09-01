@@ -463,7 +463,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 							</div>
 						</div>
 						<div
-							class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-700 z-0"
+							class="carousel-slide hidden absolute inset-0 opacity-0 transition-opacity duration-700 z-0"
 						>
 							<img
 								src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop"
@@ -956,7 +956,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 									<option value="hospitalidad"
 										>División Alojamiento</option
 									>
-									<option value="cafe"
+									<option value="cafe" hidden
 										>Cafetería</option
 									>
 									<option value="transporte"
@@ -1214,7 +1214,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				>
 					nuestro catálogo de <span
 						class="text-white font-bold tracking-tight border-none"
-						>Madera, Alojamiento, Café y Transporte</span
+						>Madera, Alojamiento y Transporte</span
 					> te brinde la mejor experiencia corporativa. Al continuar navegando,
 					aceptas nuestra política de privacidad.
 				</p>
@@ -1258,7 +1258,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 							de contacto y cotización se utiliza exclusivamente
 							para: proveer información de servicios, gestionar
 							relaciones comerciales de nuestras divisiones
-							(Madera, Café, Alojamiento) y mejorar su
+							(Madera, Alojamiento) y mejorar su
 							experiencia de usuario.
 						</p>
 					</section>
@@ -1396,7 +1396,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				const typewriterElement =
 					document.getElementById("typewriter-text");
 				const targetText =
-					"Excelencia en Madera, Alojamiento, Café y Transporte";
+					"Excelencia en Madera, Alojamiento y Transporte";
 
 				function startTypewriter() {
 					let i = 0;
@@ -1599,8 +1599,9 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				updateProgress(); // Llamada inicial
 
 				// 7. CAROUSEL LOGIC
+				// Excluye slides ocultos (ej. Cafetería) para que no dejen hueco.
 				const carouselSlides = document.querySelectorAll(
-					"#nosotros-carousel .carousel-slide",
+					"#nosotros-carousel .carousel-slide:not(.hidden)",
 				);
 				const btnPrev = document.getElementById("carousel-prev");
 				const btnNext = document.getElementById("carousel-next");
