@@ -55,35 +55,86 @@ export async function renderProductGrid(containerId, division, urlPrefix, option
       return;
     }
 
-    // Filtro por subcategoría (divisiones internas, ej. las 3 de Copesa)
-    const subcats = [...new Set(products.map((p) => p.subcategory).filter(Boolean))];
-    if (filterContainerId && subcats.length > 1) {
-      const filterEl = document.getElementById(filterContainerId);
-      if (filterEl) {
-        const btnClass =
-          "filter-btn border-2 px-5 py-2 font-ui font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer";
-        filterEl.innerHTML = [
-          `<button type="button" data-sub="" class="${btnClass} border-[#1d4c74] bg-[#1d4c74] text-white">Todos</button>`,
-          ...subcats.map(
-            (s) =>
-              `<button type="button" data-sub="${escapeHtml(s)}" class="${btnClass} border-[#1d4c74] bg-white text-[#1d4c74] hover:bg-[#1d4c74]/5">${escapeHtml(s)}</button>`,
-          ),
-        ].join("");
+    // Filtro por categoría/subcategoría. El campo `subcategory` puede ser:
+    //   "Categoría"            → un solo nivel (ej. Copesa: "Productos Procesados…")
+    //   "Categoría|Subcategoría" → dos niveles (ej. Aserradero: "Muebles de Madera|Puertas")
+    const filterEl = filterContainerId ? document.getElementById(filterContainerId) : null;
+    const parse = (s) => {
+      const [cat, sub] = String(s || "").split("|");
+      return { cat: cat || "", sub: sub || "" };
+    };
+    const categories = [...new Set(products.map((p) => parse(p.subcategory).cat).filter(Boolean))];
 
-        filterEl.querySelectorAll("button").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const sub = btn.dataset.sub ?? "";
-            filterEl.querySelectorAll("button").forEach((b) => {
-              const active = b === btn;
-              b.classList.toggle("bg-[#1d4c74]", active);
-              b.classList.toggle("text-white", active);
-              b.classList.toggle("bg-white", !active);
-              b.classList.toggle("text-[#1d4c74]", !active);
+    if (filterEl && categories.length > 1) {
+      const btnClass =
+        "filter-btn border-2 px-4 py-2 font-ui font-bold text-xs uppercase tracking-widest transition-colors cursor-pointer";
+      const subBtnClass =
+        "subfilter-btn border px-3 py-1.5 font-ui font-semibold text-[11px] tracking-wide transition-colors cursor-pointer";
+
+      const styleActive = (btn, active, primary) => {
+        btn.classList.toggle("bg-[#1d4c74]", active);
+        btn.classList.toggle("text-white", active);
+        btn.classList.toggle("bg-white", !active);
+        btn.classList.toggle("text-[#1d4c74]", !active);
+        if (primary) btn.classList.toggle("border-[#1d4c74]", true);
+      };
+
+      // Barra de categorías (nivel 1) + contenedor de subcategorías (nivel 2)
+      filterEl.innerHTML = `
+        <div class="flex flex-wrap gap-3 justify-center">
+          <button type="button" data-cat="" class="${btnClass} border-[#1d4c74] bg-[#1d4c74] text-white">Todos</button>
+          ${categories
+            .map(
+              (c) =>
+                `<button type="button" data-cat="${escapeHtml(c)}" class="${btnClass} border-[#1d4c74] bg-white text-[#1d4c74] hover:bg-[#1d4c74]/5">${escapeHtml(c)}</button>`,
+            )
+            .join("")}
+        </div>
+        <div data-subfilters class="flex flex-wrap gap-2 justify-center mt-4 hidden"></div>
+      `;
+
+      const subWrap = filterEl.querySelector("[data-subfilters]");
+
+      const applyCat = (cat) => {
+        // Sub-botones solo si la categoría tiene subcategorías
+        const subs = cat
+          ? [...new Set(products.filter((p) => parse(p.subcategory).cat === cat).map((p) => parse(p.subcategory).sub).filter(Boolean))]
+          : [];
+        if (subs.length > 0) {
+          subWrap.innerHTML =
+            `<button type="button" data-sub="" class="${subBtnClass} border-[#1d4c74] bg-[#1d4c74] text-white">Todos</button>` +
+            subs
+              .map(
+                (s) =>
+                  `<button type="button" data-sub="${escapeHtml(s)}" class="${subBtnClass} border-gray-300 bg-white text-gray-600 hover:border-[#1d4c74] hover:text-[#1d4c74]">${escapeHtml(s)}</button>`,
+              )
+              .join("");
+          subWrap.classList.remove("hidden");
+          subWrap.querySelectorAll("button").forEach((sb) => {
+            sb.addEventListener("click", () => {
+              const sub = sb.dataset.sub ?? "";
+              subWrap.querySelectorAll("button").forEach((b) => styleActive(b, b === sb, false));
+              paint(
+                products.filter((p) => {
+                  const { cat: pc, sub: ps } = parse(p.subcategory);
+                  return pc === cat && (!sub || ps === sub);
+                }),
+              );
             });
-            paint(sub ? products.filter((p) => p.subcategory === sub) : products);
           });
+        } else {
+          subWrap.innerHTML = "";
+          subWrap.classList.add("hidden");
+        }
+        paint(cat ? products.filter((p) => parse(p.subcategory).cat === cat) : products);
+      };
+
+      filterEl.querySelectorAll("[data-cat]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterEl.querySelectorAll("[data-cat]").forEach((b) => styleActive(b, b === btn, true));
+          applyCat(btn.dataset.cat ?? "");
         });
-      }
+      });
     }
 
     paint(products);

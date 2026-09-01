@@ -183,6 +183,8 @@ import LibroReclamaciones from "../../components/LibroReclamaciones.astro";
 		<!-- Catálogo de productos (dinámico desde API) -->
 		<section class="pb-24 px-6 md:px-8 bg-white">
 			<div class="max-w-7xl mx-auto">
+				<!-- Filtro por categoría (Merma / Madera / Muebles…) -->
+				<div id="aserradero-filters" class="mb-10"></div>
 				<div id="aserradero-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-item active min-h-[400px]">
 					<!-- Productos cargados via /public/products?division=MADERA&categorySlug=aserradero-prevca -->
 				</div>
@@ -320,6 +322,7 @@ import LibroReclamaciones from "../../components/LibroReclamaciones.astro";
 			renderProductGrid("aserradero-products-grid", "MADERA", "/madera", {
 				categorySlug: "aserradero-prevca",
 				variant: "ecommerce",
+				filterContainerId: "aserradero-filters",
 			});
 		</script>
 			<WhatsAppButton />
