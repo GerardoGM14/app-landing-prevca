@@ -28,7 +28,8 @@ type BankKey = "bcp" | "bbva" | "scotia" | "inter" | "bn" | "cajatrujillo";
 
 interface Props {
 	companyName: string;
-	ruc: string;
+	/** RUC opcional; si no se pasa, no se muestra esa línea. */
+	ruc?: string;
 	accounts?: Partial<Record<BankKey, BankAccount>>;
 }
 
@@ -71,8 +72,13 @@ const shown = ORDER.filter((k) => accounts[k]).map((k) => ({ key: k, ...BANKS[k]
 								class="text-white px-4 py-3.5 font-bold font-display text-sm tracking-wide"
 								style={`background-color: ${bank.header}`}
 							>
-								{companyName}<br />
-								<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: {ruc}</span>
+								{companyName}
+								{ruc && (
+									<>
+										<br />
+										<span class="text-[10px] font-normal opacity-80 tracking-normal">RUC: {ruc}</span>
+									</>
+								)}
 							</div>
 							<div class="p-5 bg-white text-left">
 								<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">
