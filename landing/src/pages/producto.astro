@@ -211,7 +211,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 					</div>
 
 					<div class="pt-4 flex flex-col lg:flex-row gap-4 items-stretch">
-						<div class="flex items-stretch border border-gray-300 bg-white text-[#2a3035] font-ui font-bold h-[56px] lg:h-auto">
+						<div id="qty-wrap" class="flex items-stretch border border-gray-300 bg-white text-[#2a3035] font-ui font-bold h-[56px] lg:h-auto">
 							<button id="qty-minus" class="w-12 hover:bg-gray-100 transition-colors border-r border-gray-300 cursor-pointer text-xl flex items-center justify-center">-</button>
 							<input id="qty-input" type="number" value="1" min="1" class="w-14 text-center m-0 p-0 outline-none bg-transparent text-lg" />
 							<button id="qty-plus" class="w-12 hover:bg-gray-100 transition-colors border-l border-gray-300 cursor-pointer text-xl flex items-center justify-center">+</button>
@@ -344,6 +344,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				woodVariants?: WoodVariant[];
 				options?: ProductOption[];
 				optionLabel?: string | null;
+				allowsDirectPurchase?: boolean;
 			}
 
 			interface CartItem {
@@ -547,6 +548,16 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 
 				// Add-to-cart button uses slug (consistent with rest of site)
 				$("add-to-cart-btn").dataset.product = product.slug;
+
+				// Solo se puede agregar al carrito si el producto acepta pago
+				// directo. Si es solo cotización, se ocultan carrito y cantidad.
+				if (product.allowsDirectPurchase === false) {
+					$("add-to-cart-btn").classList.add("hidden");
+					$("qty-wrap").classList.add("hidden");
+				} else {
+					$("add-to-cart-btn").classList.remove("hidden");
+					$("qty-wrap").classList.remove("hidden");
+				}
 
 				// Mostrar producto
 				$("product-section").classList.remove("hidden");

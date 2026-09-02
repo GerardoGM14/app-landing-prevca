@@ -23,6 +23,8 @@ import logoTransporte from "../assets/logo-transporte.png";
 // Imágenes decorativas de la división (hero y banners — los productos se cargan dinámicamente desde la API)
 import transporteImg01 from "../assets/transporte/transporte-image-01.png";
 import transporteImg02 from "../assets/transporte/transporte-image-02.png";
+import transporteHero from "../assets/transporte/transporte-hero.jpg";
+import transportePrecision from "../assets/transporte/transporte-precision.jpg";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import BankBanner from "../components/BankBanner.astro";
 import LibroReclamaciones from "../components/LibroReclamaciones.astro";
@@ -330,7 +332,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 		>
 			<div class="absolute inset-0 bg-black/60 z-10"></div>
 			<img
-				src={transporteImg01.src}
+				src={transporteHero.src}
 				alt="División Transporte"
 				class="absolute inset-0 w-full h-full object-cover"
 			/>
@@ -398,7 +400,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 					<div class="absolute -inset-4 bg-[#1d4c74]/5 rounded-none">
 					</div>
 					<img
-						src={transporteImg02.src}
+						src={transportePrecision.src}
 						alt="Proceso Logístico"
 						class="relative z-10 w-full h-auto rounded-none"
 					/>
