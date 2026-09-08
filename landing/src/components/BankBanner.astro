@@ -22,6 +22,8 @@
 interface BankAccount {
 	soles: string;
 	cci?: string;
+	/** Etiqueta del número de cuenta; por defecto "Nº CTA SOLES:". */
+	label?: string;
 }
 
 type BankKey = "bcp" | "bbva" | "scotia" | "inter" | "bn" | "cajatrujillo";
@@ -82,7 +84,7 @@ const shown = ORDER.filter((k) => accounts[k]).map((k) => ({ key: k, ...BANKS[k]
 							</div>
 							<div class="p-5 bg-white text-left">
 								<p class="text-[9px] font-bold text-gray-400 tracking-wider uppercase mb-1">
-									Nº CTA SOLES:
+									{bank.account.label ?? "Nº CTA SOLES:"}
 								</p>
 								<p class="text-base font-extrabold text-gray-800 tracking-tight mb-4">
 									{bank.account.soles}
