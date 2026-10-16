@@ -187,7 +187,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 
 					<div class="w-full h-px bg-gray-200"></div>
 
-					<div>
+					<div id="description-section">
 						<h3 class="text-[#1d4c74] font-bold font-display text-lg mb-3">Descripción</h3>
 						<p id="product-description" class="text-gray-600 font-body leading-relaxed text-base whitespace-pre-line"></p>
 					</div>
@@ -524,7 +524,8 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				$("product-ref").textContent = `Ref: ${product.ref}`;
 				$("product-title").textContent = product.title;
 				$("product-specs").textContent = product.specs ?? "";
-				$("product-description").textContent = product.description;
+				$("product-description").textContent = product.description ?? "";
+				if (!product.description) $("description-section").classList.add("hidden");
 
 				// Features
 				if (product.features && product.features.length > 0) {
