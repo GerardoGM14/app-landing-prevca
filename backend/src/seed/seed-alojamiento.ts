@@ -1,7 +1,6 @@
 /**
- * Crea el catálogo de Alojamiento (división HOSPITALIDAD): Departamento 301,
- * Departamento 302 y Lavandería. Son informativos: sin precio, sin carrito y
- * sin descripción.
+ * Crea el catálogo de Alojamiento (división HOSPITALIDAD). Productos
+ * informativos: sin precio, sin carrito y sin descripción.
  *
  *   Emulador:   npx tsx src/seed/seed-alojamiento.ts
  *   Producción: npx tsx src/seed/seed-alojamiento.ts --prod
@@ -48,8 +47,6 @@ interface NewItem {
 }
 
 const ITEMS: NewItem[] = [
-  { slug: 'departamento-301', ref: 'PRV-AL-301', title: 'Departamento 301', imagePrefix: 'departamento-301' },
-  { slug: 'departamento-302', ref: 'PRV-AL-302', title: 'Departamento 302', imagePrefix: 'departamento-302' },
   { slug: 'lavanderia', ref: 'PRV-AL-LAV', title: 'Lavandería', imagePrefix: 'lavanderia' },
 ];
 
