@@ -47,6 +47,18 @@ interface NewItem {
 }
 
 const ITEMS: NewItem[] = [
+  {
+    slug: 'departamento-senior',
+    ref: 'PRV-AL-SENIOR',
+    title: 'Departamento Senior – 4to piso',
+    imagePrefix: 'departamento-senior',
+  },
+  {
+    slug: 'departamento-premium-black',
+    ref: 'PRV-AL-PBLACK',
+    title: 'Departamento Premium Black – 3er piso',
+    imagePrefix: 'departamento-premium-black',
+  },
   { slug: 'lavanderia', ref: 'PRV-AL-LAV', title: 'Lavandería', imagePrefix: 'lavanderia' },
 ];
 
