@@ -11,6 +11,9 @@ import { OrdersListPage } from '@/features/orders/pages/OrdersListPage';
 import { OrderDetailPage } from '@/features/orders/pages/OrderDetailPage';
 import { ShippingRatesPage } from '@/features/settings/pages/ShippingRatesPage';
 import { PaymentConfigPage } from '@/features/settings/pages/PaymentConfigPage';
+import { LodgingCalendarPage } from '@/features/lodging/pages/LodgingCalendarPage';
+import { BookingsListPage } from '@/features/lodging/pages/BookingsListPage';
+import { BookingDetailPage } from '@/features/lodging/pages/BookingDetailPage';
 
 export const AppRouter = () => (
   <Routes>
@@ -24,6 +27,9 @@ export const AppRouter = () => (
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/orders" element={<OrdersListPage />} />
         <Route path="/orders/:id" element={<OrderDetailPage />} />
+        <Route path="/lodging" element={<LodgingCalendarPage />} />
+        <Route path="/bookings" element={<BookingsListPage />} />
+        <Route path="/bookings/:id" element={<BookingDetailPage />} />
         <Route path="/settings/shipping" element={<ShippingRatesPage />} />
         <Route path="/settings/payment" element={<PaymentConfigPage />} />
       </Route>

@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import {
+  FaBed,
   FaBoxes,
+  FaCalendarAlt,
   FaCreditCard,
   FaShoppingCart,
   FaTachometerAlt,
@@ -13,6 +15,11 @@ const mainItems = [
   { to: '/products', label: 'Productos', icon: FaBoxes },
   { to: '/categories', label: 'Categorías', icon: FaTags },
   { to: '/orders', label: 'Cotizaciones', icon: FaShoppingCart },
+];
+
+const lodgingItems = [
+  { to: '/lodging', label: 'Calendario', icon: FaCalendarAlt },
+  { to: '/bookings', label: 'Reservas', icon: FaBed },
 ];
 
 const settingsItems = [
@@ -46,6 +53,16 @@ export const Sidebar = () => (
     <nav className="flex-1 py-6">
       {mainItems.map(({ to, label, icon: Icon, end }) => (
         <NavLink key={to} to={to} end={end} className={linkClasses}>
+          <Icon className="text-base flex-shrink-0" />
+          <span>{label}</span>
+        </NavLink>
+      ))}
+
+      <p className="text-[10px] text-white/40 font-ui uppercase tracking-widest px-6 mt-8 mb-2">
+        Alojamiento
+      </p>
+      {lodgingItems.map(({ to, label, icon: Icon }) => (
+        <NavLink key={to} to={to} className={linkClasses}>
           <Icon className="text-base flex-shrink-0" />
           <span>{label}</span>
         </NavLink>
