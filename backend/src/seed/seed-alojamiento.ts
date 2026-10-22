@@ -81,11 +81,16 @@ const buildImageUrl = (storagePath: string): string => {
   return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(storagePath)}?alt=media`;
 };
 
-async function upload(productId: string, imageFile: string): Promise<string> {
+/**
+ * Sube una foto bajo una carpeta de versión (products/<id>/<version>/<archivo>).
+ * Así una foto reemplazada con el mismo nombre tiene URL nueva y nadie ve la
+ * vieja guardada en caché (las fotos se cachean hasta un año).
+ */
+async function upload(productId: string, version: string, imageFile: string): Promise<string> {
   const ext = imageFile.split('.').pop()?.toLowerCase();
   const contentType =
     ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : ext === 'webp' ? 'image/webp' : 'image/png';
-  const storagePath = `products/${productId}/${imageFile}`;
+  const storagePath = `products/${productId}/${version}/${imageFile}`;
   const file = bucket.file(storagePath);
   await file.save(readFileSync(join(ASSETS, imageFile)), {
     contentType,
@@ -102,11 +107,12 @@ async function main() {
     const isNew = existing.empty;
 
     const files = filesFor(item.imagePrefix);
+    const version = `v${Date.now()}`;
     const images = [];
     for (let n = 0; n < files.length; n++) {
-      const url = await upload(ref.id, files[n]);
+      const url = await upload(ref.id, version, files[n]);
       images.push({
-        storagePath: `products/${ref.id}/${files[n]}`,
+        storagePath: `products/${ref.id}/${version}/${files[n]}`,
         url,
         alt: null,
         isPrimary: n === 0,
@@ -149,7 +155,17 @@ async function main() {
     }
 
     await ref.set(data, { merge: true });
-    console.log(`   ${isNew ? '+ creado   ' : '~ actualiza'} ${item.slug.padEnd(18)} ${images.length} img`);
+
+    // Borra de Storage las fotos de versiones anteriores (ya no las usa nadie).
+    const keep = new Set(images.map((im) => im.storagePath));
+    const [stored] = await bucket.getFiles({ prefix: `products/${ref.id}/` });
+    const stale = stored.filter((f) => !keep.has(f.name));
+    await Promise.all(stale.map((f) => f.delete().catch(() => undefined)));
+
+    console.log(
+      `   ${isNew ? '+ creado   ' : '~ actualiza'} ${item.slug.padEnd(26)} ${images.length} img` +
+        (stale.length ? ` (${stale.length} foto(s) anteriores borradas)` : ''),
+    );
   }
 
   console.log('\n✨ Listo.');
