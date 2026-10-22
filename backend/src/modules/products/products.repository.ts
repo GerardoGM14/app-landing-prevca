@@ -29,6 +29,22 @@ export interface ProductOption {
   imageUrl: string | null;
 }
 
+/**
+ * Configuración de reservas de un departamento (solo división HOSPITALIDAD).
+ * Se edita desde Alojamiento en el admin, no desde el formulario de producto.
+ */
+export interface LodgingConfig {
+  /** Si acepta reservas en la web (requiere precio por noche) */
+  bookable: boolean;
+  nightlyPrice: number | null;
+  maxGuests: number;
+  minNights: number;
+  checkInTime: string;
+  checkOutTime: string;
+  /** Precios especiales por fecha ('YYYY-MM-DD' → precio); manda sobre nightlyPrice */
+  priceOverrides: Record<string, number>;
+}
+
 export interface ProductDoc {
   slug: string;
   ref: string;
@@ -55,6 +71,8 @@ export interface ProductDoc {
   optionLabel: string | null;
   /** Agrupación dentro de la categoría, para filtrar en la landing */
   subcategory: string | null;
+  /** Solo departamentos de Alojamiento */
+  lodging?: LodgingConfig;
   showPrice: boolean;
   allowsDirectPurchase: boolean;
   stock: number;
@@ -106,6 +124,14 @@ export const productsRepository = {
   async findByRef(ref: string): Promise<Product | null> {
     const snap = await col().where('ref', '==', ref).limit(1).get();
     return snap.empty ? null : mapDoc(snap.docs[0]);
+  },
+
+  /** Todos los productos de una división (activos e inactivos), por `order`. Sin índice compuesto. */
+  async listByDivision(division: Division): Promise<Product[]> {
+    const snap = await col().where('division', '==', division).get();
+    return snap.docs
+      .map((d) => mapDoc(d)!)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   },
 
   async list(filters: ListFilters): Promise<{ items: Product[]; nextCursor: string | null }> {

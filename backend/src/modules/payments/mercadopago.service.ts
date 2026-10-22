@@ -1,6 +1,7 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import { ConflictError } from '../../shared/errors/app-error';
 import { Order } from '../orders/orders.repository';
+import type { Booking } from '../lodging/lodging.repository';
 
 /**
  * Integración con MercadoPago (Checkout Pro).
@@ -44,6 +45,10 @@ const apiUrl = (): string | undefined => {
   const url = process.env.PUBLIC_API_URL;
   return url ? trimSlash(url) : undefined;
 };
+
+/** Fecha en formato ISO con zona de Perú (UTC-5, sin horario de verano), como pide MercadoPago. */
+const toLimaIso = (date: Date): string =>
+  new Date(date.getTime() - 5 * 3_600_000).toISOString().replace('Z', '-05:00');
 
 export interface PreferenceResult {
   /** ID de la preference en MercadoPago */
@@ -102,6 +107,69 @@ export const mercadopagoService = {
         // (invalid_auto_return). Solo lo activamos con una URL pública real.
         ...(isPublicUrl(landingUrl()) ? { auto_return: 'approved' as const } : {}),
         ...(notificationUrl ? { notification_url: notificationUrl } : {}),
+        statement_descriptor: 'GRUPO PREVCA',
+      },
+    });
+
+    if (!body.id || !body.init_point) {
+      throw new ConflictError('MercadoPago no devolvió un link de pago válido');
+    }
+
+    return {
+      preferenceId: body.id,
+      initPoint: body.init_point,
+      sandboxInitPoint: body.sandbox_init_point ?? body.init_point,
+    };
+  },
+
+  /**
+   * Preference para una reserva de alojamiento. A diferencia de un pedido:
+   *  - el link vence junto con el apartado de las noches (no se puede pagar
+   *    después de que se liberaron),
+   *  - `binary_mode`: el pago queda aprobado o rechazado al momento, nunca
+   *    "pendiente",
+   *  - se excluyen los pagos en efectivo (agentes, bancos), que tardan días.
+   */
+  async createBookingPreference(booking: Booking): Promise<PreferenceResult> {
+    if (!(booking.total > 0)) {
+      throw new ConflictError('La reserva no tiene un total válido para cobrar');
+    }
+
+    const preference = new Preference(getClient());
+    const notificationUrl = apiUrl() ? `${apiUrl()}/public/webhooks/mercadopago` : undefined;
+    const nightsLabel = booking.nights === 1 ? '1 noche' : `${booking.nights} noches`;
+
+    const body = await preference.create({
+      body: {
+        external_reference: booking.code,
+        items: [
+          {
+            id: booking.productId,
+            title: `${booking.productTitle} · ${nightsLabel} (${booking.checkIn} al ${booking.checkOut})`,
+            quantity: 1,
+            unit_price: booking.total,
+            currency_id: 'PEN',
+          },
+        ],
+        payer: { name: booking.customer.name },
+        back_urls: {
+          success: `${landingUrl()}/reserva-exitosa?code=${booking.code}`,
+          pending: `${landingUrl()}/reserva-pendiente?code=${booking.code}`,
+          failure: `${landingUrl()}/reserva-fallida?code=${booking.code}`,
+        },
+        ...(isPublicUrl(landingUrl()) ? { auto_return: 'approved' as const } : {}),
+        ...(notificationUrl ? { notification_url: notificationUrl } : {}),
+        binary_mode: true,
+        payment_methods: {
+          excluded_payment_types: [{ id: 'ticket' }, { id: 'atm' }],
+        },
+        ...(booking.holdExpiresAt
+          ? {
+              expires: true,
+              expiration_date_from: toLimaIso(new Date()),
+              expiration_date_to: toLimaIso(booking.holdExpiresAt.toDate()),
+            }
+          : {}),
         statement_descriptor: 'GRUPO PREVCA',
       },
     });

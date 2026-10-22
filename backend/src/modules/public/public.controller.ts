@@ -8,6 +8,7 @@ import { productsRepository } from '../products/products.repository';
 import { categoriesRepository } from '../categories/categories.repository';
 import { ordersService } from '../orders/orders.service';
 import { claimsService } from '../claims/claims.service';
+import { lodgingService } from '../lodging/lodging.service';
 import { settingsService } from '../settings/settings.service';
 import { mercadopagoService } from '../payments/mercadopago.service';
 import { ProductQuery } from '../products/products.schema';
@@ -49,6 +50,19 @@ const PUBLIC_FIELDS = (p: Awaited<ReturnType<typeof productsRepository.findById>
     showStock: p.showStock,
     isFeatured: p.isFeatured,
     images: p.images,
+    /** Resumen de reservas (solo departamentos que aceptan reservas web) */
+    lodging:
+      p.division === 'HOSPITALIDAD' &&
+      p.lodging?.bookable &&
+      p.lodging.nightlyPrice !== null &&
+      p.lodging.nightlyPrice > 0
+        ? {
+            bookable: true,
+            nightlyPrice: p.lodging.nightlyPrice,
+            maxGuests: p.lodging.maxGuests,
+            minNights: p.lodging.minNights,
+          }
+        : null,
   };
 
 const isEmulator = (): boolean =>
@@ -239,7 +253,15 @@ export const publicController = {
 
     try {
       const result = await mercadopagoService.fetchPaymentResult(String(paymentId));
-      if (result.orderCode) {
+      // El external_reference dice a quién pertenece el pago:
+      // RES-... = reserva de alojamiento, ORD-... = pedido de la tienda.
+      if (result.orderCode?.startsWith('RES-')) {
+        await lodgingService.confirmMercadoPago(result.orderCode, {
+          approved: result.approved,
+          transactionId: result.transactionId,
+          rawPayload: result.rawPayload,
+        });
+      } else if (result.orderCode) {
         await ordersService.confirmGatewayPayment(result.orderCode, {
           approved: result.approved,
           transactionId: result.transactionId,

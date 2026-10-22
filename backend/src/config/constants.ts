@@ -135,6 +135,8 @@ export const COLLECTIONS = {
   ORDERS: 'orders',
   SETTINGS: 'settings',
   CLAIMS: 'claims',
+  BOOKINGS: 'bookings',
+  LODGING_NIGHTS: 'lodgingNights',
 } as const;
 
 export const SETTINGS_DOCS = {
@@ -142,6 +144,7 @@ export const SETTINGS_DOCS = {
   PAYMENT_CONFIG: 'payment-config',
   ORDER_COUNTER: 'order-counter',
   CLAIM_COUNTER: 'claim-counter',
+  BOOKING_COUNTER: 'booking-counter',
 } as const;
 
 /**
@@ -158,6 +161,44 @@ export type ClaimItemType = (typeof CLAIM_ITEM_TYPES)[number];
 
 export const CLAIM_STATUS = ['PENDIENTE', 'ATENDIDO'] as const;
 export type ClaimStatus = (typeof CLAIM_STATUS)[number];
+
+/**
+ * Reservas de Alojamiento.
+ *   PENDIENTE_PAGO: las noches están apartadas mientras el cliente paga
+ *   CONFIRMADA: pagada (web) o registrada a mano por el admin
+ *   CANCELADA: anulada por el admin; las noches quedan libres
+ *   EXPIRADA: venció el apartado sin pago
+ *   REVISAR: el pago llegó pero alguna noche ya no estaba libre (devolver o reubicar)
+ */
+export const BOOKING_STATUS = [
+  'PENDIENTE_PAGO',
+  'CONFIRMADA',
+  'CANCELADA',
+  'EXPIRADA',
+  'REVISAR',
+] as const;
+export type BookingStatus = (typeof BOOKING_STATUS)[number];
+
+export const BOOKING_PAYMENT_STATUS = ['PENDING', 'PAID', 'REJECTED', 'REFUNDED'] as const;
+export type BookingPaymentStatus = (typeof BOOKING_PAYMENT_STATUS)[number];
+
+/** MANUAL = reserva cargada por el admin (WhatsApp, en persona) */
+export const BOOKING_PAYMENT_METHODS = ['MERCADOPAGO', 'CULQI', 'MANUAL'] as const;
+export type BookingPaymentMethod = (typeof BOOKING_PAYMENT_METHODS)[number];
+
+/** Estado de una noche en el calendario (sin documento = libre) */
+export const NIGHT_STATUS = ['HOLD', 'BOOKED', 'BLOCKED'] as const;
+export type NightStatus = (typeof NIGHT_STATUS)[number];
+
+export const LODGING_RULES = {
+  /** Minutos que las noches quedan apartadas mientras el cliente paga */
+  HOLD_MINUTES: 20,
+  /** Máximo de noches por reserva web (estadías más largas: por WhatsApp) */
+  MAX_NIGHTS: 60,
+  /** Hasta cuántos días adelante se puede reservar */
+  MAX_ADVANCE_DAYS: 365,
+  TIMEZONE: 'America/Lima',
+} as const;
 
 export const STORAGE_PATHS = {
   PRODUCT_IMAGES: 'products',

@@ -1,5 +1,11 @@
 import { ConflictError, ValidationError } from '../../shared/errors/app-error';
-import { Order } from '../orders/orders.repository';
+
+/** Lo mínimo para cobrar: sirve para pedidos (Order) y reservas de alojamiento. */
+export interface ChargeTarget {
+  code: string;
+  total: number | null;
+  customer: { name: string };
+}
 
 /**
  * Integración con Culqi (Culqi Checkout / popup).
@@ -46,7 +52,12 @@ export const culqiService = {
    * El monto se toma de la ORDEN (server-side), nunca del cliente.
    * Culqi trabaja en céntimos: S/ 10.50 → 1050.
    */
-  async createCharge(order: Order, token: string, email: string): Promise<CulqiChargeResult> {
+  async createCharge(
+    order: ChargeTarget,
+    token: string,
+    email: string,
+    description = `Pedido ${order.code} - Grupo Prevca`,
+  ): Promise<CulqiChargeResult> {
     if (order.total === null || order.total <= 0) {
       throw new ConflictError('La orden no tiene un total válido para cobrar');
     }
@@ -61,7 +72,7 @@ export const culqiService = {
       currency_code: 'PEN',
       email,
       source_id: token,
-      description: `Pedido ${order.code} - Grupo Prevca`.slice(0, 80),
+      description: description.slice(0, 80),
       metadata: {
         orderCode: order.code,
         customer: order.customer.name,

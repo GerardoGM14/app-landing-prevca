@@ -22,6 +22,15 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Reservas y calendario de Alojamiento: solo vía API (Admin SDK).
+    match /bookings/{bookingId} {
+      allow read, write: if false;
+    }
+
+    match /lodgingNights/{nightId} {
+      allow read, write: if false;
+    }
+
     match /settings/{docId} {
       allow read: if true;
       allow write: if false;

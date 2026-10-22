@@ -7,6 +7,8 @@ import { productQuerySchema } from '../products/products.schema';
 import { categoryQuerySchema } from '../categories/categories.schema';
 import { checkoutSchema, createOrderSchema } from '../orders/orders.schema';
 import { createClaimSchema } from '../claims/claims.schema';
+import { lodgingController } from '../lodging/lodging.controller';
+import { createBookingSchema } from '../lodging/lodging.schema';
 
 export const publicRouter = Router();
 
@@ -38,3 +40,8 @@ publicRouter.post('/webhooks/mercadopago', publicController.mercadopagoWebhook);
 
 // Cargo de Culqi — crea el cargo con el token del popup (pago síncrono)
 publicRouter.post('/orders/:code/culqi-charge', publicController.culqiCharge);
+
+// Reservas de Alojamiento: disponibilidad, reserva con apartado y cobro Culqi
+publicRouter.get('/lodging/units/:slug', lodgingController.getPublicUnit);
+publicRouter.post('/lodging/bookings', validate(createBookingSchema), lodgingController.createBooking);
+publicRouter.post('/lodging/bookings/:code/culqi-charge', lodgingController.culqiCharge);
