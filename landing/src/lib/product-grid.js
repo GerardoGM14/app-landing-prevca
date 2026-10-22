@@ -173,6 +173,10 @@ export async function renderProductGrid(containerId, division, urlPrefix, option
 
         // Estilo ecommerce por defecto
         const subtitle = p.specs ?? p.shortDesc ?? "";
+        // Departamento con reservas web: precio por noche en la tarjeta
+        const nightly = p.lodging?.bookable
+          ? `<p class="text-sm font-ui font-bold text-[#1d4c74] mb-4">Desde S/ ${Number(p.lodging.nightlyPrice).toFixed(2)} <span class="font-normal text-gray-500">por noche</span></p>`
+          : "";
         return `
           <div class="bg-white border border-gray-200 group hover:border-[#1d4c74] transition-colors flex flex-col">
             <div class="h-48 overflow-hidden bg-gray-100">
@@ -185,6 +189,7 @@ export async function renderProductGrid(containerId, division, urlPrefix, option
             <div class="p-6 flex flex-col flex-grow">
               <h3 class="font-display font-bold text-[#2a3035] leading-tight mb-2">${escapeHtml(p.title)}</h3>
               <p class="text-sm text-gray-500 font-body mb-6 line-clamp-2">${escapeHtml(subtitle)}</p>
+              ${nightly}
               <div class="flex justify-between items-center text-xs font-bold text-gray-400 mt-auto pt-4 border-t border-gray-100">
                 <span>Ref: ${escapeHtml(p.ref)}</span>
                 <a href="${detailUrl}" class="text-[#1d4c74] hover:text-[#153a5b] flex items-center gap-1 group-hover:gap-2 transition-all">

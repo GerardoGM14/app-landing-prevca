@@ -15,6 +15,7 @@ import {
 	FaTimes,
 	FaChevronDown,
 	FaShoppingCart,
+	FaCalendarAlt,
 	FaLinkedinIn,
 	FaInstagram,
 	FaTwitter,
@@ -221,7 +222,11 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 							<span class="text-xl"><FaShoppingCart /></span>
 							<span class="whitespace-nowrap">Agregar al Carrito</span>
 						</button>
-						<a href="/#contact-section" class="flex-1 flex items-center justify-center text-center bg-white text-[#1d4c74] font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-gray-50 transition-colors border-2 border-[#1d4c74] text-sm">
+						<a id="book-btn" href="#" class="hidden flex-1 flex items-center justify-center gap-3 text-center bg-[#1d4c74] text-white font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-[#2a3035] transition-colors border border-[#1d4c74] shadow-lg hover:shadow-xl text-sm">
+							<span class="text-xl"><FaCalendarAlt /></span>
+							<span class="whitespace-nowrap">Ver disponibilidad y reservar</span>
+						</a>
+						<a id="quote-btn" href="/#contact-section" class="flex-1 flex items-center justify-center text-center bg-white text-[#1d4c74] font-bold px-4 py-4 uppercase font-ui tracking-widest hover:bg-gray-50 transition-colors border-2 border-[#1d4c74] text-sm">
 							Cotizar Proyecto
 						</a>
 					</div>
@@ -345,6 +350,8 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				options?: ProductOption[];
 				optionLabel?: string | null;
 				allowsDirectPurchase?: boolean;
+				/** Solo departamentos con reservas web activas */
+				lodging?: { bookable: boolean; nightlyPrice: number; maxGuests: number; minNights: number } | null;
 			}
 
 			interface CartItem {
@@ -558,6 +565,19 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				} else {
 					$("add-to-cart-btn").classList.remove("hidden");
 					$("qty-wrap").classList.remove("hidden");
+				}
+
+				// Departamento reservable: precio por noche y botón al calendario
+				// en lugar de carrito y cotización.
+				if (product.lodging?.bookable) {
+					$("price-section").classList.remove("hidden");
+					$("product-price").textContent = `Desde ${formatMoney(product.lodging.nightlyPrice)} / noche`;
+					$("add-to-cart-btn").classList.add("hidden");
+					$("qty-wrap").classList.add("hidden");
+					$("quote-btn").classList.add("hidden");
+					const bookBtn = $<HTMLAnchorElement>("book-btn");
+					bookBtn.href = `/reservar?slug=${encodeURIComponent(product.slug)}`;
+					bookBtn.classList.remove("hidden");
 				}
 
 				// Mostrar producto

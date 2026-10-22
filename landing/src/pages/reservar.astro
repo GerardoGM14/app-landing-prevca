@@ -1,0 +1,579 @@
+---
+/**
+ * Reserva de un departamento de Alojamiento: /reservar?slug=<slug>
+ *
+ * 1. Calendario de disponibilidad (noches libres / ocupadas, como butacas).
+ * 2. El cliente elige llegada y salida; el total se calcula al momento.
+ * 3. Datos del huésped y pasarela (MercadoPago o Culqi).
+ * 4. El servidor aparta las noches unos minutos mientras el cliente paga.
+ */
+import "../styles/global.css";
+import { FaArrowLeft, FaWhatsapp } from "react-icons/fa";
+import logoPrevca from "../assets/logo-prevca.png";
+import libroImg from "../assets/libro-reclamaciones.png";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
+import LibroReclamaciones from "../components/LibroReclamaciones.astro";
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="robots" content="noindex" />
+		<title>Reservar | Alojamiento Grupo Prevca</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@400;600;700&family=Inter:wght@300;400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- Global: los días se crean con JS y no llevan el atributo de estilo con alcance de Astro -->
+		<style is:global>
+			.day { aspect-ratio: 1 / 1; }
+			.day:disabled { cursor: not-allowed; }
+			.day.unavailable { background: repeating-linear-gradient(135deg, #f3f4f6, #f3f4f6 4px, #e5e7eb 4px, #e5e7eb 8px); color: #9ca3af; text-decoration: line-through; }
+			.day.in-range { background: rgba(29, 76, 116, 0.12); }
+			.day.edge { background: #1d4c74; color: #fff; }
+			.day.edge .price { color: rgba(255, 255, 255, 0.8); }
+		</style>
+	</head>
+	<body class="bg-gray-50 text-gray-800 font-body selection:bg-[#1d4c74] selection:text-white overflow-x-hidden min-h-screen flex flex-col">
+		<nav class="bg-[#2a3035] text-white py-4 px-6 md:px-8 flex justify-between items-center font-ui sticky top-0 z-50">
+			<a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+				<img src={logoPrevca.src} alt="Grupo Prevca" class="h-10 md:h-14 w-auto object-contain brightness-0 invert" />
+			</a>
+			<a href="/alojamiento" class="text-xs md:text-sm font-bold uppercase tracking-widest hover:text-gray-300 transition-colors flex items-center gap-2">
+				<FaArrowLeft /> Alojamiento
+			</a>
+		</nav>
+
+		<main class="flex-grow py-10 md:py-14 px-4 md:px-8">
+			<div class="max-w-7xl mx-auto">
+				<!-- Estados de carga / error -->
+				<div id="state-loading" class="py-32 flex justify-center">
+					<span class="inline-block w-10 h-10 border-4 border-[#1d4c74] border-r-transparent rounded-full animate-spin"></span>
+				</div>
+				<div id="state-error" class="hidden max-w-xl mx-auto bg-white border border-gray-200 p-10 text-center">
+					<h1 class="text-2xl font-extrabold font-display text-[#2a3035] uppercase mb-3">Reserva no disponible</h1>
+					<p id="state-error-msg" class="text-gray-600 mb-6">Este departamento no acepta reservas en línea por el momento.</p>
+					<a href="https://wa.me/51990024933" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#25D366] text-white font-bold px-6 py-3 uppercase font-ui tracking-widest text-sm">
+						<FaWhatsapp /> Consultar por WhatsApp
+					</a>
+				</div>
+
+				<div id="booking-app" class="hidden">
+					<!-- Encabezado -->
+					<div class="mb-8">
+						<p class="text-xs font-ui uppercase tracking-widest text-[#1d4c74] mb-2">Alojamiento · Reserva en línea</p>
+						<h1 id="unit-title" class="text-3xl md:text-5xl font-extrabold font-display text-[#2a3035] tracking-tight"></h1>
+						<div class="w-16 h-1.5 bg-[#1d4c74] mt-4"></div>
+					</div>
+
+					<div id="unit-photos" class="grid grid-cols-4 grid-rows-2 gap-2 h-56 md:h-80 mb-10"></div>
+
+					<div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+						<!-- Calendario -->
+						<section class="lg:col-span-3 bg-white border border-gray-200 p-5 md:p-8">
+							<div class="flex items-center justify-between mb-2">
+								<h2 class="font-display font-extrabold uppercase tracking-widest text-sm text-[#2a3035]">Elija sus fechas</h2>
+								<button id="clear-dates" type="button" class="hidden text-xs font-ui font-bold uppercase tracking-widest text-gray-400 hover:text-[#1d4c74] cursor-pointer">Borrar fechas</button>
+							</div>
+							<p id="calendar-hint" class="text-sm text-gray-500 mb-6">Seleccione el día de llegada.</p>
+
+							<div class="flex items-center justify-between mb-4">
+								<button id="prev-month" type="button" class="w-10 h-10 border border-gray-200 text-[#1d4c74] hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer" aria-label="Meses anteriores">‹</button>
+								<div class="flex-1"></div>
+								<button id="next-month" type="button" class="w-10 h-10 border border-gray-200 text-[#1d4c74] hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer" aria-label="Meses siguientes">›</button>
+							</div>
+							<div id="months" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+
+							<div class="flex flex-wrap gap-5 mt-6 pt-5 border-t border-gray-100 text-xs text-gray-600">
+								<span class="flex items-center gap-2"><span class="w-4 h-4 border border-gray-200 bg-white"></span> Disponible</span>
+								<span class="flex items-center gap-2"><span class="w-4 h-4 day unavailable" style="aspect-ratio:auto"></span> Ocupado</span>
+								<span class="flex items-center gap-2"><span class="w-4 h-4 bg-[#1d4c74]"></span> Su estadía</span>
+							</div>
+							<p id="rules" class="text-xs text-gray-500 mt-4"></p>
+						</section>
+
+						<!-- Resumen y pago -->
+						<aside class="lg:col-span-2 bg-white border border-gray-200 lg:sticky lg:top-28">
+							<div class="p-6 border-b border-gray-200">
+								<p class="text-2xl font-extrabold font-display text-[#1d4c74]"><span id="base-price"></span> <span class="text-sm font-body font-normal text-gray-500">/ noche</span></p>
+								<div class="grid grid-cols-2 border border-gray-300 mt-4 text-sm">
+									<div class="p-3 border-r border-gray-300">
+										<p class="text-[10px] font-ui font-bold uppercase tracking-widest text-gray-500">Llegada</p>
+										<p id="sum-in" class="font-bold text-[#2a3035]">—</p>
+										<p id="sum-in-time" class="text-xs text-gray-400"></p>
+									</div>
+									<div class="p-3">
+										<p class="text-[10px] font-ui font-bold uppercase tracking-widest text-gray-500">Salida</p>
+										<p id="sum-out" class="font-bold text-[#2a3035]">—</p>
+										<p id="sum-out-time" class="text-xs text-gray-400"></p>
+									</div>
+								</div>
+								<label class="block mt-3">
+									<span class="text-[10px] font-ui font-bold uppercase tracking-widest text-gray-500">Huéspedes</span>
+									<select id="guests" class="w-full border border-gray-300 bg-white px-3 py-2 mt-1 text-sm focus:outline-none focus:border-[#1d4c74]"></select>
+								</label>
+								<div id="breakdown" class="hidden mt-5 space-y-2 text-sm"></div>
+							</div>
+
+							<form id="booking-form" class="p-6 space-y-4 hidden" novalidate>
+								<h3 class="font-display font-extrabold uppercase tracking-widest text-sm text-[#2a3035]">Datos del huésped</h3>
+								<input name="name" required placeholder="Nombre completo" class="w-full border border-gray-300 bg-gray-50 p-3 text-sm outline-none focus:border-[#1d4c74]" />
+								<div class="grid grid-cols-2 gap-3">
+									<input name="email" type="email" required placeholder="Correo" class="w-full border border-gray-300 bg-gray-50 p-3 text-sm outline-none focus:border-[#1d4c74]" />
+									<input name="phone" type="tel" required placeholder="Celular" class="w-full border border-gray-300 bg-gray-50 p-3 text-sm outline-none focus:border-[#1d4c74]" />
+								</div>
+								<div class="grid grid-cols-3 gap-3">
+									<select name="documentType" class="border border-gray-300 bg-gray-50 p-3 text-sm outline-none focus:border-[#1d4c74]">
+										<option value="DNI">DNI</option>
+										<option value="CE">CE</option>
+										<option value="PASAPORTE">Pasaporte</option>
+										<option value="RUC">RUC</option>
+									</select>
+									<input name="documentNumber" required placeholder="N° de documento" class="col-span-2 border border-gray-300 bg-gray-50 p-3 text-sm outline-none focus:border-[#1d4c74]" />
+								</div>
+								<textarea name="notes" rows="2" placeholder="Comentarios (hora estimada de llegada, etc.)" class="w-full border border-gray-300 bg-gray-50 p-3 text-sm outline-none focus:border-[#1d4c74] resize-none"></textarea>
+
+								<h3 class="font-display font-extrabold uppercase tracking-widest text-sm text-[#2a3035] pt-2">Método de pago</h3>
+								<div id="pay-methods" class="space-y-2"></div>
+
+								<label class="flex items-start gap-3 text-xs text-gray-600 cursor-pointer">
+									<input name="acceptTerms" type="checkbox" class="mt-0.5 accent-[#1d4c74]" />
+									<span>
+										Acepto que el pago es por el total de la estadía. Para cambios, cancelaciones o devoluciones me comunicaré con Grupo Prevca al
+										<a href="https://wa.me/51990024933" target="_blank" rel="noopener" class="text-[#1d4c74] font-bold">+51 990 024 933</a>; se atenderán según la
+										política de cambios y devoluciones de Grupo Prevca.
+									</span>
+								</label>
+
+								<div id="form-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 text-sm p-3"></div>
+								<button id="submit-btn" type="submit" class="w-full bg-[#1d4c74] text-white font-bold px-6 py-4 uppercase font-ui tracking-widest hover:bg-[#2a3035] transition-colors text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+									Reservar y pagar
+								</button>
+							</form>
+
+							<!-- Paso de pago (después de apartar las noches) -->
+							<div id="pay-step" class="hidden p-6 space-y-4 text-center"></div>
+						</aside>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<footer class="bg-[#2a3035] text-white pt-10 pb-6 px-6 md:px-8">
+			<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+				<p class="text-xs font-ui tracking-[0.2em] text-gray-400 uppercase font-bold">© 2026 Grupo Prevca</p>
+				<a href="#" data-libro class="bg-white p-1 max-w-[100px]">
+					<img src={libroImg.src} alt="Libro de Reclamaciones" class="w-full h-auto max-h-14 object-contain" />
+				</a>
+			</div>
+		</footer>
+
+		<script>
+			import { fetchLodgingUnit, fetchPaymentMethods, createBooking, chargeBookingCulqi } from "../lib/api.js";
+
+			type Unit = Awaited<ReturnType<typeof fetchLodgingUnit>>;
+
+			const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+			const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+			const money = (n: number) => `S/ ${n.toFixed(2)}`;
+
+			/* --- Fechas 'YYYY-MM-DD' (hora de Perú) --- */
+			const addDays = (d: string, n: number) => {
+				const x = new Date(`${d}T00:00:00Z`);
+				x.setUTCDate(x.getUTCDate() + n);
+				return x.toISOString().slice(0, 10);
+			};
+			const addMonths = (m: string, n: number) => {
+				const x = new Date(`${m}T00:00:00Z`);
+				x.setUTCMonth(x.getUTCMonth() + n, 1);
+				return x.toISOString().slice(0, 10);
+			};
+			const nightsBetween = (a: string, b: string) => {
+				const out: string[] = [];
+				for (let d = a; d < b; d = addDays(d, 1)) out.push(d);
+				return out;
+			};
+			const fmtDay = (d: string, opts: Intl.DateTimeFormatOptions = { day: "numeric", month: "short", year: "numeric" }) =>
+				new Date(`${d}T12:00:00Z`).toLocaleDateString("es-PE", { ...opts, timeZone: "UTC" });
+			const monthTitle = (m: string) => {
+				const t = fmtDay(m, { month: "long", year: "numeric" });
+				return t.charAt(0).toUpperCase() + t.slice(1);
+			};
+
+			/* --- Estado --- */
+			let unit: Unit;
+			let unavailable = new Set<string>();
+			let checkIn: string | null = null;
+			let checkOut: string | null = null;
+			let viewMonth = "";
+			let hover: string | null = null;
+			/** Tras apartar las noches ya no se pueden cambiar las fechas (se está pagando esa reserva). */
+			let locked = false;
+
+			const monthsVisible = () => (window.matchMedia("(min-width: 768px)").matches ? 2 : 1);
+			const priceOf = (d: string) => unit.lodging.priceOverrides[d] ?? unit.lodging.nightlyPrice;
+
+			/** Primera noche ocupada después de la llegada: la salida no puede pasar de ahí. */
+			const firstBlockedAfter = (from: string) => {
+				let best: string | null = null;
+				unavailable.forEach((d) => { if (d > from && (!best || d < best)) best = d; });
+				return best as string | null;
+			};
+
+			const selectingCheckout = () => checkIn !== null && checkOut === null;
+
+			/** ¿Se puede hacer clic en este día en el paso actual? */
+			const canPick = (d: string) => {
+				if (d < unit.today) return false;
+				if (selectingCheckout() && d > checkIn!) {
+					const limit = firstBlockedAfter(checkIn!);
+					const maxOut = addDays(checkIn!, unit.maxNights);
+					return (!limit || d <= limit) && d <= maxOut && d <= addDays(unit.maxDate, 1);
+				}
+				return !unavailable.has(d) && d <= unit.maxDate;
+			};
+
+			/* --- Calendario --- */
+			const renderMonths = () => {
+				const container = $("months");
+				const count = monthsVisible();
+				const firstMonth = `${unit.today.slice(0, 7)}-01`;
+				const lastMonth = `${unit.maxDate.slice(0, 7)}-01`;
+				$<HTMLButtonElement>("prev-month").disabled = viewMonth <= firstMonth;
+				$<HTMLButtonElement>("next-month").disabled = addMonths(viewMonth, count - 1) >= lastMonth;
+
+				const rangeEnd = checkOut ?? (selectingCheckout() && hover && hover > checkIn! && canPick(hover) ? hover : null);
+
+				container.innerHTML = Array.from({ length: count }, (_, i) => {
+					const m = addMonths(viewMonth, i);
+					const first = new Date(`${m}T00:00:00Z`);
+					const offset = (first.getUTCDay() + 6) % 7;
+					const days = nightsBetween(m, addMonths(m, 1));
+					const cells = [
+						...Array(offset).fill('<div></div>'),
+						...days.map((d) => {
+							const taken = unavailable.has(d);
+							const pickable = canPick(d);
+							const isEdge = d === checkIn || d === rangeEnd;
+							const inRange = checkIn && rangeEnd && d > checkIn && d < rangeEnd;
+							const price = priceOf(d);
+							const cls = [
+								"day relative flex flex-col items-center justify-center text-sm font-ui transition-colors",
+								isEdge ? "edge font-bold" : inRange ? "in-range" : "",
+								taken && !isEdge ? "unavailable" : "",
+								!pickable && !taken && !isEdge ? "text-gray-300" : "",
+								pickable && !isEdge ? "hover:border hover:border-[#1d4c74] cursor-pointer" : "",
+							].join(" ");
+							const special = unit.lodging.priceOverrides[d] !== undefined;
+							return `<button type="button" class="${cls}" data-day="${d}" ${pickable ? "" : "disabled"} aria-label="${fmtDay(d)}${taken ? " (ocupado)" : ""}">
+								<span>${Number(d.slice(8))}</span>
+								${!taken && d >= unit.today ? `<span class="price text-[9px] ${special ? "text-orange-600 font-bold" : "text-gray-400"}">${Math.round(price)}</span>` : ""}
+							</button>`;
+						}),
+					].join("");
+					return `<div>
+						<p class="text-center font-display font-bold text-[#2a3035] mb-3">${monthTitle(m)}</p>
+						<div class="grid grid-cols-7 gap-1 text-center text-[10px] font-ui font-bold uppercase tracking-widest text-gray-400 mb-1">
+							${["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"].map((w) => `<span>${w}</span>`).join("")}
+						</div>
+						<div class="grid grid-cols-7 gap-1">${cells}</div>
+					</div>`;
+				}).join("");
+			};
+
+			const setHint = () => {
+				const hint = $("calendar-hint");
+				if (!checkIn) hint.textContent = "Seleccione el día de llegada.";
+				else if (!checkOut) hint.textContent = `Llegada el ${fmtDay(checkIn)}. Ahora seleccione el día de salida (mínimo ${unit.lodging.minNights} noche${unit.lodging.minNights === 1 ? "" : "s"}).`;
+				else {
+					const n = nightsBetween(checkIn, checkOut).length;
+					hint.textContent = `${n} noche${n === 1 ? "" : "s"}: del ${fmtDay(checkIn)} al ${fmtDay(checkOut)}.`;
+				}
+				$("clear-dates").classList.toggle("hidden", !checkIn);
+			};
+
+			const renderSummary = () => {
+				$("sum-in").textContent = checkIn ? fmtDay(checkIn) : "—";
+				$("sum-out").textContent = checkOut ? fmtDay(checkOut) : "—";
+				$("sum-in-time").textContent = checkIn ? `desde las ${unit.lodging.checkInTime}` : "";
+				$("sum-out-time").textContent = checkOut ? `hasta las ${unit.lodging.checkOutTime}` : "";
+
+				const breakdown = $("breakdown");
+				const form = $("booking-form");
+				if (!checkIn || !checkOut) {
+					breakdown.classList.add("hidden");
+					form.classList.add("hidden");
+					return;
+				}
+				// Agrupa noches con el mismo precio: "S/ 150 x 3 noches"
+				const groups = new Map<number, number>();
+				nightsBetween(checkIn, checkOut).forEach((d) => groups.set(priceOf(d), (groups.get(priceOf(d)) ?? 0) + 1));
+				const total = [...groups].reduce((s, [p, n]) => s + p * n, 0);
+				breakdown.innerHTML = [...groups]
+					.map(([p, n]) => `<div class="flex justify-between text-gray-600"><span>${money(p)} x ${n} noche${n === 1 ? "" : "s"}</span><span>${money(p * n)}</span></div>`)
+					.join("") +
+					`<div class="flex justify-between pt-3 border-t border-gray-200 font-display font-extrabold text-lg text-[#2a3035]"><span>Total</span><span>${money(total)}</span></div>`;
+				breakdown.classList.remove("hidden");
+				form.classList.remove("hidden");
+				$("submit-btn").textContent = `Reservar y pagar ${money(total)}`;
+			};
+
+			const refresh = () => {
+				renderMonths();
+				setHint();
+				renderSummary();
+			};
+
+			const onDayClick = (d: string) => {
+				if (locked) return;
+				hideFormError();
+				if (!checkIn || checkOut || d <= checkIn) {
+					checkIn = d;
+					checkOut = null;
+				} else {
+					const n = nightsBetween(checkIn, d).length;
+					if (n < unit.lodging.minNights) {
+						showFormError(`La estadía mínima es de ${unit.lodging.minNights} noches.`);
+						$("calendar-hint").textContent = `La estadía mínima es de ${unit.lodging.minNights} noches. Elija una salida posterior.`;
+						return;
+					}
+					checkOut = d;
+				}
+				refresh();
+			};
+
+			/* --- Formulario y pago --- */
+			const showFormError = (msg: string) => {
+				const el = $("form-error");
+				el.textContent = msg;
+				el.classList.remove("hidden");
+			};
+			const hideFormError = () => $("form-error").classList.add("hidden");
+
+			let culqiLoaded = false;
+			const loadCulqi = () =>
+				new Promise<void>((resolve, reject) => {
+					if (culqiLoaded && (window as any).Culqi) return resolve();
+					const s = document.createElement("script");
+					s.src = "https://checkout.culqi.com/js/v4";
+					s.onload = () => { culqiLoaded = true; resolve(); };
+					s.onerror = () => reject(new Error("No se pudo cargar Culqi. Revise su conexión."));
+					document.head.appendChild(s);
+				});
+
+			/** Cuenta regresiva del apartado de noches. */
+			const startCountdown = (expiresAt: string) => {
+				const el = document.getElementById("hold-countdown");
+				if (!el) return;
+				const tick = () => {
+					const ms = new Date(expiresAt).getTime() - Date.now();
+					if (ms <= 0) {
+						el.textContent = "El tiempo para pagar venció. Vuelva a elegir sus fechas.";
+						document.getElementById("culqi-pay-btn")?.setAttribute("disabled", "true");
+						return;
+					}
+					const m = Math.floor(ms / 60000);
+					const s = Math.floor((ms % 60000) / 1000);
+					el.textContent = `Sus noches están apartadas por ${m}:${String(s).padStart(2, "0")} minutos.`;
+					setTimeout(tick, 1000);
+				};
+				tick();
+			};
+
+			const showPayStep = (res: any) => {
+				locked = true;
+				$("clear-dates").classList.add("hidden");
+				$<HTMLSelectElement>("guests").disabled = true;
+				$("calendar-hint").textContent = `Sus fechas están apartadas: del ${fmtDay(checkIn!)} al ${fmtDay(checkOut!)}.`;
+				$("booking-form").classList.add("hidden");
+				const step = $("pay-step");
+				step.classList.remove("hidden");
+				const header = `
+					<div class="bg-green-50 border-l-4 border-green-500 p-4 text-left">
+						<p class="font-bold text-green-700">Noches apartadas</p>
+						<p class="text-sm text-green-700">Código: <span class="font-mono font-bold">${esc(res.code)}</span> · Total: <span class="font-bold">${money(res.total)}</span></p>
+						<p id="hold-countdown" class="text-xs text-green-700 mt-1"></p>
+					</div>`;
+
+				if (res.paymentInfo?.mercadopago?.redirectUrl) {
+					step.innerHTML = `${header}
+						<p class="text-sm text-gray-600">Lo estamos llevando a MercadoPago para completar el pago de forma segura…</p>
+						<a href="${esc(res.paymentInfo.mercadopago.redirectUrl)}" class="inline-block bg-[#009ee3] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest text-sm">Ir a MercadoPago</a>`;
+					startCountdown(res.holdExpiresAt);
+					setTimeout(() => { window.location.href = res.paymentInfo.mercadopago.redirectUrl; }, 1500);
+					return;
+				}
+
+				step.innerHTML = `${header}
+					<p class="text-sm text-gray-600">Pague con su tarjeta Visa o Mastercard. Se abrirá una ventana segura de Culqi.</p>
+					<button id="culqi-pay-btn" type="button" class="w-full bg-[#1d4c74] text-white font-bold px-6 py-4 uppercase font-ui tracking-widest hover:bg-[#2a3035] transition-colors text-sm cursor-pointer disabled:opacity-50">Pagar ${money(res.total)}</button>
+					<div id="culqi-result" class="hidden p-3 text-sm text-left"></div>`;
+				startCountdown(res.holdExpiresAt);
+
+				const btn = $<HTMLButtonElement>("culqi-pay-btn");
+				const result = $("culqi-result");
+				const show = (ok: boolean, msg: string) => {
+					result.className = `p-3 text-sm text-left ${ok ? "bg-green-50 border-l-4 border-green-500 text-green-700" : "bg-red-50 border-l-4 border-red-500 text-red-700"}`;
+					result.innerHTML = msg;
+				};
+				btn.addEventListener("click", async () => {
+					btn.disabled = true;
+					try {
+						await loadCulqi();
+						const Culqi = (window as any).Culqi;
+						Culqi.publicKey = res.paymentInfo.culqi.publicKey;
+						Culqi.settings({ title: "Grupo Prevca", currency: "PEN", amount: Math.round(res.total * 100) });
+						Culqi.options({ style: { buttonBackground: "#1d4c74", buttonText: "Pagar" } });
+						(window as any).culqi = async () => {
+							if (Culqi.token) {
+								show(true, "Procesando el pago…");
+								try {
+									const r = await chargeBookingCulqi(res.code, Culqi.token.id);
+									if (r.approved) {
+										window.location.href = `/reserva-exitosa?code=${encodeURIComponent(res.code)}`;
+									} else {
+										show(false, esc(r.message ?? "El pago fue rechazado."));
+										btn.disabled = false;
+									}
+								} catch (err) {
+									show(false, esc((err as Error).message));
+									btn.disabled = false;
+								}
+							} else if (Culqi.error) {
+								show(false, esc(Culqi.error.user_message ?? "Error al procesar la tarjeta."));
+								btn.disabled = false;
+							}
+						};
+						Culqi.open();
+						btn.disabled = false;
+					} catch (err) {
+						show(false, esc((err as Error).message));
+						btn.disabled = false;
+					}
+				});
+			};
+
+			const onSubmit = async (e: Event) => {
+				e.preventDefault();
+				hideFormError();
+				const form = e.target as HTMLFormElement;
+				const data = new FormData(form);
+				const get = (k: string) => String(data.get(k) ?? "").trim();
+
+				if (!get("name") || !get("email") || !get("phone") || !get("documentNumber")) {
+					return showFormError("Complete nombre, correo, celular y documento.");
+				}
+				if (!data.get("paymentMethod")) return showFormError("Elija un método de pago.");
+				if (!data.get("acceptTerms")) return showFormError("Debe aceptar las condiciones de la reserva.");
+
+				const btn = $<HTMLButtonElement>("submit-btn");
+				btn.disabled = true;
+				btn.textContent = "Apartando sus noches…";
+				try {
+					const res = await createBooking({
+						productSlug: unit.slug,
+						checkIn,
+						checkOut,
+						guests: Number($<HTMLSelectElement>("guests").value),
+						customer: {
+							name: get("name"),
+							email: get("email"),
+							phone: get("phone"),
+							documentType: get("documentType"),
+							documentNumber: get("documentNumber"),
+						},
+						notes: get("notes") || null,
+						paymentMethod: data.get("paymentMethod"),
+						acceptTerms: true,
+					});
+					showPayStep(res);
+				} catch (err) {
+					const msg = (err as Error).message;
+					btn.disabled = false;
+					renderSummary();
+					// Si alguien tomó las noches mientras tanto, se recarga el calendario.
+					if (/disponible/i.test(msg)) {
+						await loadUnit(unit.slug);
+						checkIn = null;
+						checkOut = null;
+						refresh();
+						showFormError(`${msg}. Elija otras fechas.`);
+					} else {
+						showFormError(msg);
+					}
+				}
+			};
+
+			const loadUnit = async (slug: string) => {
+				unit = await fetchLodgingUnit(slug);
+				unavailable = new Set(unit.unavailable);
+			};
+
+			const renderStatic = (methods: any) => {
+				$("unit-title").textContent = unit.title;
+				document.title = `Reservar ${unit.title} | Grupo Prevca`;
+				$("base-price").textContent = money(unit.lodging.nightlyPrice);
+				$("rules").textContent = `Entrada desde las ${unit.lodging.checkInTime} · Salida hasta las ${unit.lodging.checkOutTime} · Estadía mínima: ${unit.lodging.minNights} noche${unit.lodging.minNights === 1 ? "" : "s"} · Máximo ${unit.lodging.maxGuests} huésped${unit.lodging.maxGuests === 1 ? "" : "es"}.`;
+				$("guests").innerHTML = Array.from({ length: unit.lodging.maxGuests }, (_, i) => `<option value="${i + 1}">${i + 1} huésped${i ? "es" : ""}</option>`).join("");
+
+				const imgs = [...(unit.images ?? [])].sort((a: any, b: any) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0) || a.order - b.order).slice(0, 5);
+				$("unit-photos").innerHTML = imgs
+					.map((im: any, i: number) => `<img src="${esc(im.url)}" alt="${esc(unit.title)}" class="w-full h-full object-cover ${i === 0 ? "col-span-4 md:col-span-2 row-span-2" : "hidden md:block"}" loading="${i ? "lazy" : "eager"}" />`)
+					.join("");
+				if (!imgs.length) $("unit-photos").classList.add("hidden");
+
+				const options = [
+					methods.mercadopago && { value: "MERCADOPAGO", label: "MercadoPago", desc: "Tarjetas, Yape y otros medios" },
+					methods.culqi && { value: "CULQI", label: "Tarjeta (Culqi)", desc: "Visa o Mastercard" },
+				].filter(Boolean) as { value: string; label: string; desc: string }[];
+				$("pay-methods").innerHTML = options.length
+					? options.map((o, i) => `<label class="flex items-center gap-3 border border-gray-300 p-3 cursor-pointer hover:border-[#1d4c74] has-[:checked]:border-[#1d4c74] has-[:checked]:bg-[#1d4c74]/5">
+							<input type="radio" name="paymentMethod" value="${o.value}" ${i === 0 ? "checked" : ""} class="accent-[#1d4c74]" />
+							<span><span class="block font-bold text-sm text-[#2a3035]">${o.label}</span><span class="block text-xs text-gray-500">${o.desc}</span></span>
+						</label>`).join("")
+					: `<p class="text-sm text-yellow-800 bg-yellow-50 border-l-4 border-yellow-500 p-3">El pago en línea no está disponible ahora. Escríbanos por WhatsApp para reservar.</p>`;
+				if (!options.length) $<HTMLButtonElement>("submit-btn").disabled = true;
+			};
+
+			const init = async () => {
+				const slug = new URLSearchParams(window.location.search).get("slug");
+				try {
+					if (!slug) throw new Error("Falta el departamento");
+					const [, methods] = await Promise.all([loadUnit(slug), fetchPaymentMethods().catch(() => ({}))]);
+					viewMonth = `${unit.today.slice(0, 7)}-01`;
+					renderStatic(methods);
+					refresh();
+					$("state-loading").classList.add("hidden");
+					$("booking-app").classList.remove("hidden");
+				} catch {
+					$("state-loading").classList.add("hidden");
+					$("state-error").classList.remove("hidden");
+				}
+
+				$("months").addEventListener("click", (e) => {
+					const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-day]");
+					if (btn && !btn.disabled) onDayClick(btn.dataset.day!);
+				});
+				$("months").addEventListener("mouseover", (e) => {
+					if (locked || !selectingCheckout()) return;
+					const d = (e.target as HTMLElement).closest<HTMLElement>("[data-day]")?.dataset.day ?? null;
+					if (d !== hover) { hover = d; renderMonths(); }
+				});
+				$("prev-month").addEventListener("click", () => { viewMonth = addMonths(viewMonth, -1); renderMonths(); });
+				$("next-month").addEventListener("click", () => { viewMonth = addMonths(viewMonth, 1); renderMonths(); });
+				$("clear-dates").addEventListener("click", () => { checkIn = null; checkOut = null; hideFormError(); refresh(); });
+				$("booking-form").addEventListener("submit", onSubmit);
+				window.matchMedia("(min-width: 768px)").addEventListener("change", () => unit && renderMonths());
+			};
+
+			init();
+		</script>
+		<WhatsAppButton />
+		<LibroReclamaciones />
+	</body>
+</html>

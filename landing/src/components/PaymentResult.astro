@@ -19,9 +19,16 @@ interface Props {
   variant: Variant;
   title: string;
   message: string;
+  /** Reservas de Alojamiento: cambia textos y enlaces, y no toca el carrito */
+  kind?: "order" | "booking";
 }
 
-const { variant, title, message } = Astro.props;
+const { variant, title, message, kind = "order" } = Astro.props;
+const isBooking = kind === "booking";
+const codeLabel = isBooking ? "Código de reserva" : "Código de pedido";
+const continueHref = isBooking ? "/alojamiento" : "/ecommerce";
+const continueLabel = isBooking ? "Ver alojamiento" : "Seguir comprando";
+const retryHref = isBooking ? "/alojamiento" : "/checkout";
 
 const THEME: Record<
   Variant,
@@ -80,16 +87,16 @@ import LibroReclamaciones from "./LibroReclamaciones.astro";
           <p class="text-gray-600 font-body mb-6 leading-relaxed">{message}</p>
 
           <div id="order-code-box" class={`hidden ${t.bg} border-l-4 ${t.border} p-4 mb-6 text-left`}>
-            <p class="text-xs uppercase tracking-widest font-bold text-gray-500 mb-1">Código de pedido</p>
+            <p class="text-xs uppercase tracking-widest font-bold text-gray-500 mb-1">{codeLabel}</p>
             <p class={`font-mono font-bold text-lg ${t.text}`} id="order-code"></p>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href="/ecommerce"
+              href={continueHref}
               class="bg-[#1d4c74] text-white font-bold px-8 py-3 uppercase font-ui tracking-widest hover:bg-[#153a5b] transition-colors border border-[#1d4c74] text-sm"
             >
-              Seguir comprando
+              {continueLabel}
             </a>
             <a
               href="/"
@@ -101,7 +108,7 @@ import LibroReclamaciones from "./LibroReclamaciones.astro";
 
           {variant === "failure" && (
             <a
-              href="/checkout"
+              href={retryHref}
               class="inline-block mt-4 text-sm text-[#1d4c74] font-bold font-ui uppercase tracking-widest hover:text-[#153a5b]"
             >
               Reintentar pago →
@@ -125,8 +132,8 @@ import LibroReclamaciones from "./LibroReclamaciones.astro";
       </div>
     </footer>
 
-    <script>
-      // Muestra el código de pedido que MercadoPago devuelve en ?code=
+    <script is:inline define:vars={{ isBooking }}>
+      // Muestra el código que MercadoPago devuelve en ?code=
       const params = new URLSearchParams(window.location.search);
       const code = params.get("code");
       if (code) {
@@ -138,9 +145,12 @@ import LibroReclamaciones from "./LibroReclamaciones.astro";
         }
       }
       // El pago ya se registró; limpiamos el carrito por si quedó algo.
-      try {
-        localStorage.removeItem("prevca_cart");
-      } catch {}
+      // (Una reserva no usa el carrito: no se toca.)
+      if (!isBooking) {
+        try {
+          localStorage.removeItem("prevca_cart");
+        } catch {}
+      }
     </script>
   		<LibroReclamaciones />
 	</body>

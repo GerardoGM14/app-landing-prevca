@@ -144,3 +144,42 @@ export async function fetchShippingRates() {
 export async function fetchPaymentMethods() {
   return request('/public/payment-methods');
 }
+
+/* ------------------------------------------------------------------ *
+ * Reservas de Alojamiento
+ * ------------------------------------------------------------------ */
+
+/**
+ * Ficha de reserva de un departamento: precios, reglas y noches no disponibles.
+ * @returns {Promise<{ id, slug, title, images, lodging: { nightlyPrice, maxGuests, minNights,
+ *   checkInTime, checkOutTime, priceOverrides }, unavailable: string[], today, maxDate,
+ *   maxNights, holdMinutes }>}
+ */
+export async function fetchLodgingUnit(slug) {
+  return request(`/public/lodging/units/${encodeURIComponent(slug)}`);
+}
+
+/**
+ * Crea la reserva: el servidor recalcula el total y aparta las noches mientras
+ * el cliente paga.
+ * @returns {Promise<{ code, total, nights, holdExpiresAt, paymentMethod,
+ *   paymentInfo: { mercadopago?: { redirectUrl }, culqi?: { publicKey } } }>}
+ */
+export async function createBooking(payload) {
+  return request('/public/lodging/bookings', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+/** Cobro de una reserva con el token de Culqi (200 aprobado / 402 rechazado). */
+export async function chargeBookingCulqi(code, token) {
+  const res = await fetch(`${API_BASE}/public/lodging/bookings/${encodeURIComponent(code)}/culqi-charge`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 200 || res.status === 402) return data;
+  throw new Error(data?.error?.message ?? `Error ${res.status} al procesar el pago`);
+}
