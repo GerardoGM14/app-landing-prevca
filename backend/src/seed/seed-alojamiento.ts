@@ -44,6 +44,8 @@ interface NewItem {
   title: string;
   /** Prefijo de los archivos: <prefijo>-1.jpg, <prefijo>-2.jpg, ... */
   imagePrefix: string;
+  /** false = oculto en la web (se conserva por si se vuelve a ofrecer) */
+  isActive?: boolean;
 }
 
 const ITEMS: NewItem[] = [
@@ -59,7 +61,8 @@ const ITEMS: NewItem[] = [
     title: 'Departamento Premium Black – 3er piso',
     imagePrefix: 'departamento-premium-black',
   },
-  { slug: 'lavanderia', ref: 'PRV-AL-LAV', title: 'Lavandería', imagePrefix: 'lavanderia' },
+  // Oculta desde oct 2026: en Alojamiento solo se ofrecen los departamentos.
+  { slug: 'lavanderia', ref: 'PRV-AL-LAV', title: 'Lavandería', imagePrefix: 'lavanderia', isActive: false },
 ];
 
 /** Archivos <prefijo>-N.ext ordenados por N numérico (10 va después de 9). */
@@ -144,7 +147,7 @@ async function main() {
       stock: 0,
       showStock: false,
       trackStock: false,
-      isActive: true,
+      isActive: item.isActive ?? true,
       isFeatured: false,
       images,
       updatedAt: FieldValue.serverTimestamp(),
