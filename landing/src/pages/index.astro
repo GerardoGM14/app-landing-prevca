@@ -23,6 +23,8 @@ import { LuCookie } from "react-icons/lu";
 import libroImg from "../assets/libro-reclamaciones.png";
 import logoPrevca from "../assets/logo-prevca.png";
 import logoProinnovate from "../assets/logo-proinnovate.png";
+import divisionAlojamientoImg from "../assets/hospitalidad/division-alojamiento.jpg";
+import divisionTransporteImg from "../assets/transporte/division-transporte.jpg";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
 import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 ---
@@ -638,7 +640,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 		<!-- Divisions Cards (Responsive Grid) -->
 		<section id="divisiones" class="py-16 md:py-24 px-6 md:px-8 bg-gray-50 reveal-item scroll-mt-24">
 			<div
-				class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-0 md:border border-gray-200"
+				class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 md:border border-gray-200"
 			>
 				<!-- Madera -->
 				<div
@@ -679,7 +681,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 				>
 					<div class="h-64 overflow-hidden relative">
 						<img
-							src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							src={divisionAlojamientoImg.src}
 							alt="Alojamiento"
 							class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 font-display"
 						/>
@@ -741,11 +743,11 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 
 				<!-- Transporte -->
 				<div
-					class="bg-[#1d4c74] flex flex-col group border md:border-none border-gray-200 shadow-none"
+					class="bg-[#2a3035] flex flex-col group border md:border-none border-gray-200 shadow-none"
 				>
 					<div class="h-64 overflow-hidden relative">
 						<img
-							src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=1175&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							src={divisionTransporteImg.src}
 							alt="Transporte"
 							class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 font-display"
 						/>
@@ -766,7 +768,7 @@ import LibroReclamaciones from "../components/LibroReclamaciones.astro";
 						</p>
 						<a
 							href="/transporte"
-							class="bg-[#2a3035] text-white font-ui font-bold uppercase py-3 px-6 self-start hover:bg-white hover:text-[#2a3035] transition-colors text-xs tracking-wider cursor-pointer inline-block"
+							class="bg-[#1d4c74] text-white font-ui font-bold uppercase py-3 px-6 self-start hover:bg-white hover:text-[#1d4c74] transition-colors text-xs tracking-wider cursor-pointer inline-block"
 						>
 							Ver División
 						</a>
